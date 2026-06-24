@@ -1,0 +1,87 @@
+{
+  "about": {
+    "title": "¿Quiénes somos?",
+    "intro": "Somos el Chapter Estudiantil de la American Chemical Society de la Universidad Nacional Mayor de San Marcos, dedicado a fomentar el interés por la química y la ciencia en la comunidad estudiantil.",
+    "missionTitle": "Misión",
+    "missionText": "Despertar el interés por la ciencia en los jóvenes, promoviendo la participación en actividades científicas y académicas que enriquezcan su formación.",
+    "visionTitle": "Visión",
+    "visionText": "Convertirnos en el principal referente estudiantil de divulgación científica y desarrollo profesional en el ámbito de la química en el Perú."
+  },
+  "navbar": {
+    "home": "Inicio",
+    "about": "Nosotros",
+    "officers": "Directiva",
+    "hidroinnova": "Hidroinnova Challenge",
+    "events": "Eventos",
+    "contact": "Contacto",
+    "dashboard": "Dashboard",
+    "login": "Iniciar Sesión",
+    "language": "Idioma",
+    "english": "Inglés",
+    "spanish": "Español"
+  },
+  "footer": {
+    "title": "Bienvenido a ACS UNMSM",
+    "description1": "Somos la sección estudiantil oficial de la American Chemical Society en la UNMSM.",
+    "description2": "Promovemos la química con propósito, desde San Marcos para el mundo.",
+    "follow": "Síguenos en nuestras redes sociales",
+    "copyright": "© {year} ACS UNMSM Student Chapter. Todos los derechos reservados."
+  },
+  "debug": {
+    "title": "Esta es una página de depuración",
+    "description": "Si ves este mensaje en español, la localización funciona."
+  },
+  "homePage": {
+    "welcome": "Bienvenido al ACS UNMSM",
+    "welcomePart1": "¡Bienvenidos al ACS International Student Chapter UNMSM! Nos emociona darte la bienvenida a nuestro capítulo estudiantil de la American Chemical Society en la Universidad Nacional Mayor de San Marcos. Aquí encontrarás información sobre nuestras actividades, proyectos y oportunidades para crecer junto a una comunidad apasionada por la química. Creemos en el aprendizaje continuo y la colaboración, por eso estamos abiertos a escuchar tus ideas, comentarios y sugerencias.Si quieres ser parte de este espacio, contribuir con iniciativas o simplemente conocer más sobre nosotros, contáctanos.",
+    "welcomePart2": "¡Juntos podemos impulsar la química y generar un impacto positivo!",
+    "welcomePart3": "¡Te esperamos! 💙⚗️",
+    "JoinUs": "Hazte miembro"
+  },
+  "officers": {
+    "title": "Directiva del Capítulo",
+    "roles": {
+      "facultyAdvisor": "Asesor de Facultad",
+      "president": "Presidente",
+      "vicePresident": "Vicepresidente",
+      "treasurer": "Tesorero",
+      "secretary": "Secretaria",
+      "marketingCoordinator": "Coordinador de Marketing",
+      "marketingSubCoordinator": "Subcoordinador de Marketing",
+      "eventsCoordinator": "Coordinador de Eventos",
+      "eventsSubCoordinator": "Subcoordinador de Eventos",
+      "humanResources": "Talento Humano",
+      "internalLiaison": "Coordinador de Vinculación Interna",
+      "externalLiaison": "Coordinador de Vinculación Externa",
+      "cio": "Coordinador de Tecnología de la Información",
+      "k12Coordinator": "Coordinadora K-12"
+    }
+  },
+  "contact": {
+    "title": "Contáctanos",
+    "form": {
+      "name": "Tu nombre",
+      "email": "Tu correo electrónico",
+      "subject": "Asunto",
+      "message": "Mensaje",
+      "submit": "Enviar"
+    }
+  },
+  "events": {
+    "title": "Eventos",
+    "loadingMessage": "Cargando eventos y verificando autenticación...",
+    "errorFetch": "No se pudieron cargar los eventos. Por favor, intenta de nuevo."
+  },
+  "heroCarousel": {
+    "slide1": "Súmate a la comunidad química más activa de San Marcos",
+    "slide2": "Desde San Marcos para el mundo: química con propósito",
+    "slide3": "¿Listo para innovar? ¡Sé parte de nuestras iniciativas!",
+    "slide4": "Descubre oportunidades, comparte conocimiento, haz historia"
+  },
+  "whatsAppButton": {
+    "contactUs": "Contáctenos",
+    "secretary": "Secretaría ACS UNMSM",
+    "message": "¿Tienes preguntas sobre membresía, eventos o colaboraciones?",
+    "messagePlaceholder": "Quiero saber más sobre el próximo evento..."
+  }
+}
