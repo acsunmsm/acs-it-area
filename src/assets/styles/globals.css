@@ -8,13 +8,14 @@
 @import url('https://use.fontawesome.com/releases/v5.12.1/css/all.css');
 
 /* Tus estilos personalizados heredados */
-@import url('/assets/css/styles.css');
+@import url('../css/styles.css');
 
 /* Ajustes para que Bootstrap y estilos personalizados convivan mejor */
 body {
   font-family: system-ui, sans-serif;
   background-color: #fff;
-  padding-top: 90px; /* Ajuste para altura de la navbar */
+  padding-top: 90px;
+  /* Ajuste para altura de la navbar */
 }
 
 /* Estilos para la barra de navegación */
@@ -34,7 +35,8 @@ body {
 
 .officer-card {
   display: flex;
-  flex-direction: row;   /* Foto izquierda, datos derecha en desktop */
+  flex-direction: row;
+  /* Foto izquierda, datos derecha en desktop */
   align-items: center;
   background-color: #fff;
   border-radius: 14px;
@@ -87,7 +89,8 @@ body {
   text-decoration: none;
   font-size: 1rem;
   font-weight: 500;
-  word-break: break-word; /* por si el mail es largo */
+  word-break: break-word;
+  /* por si el mail es largo */
 }
 
 .officer-email:hover {
@@ -98,7 +101,8 @@ body {
 /* 📱 Responsive para móviles */
 @media (max-width: 600px) {
   .officer-card {
-    flex-direction: column;  /* Foto arriba, datos debajo */
+    flex-direction: column;
+    /* Foto arriba, datos debajo */
     align-items: center;
     text-align: center;
   }
@@ -147,6 +151,7 @@ body {
   margin: 0 auto;
   padding: 0 20px;
 }
+
 .navbar-nav {
   align-items: center;
 }
@@ -226,7 +231,9 @@ body {
 /* Estilos para los iconos sociales */
 
 /* Corrección para FontAwesome */
-.fas, .fab, .far {
+.fas,
+.fab,
+.far {
   font-family: 'Font Awesome 5 Free' !important;
   font-weight: 900 !important;
 }
@@ -335,6 +342,7 @@ body {
 .contact-form textarea::placeholder {
   color: #888;
 }
+
 /* Estilos para la sección de capítulos */
 .chapters-section {
   background: url('/assets/img/chapter-bg.png') no-repeat center center;
@@ -379,7 +387,7 @@ h2 {
   min-height: 100vh;
   display: flex;
   justify-content: center;
-  align-items:baseline;
+  align-items: baseline;
 }
 
 .login-box {
@@ -442,40 +450,40 @@ h2 {
   #logo {
     width: 200px;
   }
-  
+
   section .container {
     text-align: center;
     padding: 40px;
   }
-  
+
   section .container .row {
     flex-direction: column;
     gap: 30px;
   }
-  
+
   body {
     padding-top: 70px;
   }
-  
+
   .sponsors-container {
     display: flex;
     flex-direction: column;
     align-items: center;
   }
-  
+
   .sponsors-container img {
     width: 200px !important;
     height: auto !important;
   }
-  
+
   .footer-content {
     width: 100%;
   }
-  
+
   .hero-content {
     flex-direction: column;
   }
-  
+
   .hero-text {
     padding: 20px;
     text-align: center;
@@ -584,11 +592,11 @@ h2 {
   .footer-title {
     font-size: 2rem;
   }
-  
+
   .footer-description {
     font-size: 1rem;
   }
-  
+
   .footer-social-icon {
     width: 40px;
     height: 40px;
@@ -626,7 +634,7 @@ h2 {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0,0,0,0.5);
+  background-color: rgba(0, 0, 0, 0.5);
   z-index: 1000;
   display: flex;
   justify-content: center;
@@ -639,7 +647,7 @@ h2 {
   border-radius: 10px;
   max-width: 500px;
   width: 90%;
-  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
 .modal-content input,
