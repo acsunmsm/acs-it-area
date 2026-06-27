@@ -7,9 +7,6 @@
 /* Importa FontAwesome */
 @import url('https://use.fontawesome.com/releases/v5.12.1/css/all.css');
 
-/* Tus estilos personalizados heredados */
-@import url('../css/styles.css');
-
 /* Ajustes para que Bootstrap y estilos personalizados convivan mejor */
 body {
   font-family: system-ui, sans-serif;
