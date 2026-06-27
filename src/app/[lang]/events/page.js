@@ -3,7 +3,6 @@
 import { supabase } from '../../../lib/supabaseClient'; // Asegúrate de que esta ruta sea correcta
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import Head from 'next/head';
 import Navbar from '../../../components/Navbar';
 import Footer from '../../../components/Footer';
 import EventModal from '../../../components/EventModal';
@@ -114,6 +113,10 @@ export default function EventsPage() {
     fetchEvents(actualSearchTerm);
   }, [actualSearchTerm]);
 
+  useEffect(() => {
+    document.title = `${t('title')} - ACS UNMSM`;
+  }, [t]);
+
   //Editar evento
   const handleEditClick = (event) => {
     console.log('DEBUG (EventsPage): Botón Editar clickeado. Evento seleccionado:', event);
@@ -220,10 +223,6 @@ export default function EventsPage() {
 
   return (
     <>
-      <Head>
-        <title>Eventos - ACS</title>
-        <meta name="description" content="Descubre nuestros próximos eventos." />
-      </Head>
       <Navbar />
       <section className="hero-section py-5 text-white" style={{ backgroundColor: '#0054a6' }}>
         <div className="container text-center">

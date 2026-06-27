@@ -54,37 +54,37 @@ export default function SponsorsCarousel() {
           <div className="carousel-inner">
             <div className="carousel-item active">
               <div className="sponsors-container d-flex justify-content-around h-100">
-                <img src="assets/img/s1.png" alt="Sponsor 1" className="h-100" />
-                <img src="assets/img/s8.png" alt="Sponsor 2" className="h-100" />
-                <img src="assets/img/s3.png" alt="Sponsor 3" className="h-100" />
+                <img src="/assets/img/s1.png" alt="Sponsor 1" className="h-100" />
+                <img src="/assets/img/s8.png" alt="Sponsor 2" className="h-100" />
+                <img src="/assets/img/s3.png" alt="Sponsor 3" className="h-100" />
               </div>
             </div>
             <div className="carousel-item">
               <div className="sponsors-container d-flex justify-content-around h-100">
-                <img src="assets/img/s4.png" alt="Sponsor 4" className="h-100" />
-                <img src="assets/img/s5.jpg" alt="Sponsor 5" className="h-100" />
-                <img src="assets/img/Poderosa.png" alt="Sponsor 14" className="h-100" />
+                <img src="/assets/img/s4.png" alt="Sponsor 4" className="h-100" />
+                <img src="/assets/img/s5.jpg" alt="Sponsor 5" className="h-100" />
+                <img src="/assets/img/Poderosa.png" alt="Sponsor 14" className="h-100" />
               </div>
             </div>
             <div className="carousel-item">
               <div className="sponsors-container d-flex justify-content-around h-100">
-                <img src="assets/img/s7.png" alt="Sponsor 7" className="h-100" />
-                <img src="assets/img/s2.png" alt="Sponsor 8" className="h-100" />
-                <img src="assets/img/s9.webp" alt="Sponsor 9" className="h-100" />
+                <img src="/assets/img/s7.png" alt="Sponsor 7" className="h-100" />
+                <img src="/assets/img/s2.png" alt="Sponsor 8" className="h-100" />
+                <img src="/assets/img/s9.webp" alt="Sponsor 9" className="h-100" />
               </div>
             </div>
             <div className="carousel-item">
               <div className="sponsors-container d-flex justify-content-around h-100">
-                <img src="assets/img/s10.png" alt="Sponsor 10" className="h-100" />
-                <img src="assets/img/s11.png" alt="Sponsor 11" className="h-100" />
-                <img src="assets/img/s12.png" alt="Sponsor 12" className="h-100" />
+                <img src="/assets/img/s10.png" alt="Sponsor 10" className="h-100" />
+                <img src="/assets/img/s11.png" alt="Sponsor 11" className="h-100" />
+                <img src="/assets/img/s12.png" alt="Sponsor 12" className="h-100" />
               </div>
             </div>
             <div className="carousel-item">
               <div className="sponsors-container d-flex justify-content-around h-100">
-                <img src="assets/img/s13.png" alt="Sponsor 13" className="h-100" />
-                <img src="assets/img/s6.png" alt="Sponsor 6" className="h-100" />
-                <img src="assets/img/s14.png" alt="Sponsor 15" className="h-100" />
+                <img src="/assets/img/s13.png" alt="Sponsor 13" className="h-100" />
+                <img src="/assets/img/s6.png" alt="Sponsor 6" className="h-100" />
+                <img src="/assets/img/s14.png" alt="Sponsor 15" className="h-100" />
               </div>
             </div>
           </div>

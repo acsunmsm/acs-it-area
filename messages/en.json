@@ -47,12 +47,13 @@
         "treasurer": "Treasurer",
         "secretary": "Secretary",
         "marketingCoordinator": "Marketing Coordinator",
-        "marketingSubCoordinator": "Marketing Subcoordinador",
+        "marketingSubCoordinator": "Marketing Subcoordinator",
         "eventsCoordinator": "Events Coordinator",
-        "eventsSubCoordinator": "Events Subcoordinador",
-        "humanResources": "Human Resources",
-        "internalLiaison": "Internal Liaison",
-        "externalLiaison": "External Liaison",
+        "eventsSubCoordinator": "Events Subcoordinator",
+        "humanResources": "Human Resources Coordinator",
+        "humanResourcesSubCoordinator": "Human Resources Subcoordinator",
+        "internalLiaison": "Liaison Subcoordinator",
+        "externalLiaison": "Liaison Coordinator",
         "cio": "Chief Information Officer",
         "k12Coordinator": "K-12 Coordinator"
         }

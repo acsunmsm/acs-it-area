@@ -1,9 +1,16 @@
-import Head from 'next/head';
 import Navbar from '@/src/components/Navbar';
 import Footer from '@/src/components/Footer';
 import OfficersList from '@/src/components/OfficersList';
 import { getTranslations } from 'next-intl/server';
 import '@/src/assets/styles/globals.css';
+
+export async function generateMetadata({ params }) {
+  const { lang } = await params;
+  const t = await getTranslations({ locale: lang, namespace: 'officers' });
+  return {
+    title: t('title'),
+  };
+}
 
 export default async function Officers({ params }) {
   const { lang } = await params;
@@ -20,33 +27,30 @@ export default async function Officers({ params }) {
   const eventsCoordinator = t('roles.eventsCoordinator');
   const eventsSubCoordinator = t('roles.eventsSubCoordinator');
   const humanResources = t('roles.humanResources');
+  const humanResourcesSubCoordinator = t('roles.humanResourcesSubCoordinator');
   const internalLiaison = t('roles.internalLiaison');
   const externalLiaison = t('roles.externalLiaison');
-  const cio = t('roles.cio');
   const k12Coordinator = t('roles.k12Coordinator');
   
   const officers = [
-    [facultyAdvisor, 'PhD Jose Orlando Calvay Castillo', 'advisor@acs-unmsm.org'],
-    [president, 'Frances Atena Malapi Segura', 'president@acs-unmsm.org'],
-    [treasurer, 'Breiner Smith Fuentes Bulnes', 'treasurer@acs-unmsm.org'],
-    [secretary, 'Geraldine Campos Arias', 'secretary@acs-unmsm.org'],
-    [secretary, 'Valery Celit Figueroa Chachi', 'secretary@acs-unmsm.org'],
-    [marketingCoordinator, 'Zulie Milene Yucra Luza', 'chief.marketing@acs-unmsm.org'],
-    [marketingSubCoordinator, 'Dalma Cruzado Tintaya', 'marketing@acs-unmsm.org'],
-    [eventsCoordinator, 'Jhefferson Andre Zagaceta Pinpincos', 'chief.project.manager@acs-unmsm.org'],
-    [eventsSubCoordinator, 'Victor Manuel Valqui Ramos', 'project.manager@acs-unmsm.org'],
-    [humanResources, 'Amira Briseida Jacinto Mauricio', 'human.resources@acs-unmsm.org'],
-    [internalLiaison, 'Javier Antony Sanchez Hilasaca', 'internal.liaison@acs-unmsm.org'],
-    [externalLiaison, 'Diana Rosa Soto Mezarino', 'external.liaison@acs-unmsm.org'],
-    [cio, 'Jose Alessandro Quispe Cabello', 'cio@acs-unmsm.org'],
-    [k12Coordinator, 'Katia Melissa Merino Huaman', 'k12@acs-unmsm.org'],
+    [facultyAdvisor, 'PhD Jose Orlando Calvay Castillo', 'advisor@acs-unmsm.org', 'josecalvay.png'],
+    [president, 'Breiner Smith Fuentes Bulnes', 'president@acs-unmsm.org', 'breiner_fuentes.jpg'],
+    [vicePresident, 'Geraldine Campos Arias', '', 'geraldine_campos.jpg'],
+    [treasurer, 'Yaquelin Cristina Juana Rivera Antonio', 'treasurer@acs-unmsm.org', 'yaquelin_rivera.jpeg'],
+    [secretary, 'Jean Franco Toledo Rodriguez', 'secretary@acs-unmsm.org', 'jean_toledo.jpg'],
+    [marketingCoordinator, 'Rosario Cinthya Yaya Paitan', 'chief.marketing@acs-unmsm.org', 'rosario_yaya.jpg'],
+    [marketingSubCoordinator, 'Angelica Esther Naucapoma Chillcce', 'chief.marketing@acs-unmsm.org', 'angelica_naucapoma.jpg'],
+    [eventsCoordinator, 'Antonio Alburqueque Ampuero', 'chief.project.manager@acs-unmsm.org', 'antonio_alburqueque.jpg'],
+    [eventsSubCoordinator, 'Andres Sebastián Bailon Vento', 'chief.project.manager@acs-unmsm.org', 'andres_bailon.jpg'],
+    [humanResources, 'Yoselin Estefany Alvarez Cueva', 'human.resources@acs-unmsm.org', 'yoselin_alvarez.jpg'],
+    [humanResourcesSubCoordinator, 'Geancarlos Genaro Cora Díaz', 'human.resources@acs-unmsm.org', 'geancarlos_cora.jpg'],
+    [externalLiaison, 'Javier Antony Sanchez Hilasaca', 'external.liaison@acs-unmsm.org', 'javier_sanchez.jpg'],
+    [internalLiaison, 'Kessia Brigitte Cordova Tantalean', 'internal.liaison@acs-unmsm.org', 'kesia_cordova.jpg'],
+    [k12Coordinator, 'Lucero Lidia Ventura Cruz', 'k12@acs-unmsm.org', 'lucero_ventura.jpg'],
   ];
 
   return (
     <>
-      <Head>
-        <title>{t('title')}</title>
-      </Head>
       <Navbar />
 
       <section className="hero-section py-5 text-white" style={{ backgroundColor: '#0054a6' }}>

@@ -43,18 +43,19 @@
     "roles": {
       "facultyAdvisor": "Asesor de Facultad",
       "president": "Presidente",
-      "vicePresident": "Vicepresidente",
-      "treasurer": "Tesorero",
-      "secretary": "Secretaria",
+      "vicePresident": "Vicepresidenta",
+      "treasurer": "Tesorera",
+      "secretary": "Secretario",
       "marketingCoordinator": "Coordinador de Marketing",
       "marketingSubCoordinator": "Subcoordinador de Marketing",
       "eventsCoordinator": "Coordinador de Eventos",
       "eventsSubCoordinator": "Subcoordinador de Eventos",
-      "humanResources": "Talento Humano",
-      "internalLiaison": "Coordinador de Vinculación Interna",
-      "externalLiaison": "Coordinador de Vinculación Externa",
+      "humanResources": "Coordinadora de Talento Humano",
+      "humanResourcesSubCoordinator": "Subcoordinador Talento Humano",
+      "internalLiaison": "Subcoordinadora de Vinculación",
+      "externalLiaison": "Coordinador de Vinculación",
       "cio": "Coordinador de Tecnología de la Información",
-      "k12Coordinator": "Coordinadora K-12"
+      "k12Coordinator": "Coordinadora de K-12"
     }
   },
   "contact": {

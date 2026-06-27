@@ -84,7 +84,7 @@ export default function WhatsAppButton() {
                 {t('message')}
             </div>
           </div>
-          <div className="wcs_popup_input" data-number="51994756667">
+          <div className="wcs_popup_input" data-number="51926639971">
             <input  type="text" placeholder={t('messagePlaceholder')}/>
             <i className="fa fa-play"></i>
           </div>

@@ -92,7 +92,7 @@ export default function ContactPage() {
               />
               <div
                 className="g-recaptcha d-flex justify-content-center"
-                data-sitekey="6Ldu82ArAAAAAB0gUcsJpdPxutQCouCaTD3F14rU"
+                data-sitekey="6LfEtTYtAAAAAJ3lT83NkLxmvPsGpsgPAI-Uqr98"
               ></div>
               <button
                 id="submit-btn"

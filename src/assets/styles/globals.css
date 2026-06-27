@@ -477,7 +477,7 @@ h2 {
   }
   
   .hero-text {
-    padding-right: 0;
+    padding: 20px;
     text-align: center;
   }
 }

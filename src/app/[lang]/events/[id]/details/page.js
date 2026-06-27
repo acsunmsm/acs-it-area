@@ -3,7 +3,6 @@
 import { useParams, useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { supabase } from '../../../../../lib/supabaseClient';
-import Head from 'next/head';
 import Navbar from '../../../../../components/Navbar';
 import Footer from '../../../../../components/Footer';
 import styles from './page.module.css';
@@ -54,6 +53,12 @@ export default function EventDetailsPage() {
     fetchEventDetails();
   }, [id]);
 
+  useEffect(() => {
+    if (event?.titulo) {
+      document.title = `${event.titulo} - ACS UNMSM`;
+    }
+  }, [event]);
+
   //Mientras se cargan los datos, se muestra un mensaje de carga
   if (loading) {
     return (
@@ -99,10 +104,6 @@ export default function EventDetailsPage() {
 
   return (
     <>
-      <Head>
-        <title>{event.titulo} - ACS UNMSM</title>
-        <meta name="description" content={event.descripcion} />
-      </Head>
       <Navbar />
       <div className={styles.container}>
         <article className={styles.article}>

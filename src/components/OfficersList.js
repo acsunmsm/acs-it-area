@@ -3,9 +3,8 @@
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 
-function OfficerCard({ role, name, email }) {
-  const imageFilename = name.toLowerCase().replace(/phd\. ?/g, '').replace(/ /g, '_') + '.jpg';
-  const imagePath = `/assets/img/${imageFilename}`;
+function OfficerCard({ role, name, email, image }) {
+  const imagePath = `/assets/img/${image}`;
   const cardRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
 
@@ -63,8 +62,8 @@ return (
 export default function OfficersList({ officers, title }) {
   return (
         <div className="officers-container">
-          {officers.map(([role, name, email], idx) => (
-            <OfficerCard key={idx} role={role} name={name} email={email} />
+          {officers.map(([role, name, email, image], idx) => (
+            <OfficerCard key={idx} role={role} name={name} email={email} image={image} />
           ))}
         </div>
         );
