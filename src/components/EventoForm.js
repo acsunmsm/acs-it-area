@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { supabase } from '../lib/supabaseClient'; // Asegúrate de que esta ruta sea correcta
 import { useRouter } from 'next/navigation'; // ¡Importa useRouter aquí!
-
+import { Editor } from '@tinymce/tinymce-react';
 export default function EventoForm({ event, onSave, onCancel }) {
   console.log('DEBUG (EventoForm): Componente EventoForm renderizado. Prop "event":', event);
 
@@ -133,9 +133,12 @@ export default function EventoForm({ event, onSave, onCancel }) {
       }
 
       // 🆕 Combinar fecha + hora
-      const fechaProgramada = fecha && hora
-        ? new Date(`${fecha}T${hora}`).toISOString()
-        : null;
+      let fechaProgramada = null;
+      if (fecha && hora) {
+        fechaProgramada = new Date(`${fecha}T${hora}`).toISOString();
+      } else if (fecha) {
+        fechaProgramada = new Date(`${fecha}T00:00`).toISOString();
+      }
 
       const eventData = {
         titulo,
@@ -215,7 +218,7 @@ export default function EventoForm({ event, onSave, onCancel }) {
       <form onSubmit={handleSubmit} style={{
         display: 'flex',
         flexDirection: 'column',
-        maxWidth: '500px',
+        maxWidth: '700px',
         margin: '0 auto',
         padding: '10px',
         border: '1px solid #e0e0e0',
@@ -233,15 +236,108 @@ export default function EventoForm({ event, onSave, onCancel }) {
           disabled={loading}
           style={{ padding: '12px', borderRadius: '6px', border: '1px solid #ccc', fontSize: '1rem' }}
         />
-        <textarea
-          value={descripcion}
-          onChange={(e) => setDescripcion(e.target.value)}
-          placeholder="Descripción detallada del evento"
-          required
-          disabled={loading}
-          rows="6"
-          style={{ padding: '12px', borderRadius: '6px', border: '1px solid #ccc', resize: 'vertical', fontSize: '1rem' }}
-        />
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+          <Editor
+            apiKey="i5620gwdso6le3nj947t6jbv84qcq41mweg5vzg22k2ttle9"
+            value={descripcion}
+            onEditorChange={(newValue, editor) => setDescripcion(newValue)}
+            disabled={loading}
+            init={{
+              height: 400,
+              menubar: false,
+              plugins: [
+                'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+                'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+                'insertdatetime', 'media', 'table', 'code', 'help', 'wordcount'
+              ],
+              toolbar: 'undo redo | blocks fontfamily fontsize | ' +
+                'bold italic underline strikethrough forecolor backcolor | alignleft aligncenter ' +
+                'alignright alignjustify | bullist numlist outdent indent | ' +
+                'image media link table charmap | removeformat fullscreen code | help',
+              toolbar_mode: 'sliding',
+              image_advtab: true,
+              image_dimensions: false,
+              image_class_list: [
+                { title: 'Normal (bloque, ajuste automático)', value: 'img-responsive' },
+                { title: 'Flotar a la izquierda (texto al lado derecho)', value: 'img-float-left' },
+                { title: 'Flotar a la derecha (texto al lado izquierdo)', value: 'img-float-right' },
+                { title: 'Centrar imagen', value: 'img-center' },
+                { title: 'En línea (varias imágenes en fila)', value: 'img-inline' },
+              ],
+              content_style: `
+                body { font-family:Helvetica,Arial,sans-serif; font-size:14px; }
+                img { max-width: 100%; height: auto; }
+                .img-responsive { display: block; max-width: 100%; height: auto; margin: 10px 0; }
+                .img-float-left { float: left; margin: 0 15px 10px 0; max-width: 50%; height: auto; }
+                .img-float-right { float: right; margin: 0 0 10px 15px; max-width: 50%; height: auto; }
+                .img-center { display: block; margin: 10px auto; max-width: 100%; height: auto; }
+                .img-inline { display: inline-block; margin: 4px 2px; height: auto; vertical-align: top; }
+                /* Distribución automática de imágenes inline por fila */
+                p:has(> img.img-inline) { display: flex; flex-wrap: wrap; gap: 8px; }
+                p:has(> img.img-inline) img.img-inline { flex: 1 1 0; min-width: 120px; max-width: 100%; object-fit: contain; }
+              `,
+              placeholder: 'Descripción detallada del evento',
+              automatic_uploads: true,
+              file_picker_types: 'image',
+              // Al insertar una imagen, eliminar dimensiones hardcodeadas para que se ajuste sola
+              setup: (editor) => {
+                editor.on('NodeChange', (e) => {
+                  if (e.element.nodeName === 'IMG') {
+                    const img = e.element;
+                    // Quitar width/height hardcodeados del atributo HTML
+                    if (img.getAttribute('width')) {
+                      img.removeAttribute('width');
+                    }
+                    if (img.getAttribute('height')) {
+                      img.removeAttribute('height');
+                    }
+                    // Quitar width/height del style inline
+                    if (img.style.width) {
+                      img.style.removeProperty('width');
+                    }
+                    if (img.style.height) {
+                      img.style.removeProperty('height');
+                    }
+                    // Si no tiene clase específica, asignar la clase responsive por defecto
+                    if (!img.className || img.className.trim() === '') {
+                      img.className = 'img-responsive';
+                    }
+                  }
+                });
+              },
+              file_picker_callback: (cb, value, meta) => {
+                const input = document.createElement('input');
+                input.setAttribute('type', 'file');
+                input.setAttribute('accept', 'image/*');
+                input.addEventListener('change', async (e) => {
+                  const file = e.target.files[0];
+                  if (!file) return;
+                  try {
+                    const fileExt = file.name.split('.').pop();
+                    const fileName = `${Date.now()}-${Math.random().toString(36).substring(2, 9)}.${fileExt}`;
+                    const filePath = `editor/${fileName}`;
+                    const { error: uploadError } = await supabase.storage
+                      .from('eventos')
+                      .upload(filePath, file, {
+                        cacheControl: '3600',
+                        upsert: false,
+                        contentType: file.type,
+                      });
+                    if (uploadError) throw uploadError;
+                    const { data: publicData } = supabase.storage
+                      .from('eventos')
+                      .getPublicUrl(filePath);
+                    cb(publicData.publicUrl, { title: file.name, class: 'img-responsive' });
+                  } catch (err) {
+                    console.error('Error subiendo imagen del editor:', err);
+                    alert('Error al subir la imagen. Intenta de nuevo.');
+                  }
+                });
+                input.click();
+              }
+            }}
+          />
+        </div>
         <input
           type="date"
           value={fecha}
