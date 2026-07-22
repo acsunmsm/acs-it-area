@@ -2,6 +2,7 @@
   padding: 2rem;
   max-width: 1200px;
   margin: 0 auto;
+  overflow-x: hidden;
 }
 
 .loadingContainer,
@@ -17,14 +18,18 @@
 
 .article {
   font-family: Arial, sans-serif;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
 }
 
 .title {
-  font-size: clamp(2rem, 4vw, 2.5rem);
+  font-size: clamp(1.4rem, 4vw, 2.5rem);
   font-weight: 700;
   color: #003366;
   margin: 0 0 1rem;
   text-align: center;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
 }
 
 .meta {
@@ -52,13 +57,81 @@
 
 .description {
   font-size: 0.95rem;
-  line-height: 1.25;
+  line-height: 1.5;
   color: #2c2c2c;
-  white-space: pre-line;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  overflow: hidden;
 }
 
 .description p {
   margin: 0 0 1rem;
+}
+
+/* Asegurar que TODAS las imágenes dentro de la descripción se ajusten al ancho */
+.description img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Imagen responsive por defecto: se ajusta al 100% del contenedor */
+.description :global(.img-responsive) {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 10px 0;
+}
+
+/* Flotar imágenes */
+.description :global(.img-float-left) {
+  float: left;
+  margin: 0 15px 10px 0;
+  max-width: 50%;
+  height: auto;
+}
+
+.description :global(.img-float-right) {
+  float: right;
+  margin: 0 0 10px 15px;
+  max-width: 50%;
+  height: auto;
+}
+
+/* Centrar imagen */
+.description :global(.img-center) {
+  display: block;
+  margin: 10px auto;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Imágenes inline: se distribuyen automáticamente en fila */
+.description :global(.img-inline) {
+  display: inline-block;
+  margin: 4px 2px;
+  height: auto;
+  vertical-align: top;
+}
+
+/* Distribución automática: cuando un p contiene imágenes inline, usa flexbox */
+.description p:has(> :global(.img-inline)) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.description p:has(> :global(.img-inline)) :global(.img-inline) {
+  flex: 1 1 0;
+  min-width: 120px;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+/* Limpiar floats después de cada párrafo con imágenes flotantes */
+.description p::after {
+  content: '';
+  display: table;
+  clear: both;
 }
 
 .actions {
@@ -94,4 +167,31 @@
   }
 }
 
+@media (max-width: 600px) {
+  .container {
+    padding: 1rem;
+  }
 
+  .title {
+    font-size: clamp(1.2rem, 5vw, 1.6rem);
+  }
+
+  /* En móvil, las imágenes del editor nunca flotan, se muestran en bloque completo */
+  .description img {
+    max-width: 100% !important;
+    height: auto !important;
+    float: none !important;
+    display: block;
+    margin: 10px auto;
+  }
+
+  /* En móvil, las imágenes inline se apilan verticalmente */
+  .description p:has(> :global(.img-inline)) {
+    flex-direction: column;
+  }
+
+  .description p:has(> :global(.img-inline)) :global(.img-inline) {
+    flex: none;
+    width: 100%;
+  }
+}

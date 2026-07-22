@@ -642,8 +642,10 @@ h2 {
   background: white;
   padding: 2rem;
   border-radius: 10px;
-  max-width: 500px;
+  max-width: 750px;
   width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
@@ -655,4 +657,66 @@ h2 {
   padding: 0.5rem;
   border: 1px solid #ccc;
   border-radius: 5px;
+}
+
+/* TinyMCE dialogs must appear above the modal */
+.tox-tinymce-aux,
+.tox.tox-tinymce-aux {
+  z-index: 10000 !important;
+}
+
+.tox .tox-dialog-wrap {
+  z-index: 10001 !important;
+}
+
+.tox .tox-dialog-wrap__backdrop {
+  z-index: 10001 !important;
+}
+
+.tox .tox-dialog {
+  z-index: 10002 !important;
+}
+
+/* TinyMCE color picker, menus, autocomplete */
+.tox .tox-menu,
+.tox .tox-collection,
+.tox .tox-swatches-menu {
+  z-index: 10003 !important;
+}
+
+/* ========== Estilos de layout de imágenes del editor (TinyMCE) ========== */
+.img-float-left {
+  float: left;
+  margin: 0 15px 10px 0;
+  max-width: 50%;
+  height: auto;
+}
+
+.img-float-right {
+  float: right;
+  margin: 0 0 10px 15px;
+  max-width: 50%;
+  height: auto;
+}
+
+.img-center {
+  display: block;
+  margin: 10px auto;
+  max-width: 100%;
+  height: auto;
+}
+
+.img-inline {
+  display: inline-block;
+  margin: 5px;
+  max-width: 45%;
+  height: auto;
+  vertical-align: top;
+}
+
+/* Limpiar float después del contenido con imágenes flotantes */
+.description::after {
+  content: '';
+  display: table;
+  clear: both;
 }

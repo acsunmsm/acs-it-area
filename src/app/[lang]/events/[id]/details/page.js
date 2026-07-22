@@ -124,7 +124,7 @@ export default function EventDetailsPage() {
               />
             )}
             <div className={styles.description}>
-              <p>{event.descripcion}</p>
+              <div dangerouslySetInnerHTML={{ __html: event.descripcion }} />
             </div>
           </div>
           <div className={styles.actions}>

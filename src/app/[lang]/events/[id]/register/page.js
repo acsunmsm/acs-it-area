@@ -313,7 +313,7 @@ export default function EventRegistrationPage() {
       <div className="container">
         <h1>{event.titulo}</h1>
         <p className="intro">
-          {event.descripcion}
+          <span dangerouslySetInnerHTML={{ __html: event.descripcion }} />
           <br /><br />
           📅 <strong>Fecha:</strong> {formattedDate}
                     <br /><br />
