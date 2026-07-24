@@ -238,7 +238,7 @@ export default function EventoForm({ event, onSave, onCancel }) {
         />
         <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
           <Editor
-            apiKey="i5620gwdso6le3nj947t6jbv84qcq41mweg5vzg22k2ttle9"
+            apiKey={process.env.NEXT_PUBLIC_TINYMCE_API_KEY}
             value={descripcion}
             onEditorChange={(newValue, editor) => setDescripcion(newValue)}
             disabled={loading}
