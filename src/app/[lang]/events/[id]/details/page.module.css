@@ -127,8 +127,8 @@
   object-fit: contain;
 }
 
-/* Limpiar floats después de cada párrafo con imágenes flotantes */
-.description p::after {
+/* Limpiar floats después de la descripción para evitar desbordamientos, aunque overflow: hidden ya lo hace */
+.description::after {
   content: '';
   display: table;
   clear: both;
