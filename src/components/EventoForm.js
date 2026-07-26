@@ -279,26 +279,11 @@ export default function EventoForm({ event, onSave, onCancel }) {
               placeholder: 'Descripción detallada del evento',
               automatic_uploads: true,
               file_picker_types: 'image',
-              // Al insertar una imagen, eliminar dimensiones hardcodeadas para que se ajuste sola
+              // Solo asignar clase responsive si no tiene ninguna para que no se desborde al inicio
               setup: (editor) => {
                 editor.on('NodeChange', (e) => {
                   if (e.element.nodeName === 'IMG') {
                     const img = e.element;
-                    // Quitar width/height hardcodeados del atributo HTML
-                    if (img.getAttribute('width')) {
-                      img.removeAttribute('width');
-                    }
-                    if (img.getAttribute('height')) {
-                      img.removeAttribute('height');
-                    }
-                    // Quitar width/height del style inline
-                    if (img.style.width) {
-                      img.style.removeProperty('width');
-                    }
-                    if (img.style.height) {
-                      img.style.removeProperty('height');
-                    }
-                    // Si no tiene clase específica, asignar la clase responsive por defecto
                     if (!img.className || img.className.trim() === '') {
                       img.className = 'img-responsive';
                     }
