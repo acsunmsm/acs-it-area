@@ -39,23 +39,24 @@
         "JoinUs": "Become a member"
     },
     "officers": {
-    "title": "Chapter officers",
-    "roles": {
-        "facultyAdvisor": "Faculty Advisor",
-        "president": "President",
-        "vicePresident": "Vice President",
-        "treasurer": "Treasurer",
-        "secretary": "Secretary",
-        "marketingCoordinator": "Marketing Coordinator",
-        "marketingSubCoordinator": "Marketing Subcoordinator",
-        "eventsCoordinator": "Events Coordinator",
-        "eventsSubCoordinator": "Events Subcoordinator",
-        "humanResources": "Human Resources Coordinator",
-        "humanResourcesSubCoordinator": "Human Resources Subcoordinator",
-        "internalLiaison": "Liaison Subcoordinator",
-        "externalLiaison": "Liaison Coordinator",
-        "cio": "Chief Information Officer",
-        "k12Coordinator": "K-12 Coordinator"
+        "title": "Chapter officers",
+        "roles": {
+            "facultyAdvisor": "Faculty Advisor",
+            "president": "President",
+            "vicePresident": "Vice President",
+            "treasurer": "Treasurer",
+            "secretary": "Secretary",
+            "marketingCoordinator": "Marketing Coordinator",
+            "marketingSubCoordinator": "Marketing Subcoordinator",
+            "eventsCoordinator": "Events Coordinator",
+            "eventsSubCoordinator": "Events Subcoordinator",
+            "humanResources": "Human Resources Coordinator",
+            "humanResourcesSubCoordinator": "Human Resources Subcoordinator",
+            "internalLiaison": "Liaison Subcoordinator",
+            "externalLiaison": "Liaison Coordinator",
+            "cio": "Information Technology Coordinator",
+            "dcio": "Information Technology Subcoordinator",
+            "k12Coordinator": "K-12 Coordinator"
         }
     },
     "contact": {
@@ -67,23 +68,22 @@
             "message": "Message",
             "submit": "Send"
         }
-     },
-     "events": {
+    },
+    "events": {
         "title": "Events",
         "loadingMessage": "Loading events and verifying auth...",
         "errorFetch": "Events could not be loaded. Please try again."
-     },
-     "heroCarousel": {
+    },
+    "heroCarousel": {
         "slide1": "Join the most active chemistry community in San Marcos",
         "slide2": "From San Marcos to the world: chemistry with purpose",
         "slide3": "Ready to innovate? Be part of our initiatives!",
         "slide4": "Discover opportunities, share knowledge, make history"
-     },
-     "whatsAppButton": {
+    },
+    "whatsAppButton": {
         "contactUs": "Contact Us",
         "secretary": "Secretary ACS UNMSM",
         "message": "Do you have questions about membership, events or collaborations?",
         "messagePlaceholder": "I want to know more about the upcoming event..."
-     }
+    }
 }
-
