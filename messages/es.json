@@ -54,8 +54,10 @@
       "humanResourcesSubCoordinator": "Subcoordinador Talento Humano",
       "internalLiaison": "Subcoordinadora de Vinculación",
       "externalLiaison": "Coordinador de Vinculación",
-      "cio": "Coordinador de Tecnología de la Información",
-      "k12Coordinator": "Coordinadora de K-12"
+      "cio": "Coordinador de Tecnologías de la Información",
+      "dcio": "Subcoordinador de Tecnologías de la Información",
+      "k12Coordinator": "Coordinadora de K-12",
+      "k12SubCoordinator": "Subcoordinador de K-12"
     }
   },
   "contact": {

@@ -30,8 +30,11 @@ export default async function Officers({ params }) {
   const humanResourcesSubCoordinator = t('roles.humanResourcesSubCoordinator');
   const internalLiaison = t('roles.internalLiaison');
   const externalLiaison = t('roles.externalLiaison');
+  const cio = t('roles.cio');
+  const dcio = t('roles.dcio');
   const k12Coordinator = t('roles.k12Coordinator');
-  
+  const k12SubCoordinator = t('roles.k12SubCoordinator');
+
   const officers = [
     [facultyAdvisor, 'PhD Jose Orlando Calvay Castillo', 'advisor@acs-unmsm.org', 'josecalvay.png'],
     [president, 'Breiner Smith Fuentes Bulnes', 'president@acs-unmsm.org', 'breiner_fuentes.jpg'],
@@ -39,14 +42,17 @@ export default async function Officers({ params }) {
     [treasurer, 'Yaquelin Cristina Juana Rivera Antonio', 'treasurer@acs-unmsm.org', 'yaquelin_rivera.jpeg'],
     [secretary, 'Jean Franco Toledo Rodriguez', 'secretary@acs-unmsm.org', 'jean_toledo.jpg'],
     [marketingCoordinator, 'Rosario Cinthya Yaya Paitan', 'chief.marketing@acs-unmsm.org', 'rosario_yaya.jpg'],
-    [marketingSubCoordinator, 'Angelica Esther Naucapoma Chillcce', 'chief.marketing@acs-unmsm.org', 'angelica_naucapoma.jpg'],
+    [marketingSubCoordinator, 'Angelica Esther Naucapoma Chillcce', 'marketing@acs-unmsm.org', 'angelica_naucapoma.jpg'],
     [eventsCoordinator, 'Antonio Alburqueque Ampuero', 'chief.project.manager@acs-unmsm.org', 'antonio_alburqueque.jpg'],
-    [eventsSubCoordinator, 'Andres Sebastián Bailon Vento', 'chief.project.manager@acs-unmsm.org', 'andres_bailon.jpg'],
-    [humanResources, 'Yoselin Estefany Alvarez Cueva', 'human.resources@acs-unmsm.org', 'yoselin_alvarez.jpg'],
+    [eventsSubCoordinator, 'Andres Sebastián Bailon Vento', 'project.manager@acs-unmsm.org', 'andres_bailon.jpg'],
+    [humanResources, 'Yoselin Estefany Alvarez Cueva', 'chief.human.resources@acs-unmsm.org', 'yoselin_alvarez.jpg'],
     [humanResourcesSubCoordinator, 'Geancarlos Genaro Cora Díaz', 'human.resources@acs-unmsm.org', 'geancarlos_cora.jpg'],
     [externalLiaison, 'Javier Antony Sanchez Hilasaca', 'external.liaison@acs-unmsm.org', 'javier_sanchez.jpg'],
     [internalLiaison, 'Kessia Brigitte Cordova Tantalean', 'internal.liaison@acs-unmsm.org', 'kesia_cordova.jpg'],
+    [cio, 'Gonzalo Manuel Aguilar Espinoza', 'cio@acs-unmsm.org', 'gonzalo_aguilar.jpg'],
+    [dcio, 'Paolo Jesus Pichilingue La Torre', 'dcio@acs-unmsm.org', 'paolo.jpeg'],
     [k12Coordinator, 'Lucero Lidia Ventura Cruz', 'k12@acs-unmsm.org', 'lucero_ventura.jpg'],
+    [k12SubCoordinator, 'Ricardo Gomez', 'subk12@acs-unmsm.org', 'ricardo.jpg']
   ];
 
   return (
