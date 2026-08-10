@@ -56,7 +56,8 @@
             "externalLiaison": "Liaison Coordinator",
             "cio": "Information Technology Coordinator",
             "dcio": "Information Technology Subcoordinator",
-            "k12Coordinator": "K-12 Coordinator"
+            "k12Coordinator": "K-12 Coordinator",
+            "k12SubCoordinator": "K-12 Subcoordinator"
         }
     },
     "contact": {

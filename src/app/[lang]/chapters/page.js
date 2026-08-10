@@ -52,7 +52,7 @@ export default async function Officers({ params }) {
     [cio, 'Gonzalo Manuel Aguilar Espinoza', 'cio@acs-unmsm.org', 'gonzalo.jpg'],
     [dcio, 'Paolo Jesus Pichilingue La Torre', 'dcio@acs-unmsm.org', 'paolo.jpeg'],
     [k12Coordinator, 'Lucero Lidia Ventura Cruz', 'k12@acs-unmsm.org', 'lucero_ventura.jpg'],
-    [k12SubCoordinator, 'Ricardo Gomez', 'subk12@acs-unmsm.org', 'ricardo.jpg']
+    [k12SubCoordinator, 'Ricardo Javier Gomez Sangay', 'subk12@acs-unmsm.org', 'ricardo.jpeg']
   ];
 
   return (
