@@ -53,6 +53,17 @@ export default function EventsPage() {
     return eventDate < now;
   };
 
+  // Verifica si la hora debe mostrarse (se oculta 1 día después del evento o si no hay hora)
+  const shouldShowTime = (event) => {
+    if (!event.hora) return false;
+    if (!event.fecha_programada) return true;
+    const eventDate = new Date(event.fecha_programada);
+    const hideDate = new Date(eventDate);
+    hideDate.setDate(hideDate.getDate() + 1);
+    const now = new Date();
+    return now < hideDate;
+  };
+
   // Ir a la página de detalles de un evento
   const handleDetailsClick = (event) => {
     router.push(`events/${event.id}/details`);
@@ -230,7 +241,7 @@ export default function EventsPage() {
         </div>
       </section>
       <section className="py-5 bg-white chapters-section" style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-        <div className="container" style={{ flexGrow: 1}}>
+        <div className="container" style={{ flexGrow: 1 }}>
           <form onSubmit={handleSearchSubmit} style={{ display: 'flex', gap: '10px', marginBottom: '30px' }}>
             <input
               type="text"
@@ -323,7 +334,7 @@ export default function EventsPage() {
 
                   <div style={{ flex: '1 1 400px' }}>
                     <h3 style={{ fontSize: '1.4em', color: '#555', marginBottom: '10px' }}>{event.titulo}</h3>
-                    <p style={{ fontSize: '1em', color: '#666', marginTop: '10px' }}>
+                    <p style={{ fontSize: '1em', color: '#666', marginTop: shouldShowTime(event) ? '10px' : '25px' }}>
                       📅 Fecha: {
                         (() => {
                           const displayDate = new Date(event.fecha_programada);
@@ -335,12 +346,14 @@ export default function EventsPage() {
                         })()
                       }
                     </p>
-                    <p style={{ fontSize: '1em', color: '#666', marginTop: '10px' }}>
-                      <span style={{ marginRight: '5px' }}>🕓</span>Hora: {formatTime12Hour(event.hora)}
-                    </p>
-                    <p style={{ fontSize: '1em', color: '#666', marginTop: '10px' }}>🚀Evento {event.modalidad}</p>
+                    {shouldShowTime(event) && (
+                      <p style={{ fontSize: '1em', color: '#666', marginTop: '10px' }}>
+                        <span style={{ marginRight: '5px' }}>🕓</span>Hora: {formatTime12Hour(event.hora)}
+                      </p>
+                    )}
+                    <p style={{ fontSize: '1em', color: '#666', marginTop: shouldShowTime(event) ? '10px' : '10px' }}>🚀Evento: {event.modalidad === 'En persona' ? 'Presencial' : event.modalidad}</p>
 
-                    <div style={{ display: 'flex', gap: '10px', marginTop: '20px' }}>
+                    <div style={{ display: 'flex', gap: '10px', marginTop: shouldShowTime(event) ? '10px' : '30px' }}>
                       {/* ✅ Botón "Saber más" siempre visible, abre en nueva pestaña */}
                       <button
                         onClick={() => handleDetailsClick(event)}
