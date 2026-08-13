@@ -351,7 +351,7 @@ export default function EventsPage() {
                         <span style={{ marginRight: '5px' }}>🕓</span>Hora: {formatTime12Hour(event.hora)}
                       </p>
                     )}
-                    <p style={{ fontSize: '1em', color: '#666', marginTop: shouldShowTime(event) ? '10px' : '10px' }}>🚀Evento: {event.modalidad === 'En persona' ? 'Presencial' : event.modalidad}</p>
+                    <p style={{ fontSize: '1em', color: '#666', marginTop: shouldShowTime(event) ? '10px' : '10px' }}>🚀Evento {event.modalidad === 'En persona' ? 'Presencial' : event.modalidad}</p>
 
                     <div style={{ display: 'flex', gap: '10px', marginTop: shouldShowTime(event) ? '10px' : '30px' }}>
                       {/* ✅ Botón "Saber más" siempre visible, abre en nueva pestaña */}
