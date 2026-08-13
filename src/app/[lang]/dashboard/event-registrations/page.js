@@ -153,7 +153,7 @@ export default function EventRegistrationsPage() {
                         <span className="icon">⏰</span> {event.hora}
                       </p>
                       <p className="event-card-detail">
-                        <span className="icon">📍</span> {event.modalidad}
+                        <span className="icon">📍</span> {event.modalidad?.toLowerCase() === 'en persona' ? 'presencial' : event.modalidad?.toLowerCase()}
                       </p>
                       <button className="view-registrations-button">Ver Registros</button>
                     </div>
