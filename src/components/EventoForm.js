@@ -331,15 +331,38 @@ export default function EventoForm({ event, onSave, onCancel }) {
           disabled={loading}
           style={{ padding: '12px', borderRadius: '6px', border: '1px solid #ccc', fontSize: '1rem' }}
         />
-        {/* 🆕 Campo de entrada para la hora */}
-        <input
-          type="time"
-          value={hora}
-          onChange={(e) => setHora(e.target.value)}
-          placeholder="Hora del evento"
-          disabled={loading}
-          style={{ padding: '12px', borderRadius: '6px', border: '1px solid #ccc', fontSize: '1rem' }}
-        />
+        {/* 🆕 Campo de entrada para la hora (opcional) */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <input
+              id="incluir-hora-checkbox"
+              type="checkbox"
+              checked={!!hora}
+              onChange={(e) => {
+                if (e.target.checked) {
+                  setHora('12:00'); // Hora por defecto al marcar
+                } else {
+                  setHora(''); // Limpiar hora al desmarcar
+                }
+              }}
+              disabled={loading}
+              style={{ width: '20px', height: '20px' }}
+            />
+            <label htmlFor="incluir-hora-checkbox" style={{ fontSize: '1rem', color: '#333' }}>
+              Incluir hora del evento
+            </label>
+          </div>
+          {!!hora && (
+            <input
+              type="time"
+              value={hora}
+              onChange={(e) => setHora(e.target.value)}
+              placeholder="Hora del evento"
+              disabled={loading}
+              style={{ padding: '12px', borderRadius: '6px', border: '1px solid #ccc', fontSize: '1rem', width: '100%' }}
+            />
+          )}
+        </div>
         {/* 🆕 Selector para la modalidad */}
         <select
           value={modalidad}
@@ -349,7 +372,7 @@ export default function EventoForm({ event, onSave, onCancel }) {
           style={{ padding: '12px', borderRadius: '6px', border: '1px solid #ccc', fontSize: '1rem' }}
         >
           <option value="">Selecciona la modalidad</option>
-          <option value="En persona">En persona</option>
+          <option value="En persona">Presencial</option>
           <option value="Virtual">Virtual</option>
         </select>
 
