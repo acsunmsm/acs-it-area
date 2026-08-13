@@ -372,8 +372,8 @@ export default function EventoForm({ event, onSave, onCancel }) {
           style={{ padding: '12px', borderRadius: '6px', border: '1px solid #ccc', fontSize: '1rem' }}
         >
           <option value="">Selecciona la modalidad</option>
-          <option value="En persona">Presencial</option>
-          <option value="Virtual">Virtual</option>
+          <option value="En persona">presencial</option>
+          <option value="Virtual">virtual</option>
         </select>
 
         {/* ✅ Campo de entrada para la inscripción */}
