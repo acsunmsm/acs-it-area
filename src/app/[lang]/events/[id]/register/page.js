@@ -319,7 +319,7 @@ export default function EventRegistrationPage() {
                     <br /><br />
           🕓 <strong>Hora:</strong> {formatTime12Hour(event.hora)}
                     <br /><br />
-          🚀 <strong>Evento {event.modalidad}</strong> 
+          🚀 <strong>Evento {event.modalidad?.toLowerCase() === 'en persona' ? 'presencial' : event.modalidad?.toLowerCase()}</strong> 
         </p>
 
         <form id="registration-form" onSubmit={handleSubmit}>
