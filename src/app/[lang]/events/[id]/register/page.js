@@ -123,15 +123,18 @@ export default function EventRegistrationPage() {
     if (!data.major || data.major.trim() === '') data.major = null;
 
     try {
+      // Petición al Route Handler (Backend)
+      const response = await fetch('/api/events/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
 
-      //Inserción en la tabla de registros de eventos
-      const { error: insertError } = await supabase
-        .from('event_registrations')
-        .insert([data]);
+      const result = await response.json();
 
-      if (insertError) {
-        console.error('Supabase insert error:', insertError);
-        return endWithError('Error al registrar: ' + insertError.message);
+      if (!response.ok) {
+        console.error('Backend insert error:', result.error);
+        return endWithError('Error al registrar: ' + (result.error || 'Error interno'));
       }
 
       form.reset();

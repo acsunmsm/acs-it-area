@@ -1,101 +1,48 @@
-'use client';
-
-import { useParams, useRouter } from 'next/navigation';
-import { useState, useEffect } from 'react';
-import { supabase } from '../../../../../lib/supabaseClient';
+import { supabaseServer as supabase } from '../../../../../lib/supabase-server';
 import Navbar from '../../../../../components/Navbar';
 import Footer from '../../../../../components/Footer';
 import styles from './page.module.css';
+import Link from 'next/link';
+import { notFound } from 'next/navigation';
 
-export default function EventDetailsPage() {
-  const params = useParams();
-  const id = params.id; // Obtenemos el ID del evento desde la URL
-  const router = useRouter();
+export async function generateMetadata({ params }) {
+  const { id } = await params;
+  const { data: event } = await supabase
+    .from('eventos')
+    .select('titulo, descripcion')
+    .eq('id', id)
+    .single();
 
-  // Estados para manejar la información del evento, la carga y posibles errores
-  const [event, setEvent] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  if (!event) return { title: 'Evento no encontrado - ACS UNMSM' };
 
-  useEffect(() => {
-    //Se ejecuta al montar el componente o cuando cambia el ID
-    async function fetchEventDetails() {
-      if (!id) {
-        setLoading(false);
-        return;
-      }
+  return {
+    title: `${event.titulo} - ACS UNMSM`,
+    description: event.descripcion ? event.descripcion.substring(0, 160) : 'Detalles del evento',
+  };
+}
 
-      try {
-        //Consulta a Supabase para obtener un evento por ID
-        const { data, error } = await supabase
-          .from('eventos')
-          .select('*')
-          .eq('id', id)
-          .single(); // ✅ Usamos .single() para obtener un solo registro
+export default async function EventDetailsPage({ params }) {
+  const { id, lang } = await params;
 
-        if (error) {
-          throw error; // Si hay error en la consulta, se maneja en catch
-        }
+  // Data fetching en el servidor
+  const { data: event, error } = await supabase
+    .from('eventos')
+    .select('*')
+    .eq('id', id)
+    .single();
 
-        if (!data) {
-          setError('No se encontró el evento con el ID proporcionado.');
-        } else {
-          setEvent(data);
-        }
-      } catch (err) {
-        console.error('Error fetching event details:', err);
-        setError('Ocurrió un error al cargar los detalles del evento.');
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchEventDetails();
-  }, [id]);
-
-  useEffect(() => {
-    if (event?.titulo) {
-      document.title = `${event.titulo} - ACS UNMSM`;
-    }
-  }, [event]);
-
-  //Mientras se cargan los datos, se muestra un mensaje de carga
-  if (loading) {
-    return (
-      <>
-        <Navbar />
-        <div className={styles.loadingContainer}>
-          Cargando detalles del evento...
-        </div>
-        <Footer />
-      </>
-    );
-  }
-
-  //Si ocurre un error, mostramos un mensaje y un botón para volver a la lista de eventos
-  if (error) {
+  if (error || !event) {
+    // Retorna a página 404 de Next.js si no se encuentra
     return (
       <>
         <Navbar />
         <div className={styles.errorContainer}>
           <div className="alert alert-danger" role="alert">
-            {error}
+            No se encontró el evento con el ID proporcionado o hubo un error al cargarlo.
           </div>
-          <button onClick={() => router.push('/es/events')} className="btn btn-primary mt-3">
+          <Link href={`/${lang}/events`} className="btn btn-primary mt-3">
             Volver a eventos
-          </button>
-        </div>
-        <Footer />
-      </>
-    );
-  }
-
-  if (!event) {
-    return (
-      <>
-        <Navbar />
-        <div className={styles.notFoundContainer}>
-          No se encontró el evento.
+          </Link>
         </div>
         <Footer />
       </>
@@ -128,9 +75,9 @@ export default function EventDetailsPage() {
             </div>
           </div>
           <div className={styles.actions}>
-            <button onClick={() => router.push('/es/events')} className={styles.backButton}>
+            <Link href={`/${lang}/events`} className={styles.backButton}>
               Volver a Eventos
-            </button>
+            </Link>
           </div>
         </article>
       </div>
