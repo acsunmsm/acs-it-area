@@ -147,7 +147,7 @@ export default function EventoForm({ event, onSave, onCancel }) {
         hora: hora || null,
         modalidad: modalidad || null,
         // ✅ Añadir el campo de inscripción al objeto de datos
-        inscription: inscripcion, 
+        inscription: inscripcion,
         imagen_url: finalImagenUrl,
         fecha_programada: fechaProgramada, // 🆕 Nuevo campo
       };
