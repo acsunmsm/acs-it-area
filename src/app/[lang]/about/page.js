@@ -42,22 +42,28 @@ export default async function About({ params }) {
               {/* Bloques misión y visión con íconos */}
               <div className="row g-4">
                 <div className="col-md-6">
-                  <div className="p-4 bg-white rounded shadow text-dark h-100">
-                    <FaBullseye size={40} color="#0054a6" className="mb-3" />
-                    <h5 className="fw-bold" style={{ color: "#0054a6" }}>
+                  <div className="p-4 bg-white rounded shadow text-dark h-100 mission-vision-card">
+                    <svg className="bg-icon" viewBox="0 0 100 100">
+                      <polygon points="50,5 95,27 95,73 50,95 5,73 5,27" />
+                    </svg>
+                    <FaBullseye size={40} color="#412BFD" className="mb-3 position-relative z-1" />
+                    <h5 className="fw-bold position-relative z-1" style={{ color: "#412BFD" }}>
                       {t('missionTitle')}
                     </h5>
-                    <p>{t('missionText')}</p>
+                    <p className="position-relative z-1">{t('missionText')}</p>
                   </div>
                 </div>
 
                 <div className="col-md-6">
-                  <div className="p-4 bg-white rounded shadow text-dark h-100">
-                    <FaEye size={40} color="#0054a6" className="mb-3" />
-                    <h5 className="fw-bold" style={{ color: "#0054a6" }}>
+                  <div className="p-4 bg-white rounded shadow text-dark h-100 mission-vision-card">
+                    <svg className="bg-icon" viewBox="0 0 100 100">
+                      <polygon points="50,5 95,27 95,73 50,95 5,73 5,27" />
+                    </svg>
+                    <FaEye size={40} color="#412BFD" className="mb-3 position-relative z-1" />
+                    <h5 className="fw-bold position-relative z-1" style={{ color: "#412BFD" }}>
                       {t('visionTitle')}
                     </h5>
-                    <p>{t('visionText')}</p>
+                    <p className="position-relative z-1">{t('visionText')}</p>
                   </div>
                 </div>
               </div>

@@ -7,11 +7,17 @@
 /* Importa FontAwesome */
 @import url('https://use.fontawesome.com/releases/v5.12.1/css/all.css');
 
+:root {
+  --color-primary: #412BFD;
+  --color-secondary: #6FEDEE;
+  --color-primary-dark: #2B1BAA;
+}
+
 /* Ajustes para que Bootstrap y estilos personalizados convivan mejor */
 body {
   font-family: system-ui, sans-serif;
   background-color: #fff;
-  padding-top: 90px;
+  padding-top: 76px;
   /* Ajuste para altura de la navbar */
 }
 
@@ -33,24 +39,46 @@ body {
 .officer-card {
   display: flex;
   flex-direction: row;
-  /* Foto izquierda, datos derecha en desktop */
   align-items: center;
   background-color: #fff;
-  border-radius: 14px;
-  padding: 25px;
+  border-radius: 16px;
+  padding: 30px;
   width: 100%;
   max-width: 700px;
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
-  gap: 25px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  gap: 30px;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.officer-card.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.officer-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+  border-color: rgba(65, 43, 253, 0.15);
+  /* Brand border on hover */
 }
 
 .officer-photo-container {
-  width: 120px;
-  height: 120px;
+  width: 130px;
+  height: 130px;
   border-radius: 50%;
   overflow: hidden;
-  border: 6px solid #ffd400;
+  border: 4px solid var(--color-primary);
+  /* Professional primary border */
   flex-shrink: 0;
+  box-shadow: 0 4px 15px rgba(65, 43, 253, 0.2);
+  transition: transform 0.4s ease;
+}
+
+.officer-card:hover .officer-photo-container {
+  transform: scale(1.05);
 }
 
 .officer-photo {
@@ -68,31 +96,42 @@ body {
 }
 
 .officer-role {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #0054a6;
-  margin-bottom: 6px;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: 4px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
 }
 
 .officer-name {
-  font-size: 1.4rem;
-  font-weight: 700;
-  color: #2d3748;
-  margin-bottom: 8px;
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #1a202c;
+  margin-bottom: 10px;
+  line-height: 1.2;
 }
 
 .officer-email {
-  color: #4299e1;
+  color: #718096;
   text-decoration: none;
-  font-size: 1rem;
+  font-size: 1.05rem;
   font-weight: 500;
   word-break: break-word;
-  /* por si el mail es largo */
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: color 0.3s ease;
+}
+
+.officer-email::before {
+  content: '✉';
+  font-size: 1.2rem;
+  color: var(--color-secondary);
 }
 
 .officer-email:hover {
-  color: #2b6cb0;
-  text-decoration: underline;
+  color: var(--color-primary);
 }
 
 /* 📱 Responsive para móviles */
@@ -257,7 +296,7 @@ body {
   display: flex;
   height: 50px;
   width: 50px;
-  background-color: #ffd400;
+  background-color: var(--color-secondary);
   border-radius: 50%;
   align-items: center;
   justify-content: center;
@@ -267,7 +306,7 @@ body {
   display: flex;
   height: 50px;
   width: 50px;
-  background-color: #ffd400;
+  background-color: var(--color-secondary);
   border-radius: 50%;
   align-items: center;
   justify-content: center;
@@ -280,7 +319,7 @@ body {
 
 /* Estilos para botones */
 .member-button {
-  background-color: #ffd400;
+  background-color: var(--color-secondary);
   color: black;
   padding: 10px 20px;
   border: white 2px solid;
@@ -298,7 +337,7 @@ body {
 .contact-section {
   background: url('/assets/img/contact-bg.png') no-repeat center center;
   background-size: cover;
-  color: #0054a6;
+  color: var(--color-primary);
   font-weight: 600;
   text-align: center;
   padding: 50px 0;
@@ -321,7 +360,7 @@ body {
 }
 
 .contact-form button {
-  background-color: #0054a6;
+  background-color: var(--color-primary);
   color: white;
   border: none;
   padding: 10px;
@@ -331,7 +370,7 @@ body {
 }
 
 .contact-form button:hover {
-  background-color: #003366;
+  background-color: var(--color-primary-dark);
   transform: scale(1.05);
 }
 
@@ -347,7 +386,7 @@ body {
 
 .chapters-section h2 {
   font-size: 2rem;
-  color: #0054a6;
+  color: var(--color-primary);
   margin-top: 1.5rem;
   font-weight: 700;
 }
@@ -357,7 +396,7 @@ section h1 {
   font-size: 2.5rem;
   font-weight: 700;
   margin-bottom: 32px;
-  color: #003366;
+  color: var(--color-primary-dark);
 }
 
 footer h1 {
@@ -371,7 +410,7 @@ h2 {
   font-size: 2rem;
   font-weight: 700;
   margin-top: 32px;
-  color: #0054a6;
+  color: var(--color-primary);
 }
 
 /* Manejo de idiomas */
@@ -390,7 +429,7 @@ h2 {
 .login-box {
   background-color: #ffffff;
   padding: 40px;
-  border: 2px solid #003366;
+  border: 2px solid var(--color-primary-dark);
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   width: 100%;
@@ -398,7 +437,7 @@ h2 {
 }
 
 .login-box h1 {
-  color: #003366;
+  color: var(--color-primary-dark);
   text-align: center;
   margin-bottom: 24px;
 }
@@ -408,10 +447,10 @@ h2 {
   width: 100%;
   padding: 10px 15px;
   margin-bottom: 16px;
-  border: 2px solid #0054a6;
+  border: 2px solid var(--color-primary);
   border-radius: 4px;
   font-size: 16px;
-  color: #003366;
+  color: var(--color-primary-dark);
   background-color: #f9f9f9;
 }
 
@@ -420,7 +459,7 @@ h2 {
 }
 
 .login-box button {
-  background-color: #0054a6;
+  background-color: var(--color-primary);
   color: white;
   border: 2px solid white;
   padding: 10px 20px;
@@ -432,7 +471,7 @@ h2 {
 }
 
 .login-box button:hover {
-  background-color: #003366;
+  background-color: var(--color-primary-dark);
 }
 
 
@@ -492,7 +531,7 @@ h2 {
   position: relative;
   overflow: hidden;
   padding: 5rem 0;
-  background: linear-gradient(135deg, #0054a6 0%, #003366 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
   color: white;
 }
 
@@ -544,7 +583,7 @@ h2 {
 .footer-dot {
   width: 12px;
   height: 12px;
-  background-color: #ffd400;
+  background-color: var(--color-secondary);
   border-radius: 50%;
 }
 
@@ -563,7 +602,7 @@ h2 {
 .footer-social-icon {
   font-size: 24px;
   color: white;
-  background-color: #ffd400;
+  background-color: var(--color-secondary);
   border-radius: 50%;
   aspect-ratio: 1;
   width: 50px;
@@ -576,7 +615,7 @@ h2 {
 
 .footer-social-link:hover .footer-social-icon {
   transform: scale(1.1);
-  background-color: #0054a6;
+  background-color: var(--color-primary);
 }
 
 .footer-copyright {
@@ -608,7 +647,7 @@ h2 {
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  background-color: #ffd400;
+  background-color: var(--color-secondary);
   transition: all 0.3s ease;
 }
 
@@ -622,7 +661,7 @@ h2 {
 
 .footer-social-link:hover .footer-social-icon-container {
   transform: scale(1.1);
-  background-color: #0054a6;
+  background-color: var(--color-primary);
 }
 
 .modal-backdrop {
@@ -719,4 +758,435 @@ h2 {
   content: '';
   display: table;
   clear: both;
+}
+
+/* Limpiar float después del contenido con imágenes flotantes */
+.description::after {
+  content: '';
+  display: table;
+  clear: both;
+}
+
+/* Estilos para las tarjetas de Misión y Visión (Nosotros) */
+.mission-vision-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid transparent;
+}
+
+.mission-vision-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15) !important;
+  border-color: rgba(65, 43, 253, 0.1);
+}
+
+.mission-vision-card .bg-icon {
+  position: absolute;
+  top: -30px;
+  right: -10px;
+  width: 80px;
+  height: 120px;
+  fill: #666;
+  /* gris oscuro */
+  opacity: 0.05;
+  /* muy transparente */
+  transition: transform 0.5s ease;
+  pointer-events: none;
+}
+
+.mission-vision-card:hover .bg-icon {
+  transform: scale(1.3);
+  fill: #ffffff;
+  stroke: #412BFD;
+  stroke-width: 5px;
+  /* se vuelve sutilmente azul al hacer hover */
+  opacity: 0.25;
+}
+
+/* Navbar active and hover states */
+.nav-link-custom {
+  position: relative;
+  color: #444 !important;
+  font-weight: bold;
+  font-size: 15px;
+  transition: color 0.3s ease;
+  font-family: sans-serif, 'Segoe UI', Tahoma, Geneva, Verdana;
+
+}
+
+.nav-link-custom:hover,
+.nav-link-custom.active-link {
+  color: #412BFD !important;
+}
+
+.nav-link-custom::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 4px;
+  /* 2px por debajo del texto, respetando el padding de Bootstrap */
+  left: 50%;
+  background-color: #412BFD;
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.nav-link-custom:hover::after,
+.nav-link-custom.active-link::after {
+  width: calc(100% - 2rem);
+  /* El ancho exacto del texto, excluyendo el padding izquierdo y derecho */
+}
+
+/* ========================================= */
+/* NEWSPAPER STYLES FOR NEWS SECTION         */
+/* ========================================= */
+.newspaper-wrapper {
+  background-color: #fdfbf7;
+  color: #1a1a1a;
+  font-family: 'Georgia', 'Times New Roman', serif;
+  min-height: 100vh;
+  padding-bottom: 50px;
+}
+
+.newspaper-header {
+  border-bottom: 4px double #1a1a1a;
+  border-top: 4px double #1a1a1a;
+  padding: 20px 0;
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.newspaper-site-title {
+  font-family: 'Playfair Display', 'Georgia', serif;
+  font-size: 3rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin: 0;
+  color: #1a1a1a;
+}
+
+.newspaper-date-line {
+  font-family: sans-serif;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 10px;
+  border-top: 1px solid #1a1a1a;
+  border-bottom: 1px solid #1a1a1a;
+  padding: 5px 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.newspaper-hero-article {
+  margin-bottom: 50px;
+  border-bottom: 2px solid #ccc;
+  padding-bottom: 40px;
+}
+
+.newspaper-hero-title {
+  font-size: 3.5rem;
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.newspaper-columns {
+  column-count: 2;
+  column-gap: 40px;
+  column-rule: 1px solid #ccc;
+  text-align: justify;
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+.newspaper-dropcap {
+  float: left;
+  font-size: 4.5rem;
+  line-height: 0.8;
+  padding-top: 4px;
+  padding-right: 8px;
+  font-weight: bold;
+}
+
+.newspaper-secondary-article {
+  margin-bottom: 40px;
+}
+
+.newspaper-secondary-title {
+  font-size: 2rem;
+  font-weight: bold;
+  line-height: 1.2;
+  margin-bottom: 15px;
+}
+
+.newspaper-image-caption {
+  font-family: sans-serif;
+  font-size: 0.85rem;
+  color: #555;
+  text-align: center;
+  margin-top: 8px;
+  font-style: italic;
+}
+
+@media (max-width: 768px) {
+  .newspaper-columns {
+    column-count: 1;
+  }
+
+  .newspaper-hero-title {
+    font-size: 2.5rem;
+  }
+
+  .newspaper-site-title {
+    font-size: 2.5rem;
+  }
+
+  .newspaper-date-line {
+    flex-direction: column;
+    text-align: center;
+    gap: 5px;
+  }
+}
+
+/* ========================================= */
+/* PREMIUM MAINTENANCE PAGE                  */
+/* ========================================= */
+.maintenance-wrapper {
+  min-height: calc(100vh - 70px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #FAFAFA;
+  background-image:
+    radial-gradient(at 0% 0%, rgba(65, 43, 253, 0.04) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(255, 212, 0, 0.05) 0px, transparent 50%);
+  padding: 60px 20px;
+  position: relative;
+}
+
+.maintenance-container {
+  max-width: 800px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.maintenance-badge {
+  display: inline-block;
+  padding: 6px 16px;
+  background-color: rgba(65, 43, 253, 0.08);
+  color: #412BFD;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border-radius: 100px;
+  margin-bottom: 30px;
+  border: 1px solid rgba(65, 43, 253, 0.15);
+}
+
+.maintenance-title {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 3.8rem;
+  font-weight: 800;
+  color: #0F172A;
+  line-height: 1.1;
+  margin-bottom: 24px;
+  letter-spacing: -1.5px;
+}
+
+.maintenance-title span {
+  color: #412BFD;
+}
+
+.maintenance-divider {
+  width: 60px;
+  height: 4px;
+  background-color: #FFD400;
+  margin: 0 auto 30px;
+  border-radius: 2px;
+}
+
+.maintenance-text {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 1.25rem;
+  color: #64748B;
+  line-height: 1.6;
+  max-width: 600px;
+  margin-bottom: 45px;
+}
+
+.maintenance-btn-group {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
+
+.maintenance-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background-color: #0F172A;
+  color: #FFFFFF !important;
+  padding: 14px 32px;
+  border-radius: 8px;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  border: 1px solid #0F172A;
+}
+
+.maintenance-btn-primary:hover {
+  background-color: #1E293B;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(15, 23, 42, 0.15);
+}
+
+@media (max-width: 768px) {
+  .maintenance-title {
+    font-size: 2.8rem;
+    letter-spacing: -1px;
+  }
+
+  .maintenance-btn-group {
+    flex-direction: column;
+    width: 100%;
+    max-width: 300px;
+  }
+}
+
+/* ========================================= */
+/* PREMIUM NEWS SECTION                      */
+/* ========================================= */
+.newspaper-wrapper {
+  background-color: #f8f9fa;
+  /* Sleeker background */
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  min-height: 100vh;
+  padding-bottom: 60px;
+}
+
+.news-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.news-card {
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.news-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, #0054A6, #412BFD);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s ease;
+}
+
+.news-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(65, 43, 253, 0.08);
+  border-color: rgba(65, 43, 253, 0.1);
+}
+
+.news-card:hover::before {
+  transform: scaleX(1);
+}
+
+.news-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.news-category {
+  background-color: rgba(65, 43, 253, 0.1);
+  color: #412BFD;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 20px;
+  letter-spacing: 1px;
+}
+
+.news-meta span:not(.news-category) {
+  font-size: 0.8rem;
+  color: #888;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+.news-title {
+  font-family: 'Playfair Display', 'Georgia', serif;
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #1a1a1a;
+  margin-bottom: 12px;
+  line-height: 1.3;
+  transition: color 0.3s ease;
+}
+
+.news-title.large {
+  font-size: 1.8rem;
+}
+
+.news-card:hover .news-title {
+  color: #0054A6;
+}
+
+.news-excerpt {
+  color: #555;
+  line-height: 1.6;
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+  flex-grow: 1;
+}
+
+.news-read-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: #412BFD;
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none;
+  margin-top: auto;
+  transition: gap 0.3s ease, color 0.3s ease;
+}
+
+.news-read-more::after {
+  content: '→';
+  transition: transform 0.3s ease;
+}
+
+.news-read-more:hover {
+  gap: 10px;
+  color: #0054A6;
 }

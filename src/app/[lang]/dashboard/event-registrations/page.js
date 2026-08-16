@@ -165,7 +165,7 @@ export default function EventRegistrationsPage() {
             </div>
           )}
         </div>
-        
+
 
       </div>
 
@@ -390,7 +390,7 @@ export default function EventRegistrationsPage() {
           }
         }
       `}</style>
-    <Footer />
+      <Footer />
     </>
   );
 }

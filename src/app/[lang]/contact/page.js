@@ -17,10 +17,10 @@ export default function ContactPage() {
     const formData = new FormData(form); // recoge los datos del formulario
 
     if (typeof grecaptcha === 'undefined') {
-    setStatus('Error: reCAPTCHA no está listo.');
-    return;
+      setStatus('Error: reCAPTCHA no está listo.');
+      return;
     }
-    
+
     const captcha = grecaptcha.getResponse();
 
     if (!captcha) {
@@ -98,7 +98,7 @@ export default function ContactPage() {
                 id="submit-btn"
                 type="submit"
                 className="btn"
-                style={{ backgroundColor: '#0054a6', color: 'white' }}
+                style={{ backgroundColor: '#412BFD', color: 'white' }}
               >
                 {t('form.submit')}
               </button>
