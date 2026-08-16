@@ -47,7 +47,7 @@ export default function RegistrationsModal({ selectedEvent, registrations, onClo
         <button className="modal-close-button" onClick={onClose}>&times;</button>
         <h2>Registros para: <span className="selected-event-title">{selectedEvent.titulo || '[Sin Título]'}</span></h2>
         <p className="modal-event-details">
-          Fecha: {new Date(selectedEvent.fecha).toLocaleDateString()} | Modalidad: {selectedEvent.modalidad}
+          Fecha: {new Date(selectedEvent.fecha).toLocaleDateString()} | Modalidad: {selectedEvent.modalidad?.toLowerCase() === 'en persona' ? 'presencial' : selectedEvent.modalidad?.toLowerCase()}
         </p>
 
         {error && <p className="error-message">{error}</p>}
