@@ -4,27 +4,27 @@
 import useAuth from '@/src/hooks/useAuth'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import EventoForm from '../../../components/EventoForm' 
-import Footer from '../../../components/Footer'; 
-import { supabase } from '@/src/lib/supabaseClient' 
-import Link from 'next/link'; 
-import EventModal from '../../../components/EventModal'; 
-import Navbar from '../../../components/Navbar' 
-import UserRegistrationsModal from '../../../components/UserRegistrationsModal'; 
+import EventoForm from '../../../components/EventoForm'
+import Footer from '../../../components/Footer';
+import { supabase } from '@/src/lib/supabaseClient'
+import Link from 'next/link';
+import EventModal from '../../../components/EventModal';
+import Navbar from '../../../components/Navbar'
+import UserRegistrationsModal from '../../../components/UserRegistrationsModal';
 
 export default function DashboardPage() {
 
   // Obtiene la sesión actual y el estado de carga desde el hook
-  const { session, loading } = useAuth() 
+  const { session, loading } = useAuth()
   const router = useRouter()
 
   // Estados para mostrar/ocultar formularios o modales
-  const [showEventForm, setShowEventForm] = useState(false); 
-  const [showUserRegistrationsModal, setShowUserRegistrationsModal] = useState(false); 
+  const [showEventForm, setShowEventForm] = useState(false);
+  const [showUserRegistrationsModal, setShowUserRegistrationsModal] = useState(false);
 
   useEffect(() => {
     // Si todavía está cargando la sesión, no hace nada
-    if (loading) return; 
+    if (loading) return;
 
     // Si no hay sesión activa, redirige al login
     if (!session) {
@@ -41,22 +41,22 @@ export default function DashboardPage() {
       </div>
     );
   }
- 
+
   // Si no hay sesión, no renderiza nada
   if (!session) {
-    return null; 
+    return null;
   }
 
   return (
-    <div className="dashboard-container"> 
-      <Navbar /> 
+    <div className="dashboard-container">
+      <Navbar />
       <main className="dashboard-content-main"> {/* Renombrado para evitar conflicto con .dashboard-content del modal */}
         <div className="dashboard-card">
           <h1>¡Bienvenido al Dashboard!</h1>
           {session.user && <p>Has iniciado sesión exitosamente como: <strong>{session.user.email}</strong></p>}
           <p className="dashboard-info-text">Este es tu espacio seguro, solo visible para usuarios autenticados.</p>
-          
-          <button 
+
+          <button
             onClick={async () => {
               const { error } = await supabase.auth.signOut();
               if (error) {
@@ -65,7 +65,7 @@ export default function DashboardPage() {
               } else {
                 console.log('Sesión cerrada. Redirigiendo...');
               }
-            }} 
+            }}
             className="btn-logout"
           >
             Cerrar Sesión
@@ -82,7 +82,7 @@ export default function DashboardPage() {
               Crear Nuevo Evento
             </button>
 
- {/* 🆕 BOTÓN Ver Usuarios Registrados AHORA ES UN LINK */}
+            {/* 🆕 BOTÓN Ver Usuarios Registrados AHORA ES UN LINK */}
             <Link href={`/${router.query?.lang || 'es'}/dashboard/event-registrations`} passHref legacyBehavior>
               <a className="dashboard-button btn-green">
                 <img src="/assets/img/usuarios_registrados.png" alt="Ver Usuarios" className="button-icon" />
@@ -101,20 +101,20 @@ export default function DashboardPage() {
 
         </div>
       </main>
-      
-      <EventModal 
-        show={showEventForm} 
-        onClose={() => setShowEventForm(false)} 
+
+      <EventModal
+        show={showEventForm}
+        onClose={() => setShowEventForm(false)}
         title="Crear Nuevo Evento"
       >
         <EventoForm />
       </EventModal>
 
-      <UserRegistrationsModal 
-        show={showUserRegistrationsModal} 
-        onClose={() => setShowUserRegistrationsModal(false)} 
+      <UserRegistrationsModal
+        show={showUserRegistrationsModal}
+        onClose={() => setShowUserRegistrationsModal(false)}
       />
-      <Footer /> 
+      <Footer />
 
       {/* 🆕 ESTILOS CSS PARA LOS BOTONES Y LAYOUT DEL DASHBOARD */}
       <style jsx>{`

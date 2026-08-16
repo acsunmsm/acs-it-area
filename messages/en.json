@@ -14,6 +14,8 @@
         "hidroinnova": "Hidroinnova Challenge",
         "events": "Events",
         "contact": "Contact",
+        "news": "News",
+        "resources": "Resources",
         "dashboard": "Dashboard",
         "login": "Login",
         "language": "Language",
@@ -87,4 +89,8 @@
         "message": "Do you have questions about membership, events or collaborations?",
         "messagePlaceholder": "I want to know more about the upcoming event..."
     }
+}       "secretary": "Secretary {brandName}",
+"message": "Do you have questions about membership, events or collaborations?",
+"messagePlaceholder": "I want to know more about the upcoming event..."
+}
 }

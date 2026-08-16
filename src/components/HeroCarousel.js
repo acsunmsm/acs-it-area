@@ -1,131 +1,216 @@
-'use client'; // Indica que este componente se renderiza en el cliente (no en el servidor)
-
-// Importamos hooks y funciones necesarias
-import { use, useEffect } from 'react';
-import { useTranslations, useLocale } from 'next-intl';
+'use client';
 
 export default function HeroCarousel() {
-  // Hook de traducción: permite usar textos desde los archivos de idioma
-  const t = useTranslations('heroCarousel');
-  useEffect(() => {
-    // Verifica que el código corre en el navegador y que Bootstrap está cargado
-    if (typeof window !== 'undefined' && window.bootstrap) {
-      const el = document.getElementById('heroCarousel'); // Busca el elemento del carrusel
-      if (el) {
-        // Inicializa el carrusel de Bootstrap con configuración personalizada
-        new window.bootstrap.Carousel(el, {
-          interval: 5000, // 5s entre slides
-          ride: 'carousel', // Hace que empiece automáticamente
-          pause: false, // No se detiene al pasar el mouse
-          wrap: true // Permite que vuelva al primer slide al llegar al último
-        });
-      }
+  const handleScroll = (e) => {
+    e.preventDefault();
+    const section = document.querySelector('.hero-section');
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
     }
-  }, []); // [] asegura que se ejecute solo una vez al montar el componente
+  };
 
   return (
-    <section className="container" style={{ margin: 0, padding: 0, minWidth: '100%', marginTop: 0 }}>
-      <div id="heroCarousel" className="carousel slide carousel-fade" data-bs-ride="carousel">
-        <div className="carousel-inner">
+    <section className="hero-container">
+      {/* Lado Izquierdo (3 figuras) */}
+      <img src="/assets/img/000643421W.jpg" alt="Students" className="floating-element shape-left-1" />
+      <img src="/assets/img/Fondo2.jpeg" alt="Campus" className="floating-element shape-left-2" />
+      <div className="floating-element shape-left-3-color"></div>
 
-          <div className="carousel-item">
-            <img src="/assets/img/000643421W.jpg" className="d-block w-100 fade-img" alt="Slide 1" />
-            <div className="carousel-caption d-flex flex-column justify-content-center align-items-center h-100">
-              <h1 className="text-white text-center">{t('slide1')}</h1>
-            </div>
-          </div>
+      {/* Lado Derecho (3 figuras) */}
+      <div className="floating-element shape-right-1-color"></div>
+      <img src="/assets/img/about.jpg" alt="UNMSM" className="floating-element shape-right-2" />
+      <img src="https://images.pexels.com/photos/2280571/pexels-photo-2280571.jpeg?auto=compress&cs=tinysrgb&w=500" alt="Industry" className="floating-element shape-right-3" />
 
-          <div className="carousel-item">
-            <img
-              src="https://images.pexels.com/photos/1366942/pexels-photo-1366942.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-              className="d-block w-100 fade-img"
-              alt="Slide 2"
-            />
-            <div className="carousel-caption d-flex flex-column justify-content-center align-items-center h-100">
-              <h1 className="text-white text-center">{t('slide2')}</h1>
-            </div>
-          </div>
-
-          <div className="carousel-item active">
-            <img
-              src="https://images.pexels.com/photos/2280571/pexels-photo-2280571.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-              className="d-block w-100 fade-img"
-              alt="Slide 3"
-            />
-            <div className="carousel-caption d-flex flex-column justify-content-center align-items-center h-100">
-              <h1 className="text-white text-center">{t('slide3')}</h1>
-            </div>
-          </div>
-
-          <div className="carousel-item">
-            <img
-              src="https://images.pexels.com/photos/4033148/pexels-photo-4033148.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-              className="d-block w-100 fade-img"
-              alt="Slide 4"
-            />
-            <div className="carousel-caption d-flex flex-column justify-content-center align-items-center h-100">
-              <h1 className="text-white text-center">{t('slide4')}</h1>
-            </div>
-          </div>
-
-        </div>
-
-        <button className="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
-          <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span className="visually-hidden">Anterior</span>
-        </button>
-
-        <button className="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
-          <span className="carousel-control-next-icon" aria-hidden="true"></span>
-          <span className="visually-hidden">Siguiente</span>
+      {/* Contenido Central */}
+      <div className="content-wrapper">
+        <h1 className="title">
+          Química que transforma <span className="highlight">el Perú</span>
+        </h1>
+        <p className="subtitle">
+          Somos el capítulo estudiantil de la American Chemical Society en la Universidad Nacional Mayor de San Marcos, Decana de América. Divulgamos, investigamos y formamos comunidad.
+        </p>
+        <button onClick={handleScroll} className="cta-button">
+          Conócenos
         </button>
       </div>
 
-    <style jsx>{`
-        .carousel-fade .carousel-item {
-          transition: opacity 1s ease-in-out;
-        }
-
-        .fade-img {
-          transition: transform 1.2s ease-in-out;
-        }
-
-        .carousel-item.active .fade-img {
-          transform: scale(1.03);
-        }
-
-        .carousel-caption {
-          backgroundColor: rgba(0, 0, 0, 0.4);
-          padding: 1rem 2rem;
-          borderRadius: 0.5rem;
-          backdropFilter: blur(2px);
-          top: 0;
-          bottom: 0;
-          left: 0;
-          right: 0;
-          position: absolute;
-          zIndex: 2;
-          text-shadow: 2px 2px 8px rgba(0,0,0,0.8);
-          font-size: 2rem;
-        }
-
-        .carousel-overlay {
-          position: absolute;
-          top: 0;
-          left: 0;
-          height: 100%;
+      <style jsx>{`
+        .hero-container {
+          position: relative;
           width: 100%;
-          background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), transparent 70%);
-          z-index: 1;
+          min-height: 90vh;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          overflow: hidden;
+          background-color: #412BFD;
+          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Crect x='20' y='20' width='60' height='60' rx='10' transform='rotate(45 50 50)' fill='none' stroke='rgba(255,255,255,0.1)' stroke-width='2'/%3E%3C/svg%3E");
+          background-size: 100px 100px;
+          color: white;
+          padding: 4rem 1rem;
         }
-          .carousel-item img {
-          width: 100%;
-          height: 90vh;         /* limita la altura al alto de la ventana */
-          object-fit: cover;     /* asegura que la imagen se recorte sin deformarse */
+        
+        .content-wrapper {
+          position: relative;
+          z-index: 10;
+          text-align: center;
+          max-width: 800px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 1.5rem;
+        }
+        
+        .title {
+          font-size: 4rem;
+          font-weight: 700;
+          line-height: 1.2;
+          margin: 0;
+          color: #ffffff;
+          text-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        
+        .highlight {
+          color: #6FEDEE;
         }
 
+        .subtitle {
+          font-size: 1.25rem;
+          font-weight: 300;
+          line-height: 1.6;
+          color: rgba(255, 255, 255, 0.9);
+          max-width: 700px;
+          margin: 0 auto;
+        }
+        
+        .cta-button {
+          background-color: #6FEDEE;
+          color: #0b0736;
+          font-weight: 600;
+          font-size: 1.1rem;
+          padding: 0.8rem 2.5rem;
+          border: none;
+          border-radius: 8px;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          margin-top: 1rem;
+          text-decoration: none;
+          box-shadow: 0 4px 14px rgba(92, 229, 172, 0.4);
+        }
+        
+        .cta-button:hover {
+          background-color: #4cd49b;
+          transform: translateY(-2px);
+          box-shadow: 0 6px 20px rgba(92, 229, 172, 0.6);
+        }
+        
+        .floating-element {
+          position: absolute;
+          z-index: 5;
+          transition: transform 0.5s ease;
+        }
+        
+        .shape-left-1 {
+          top: 15%;
+          left: 5%;
+          width: 180px;
+          height: 180px;
+          border-radius: 30px;
+          object-fit: cover;
+          box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+          animation: float 6s ease-in-out infinite;
+        }
+        
+        .shape-left-2 {
+          top: 45%;
+          left: 12%;
+          transform: translateY(-50%);
+          width: 140px;
+          height: 140px;
+          border-radius: 50%;
+          object-fit: cover;
+          box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+          animation: float 8s ease-in-out infinite reverse;
+        }
+        
+        .shape-left-3-color {
+          bottom: 15%;
+          left: 8%;
+          width: 120px;
+          height: 120px;
+          background-color: #6FEDEE;
+          border-radius: 20px;
+          transform: rotate(45deg);
+          box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+          animation: floatDiamond 7s ease-in-out infinite;
+        }
+        
+        .shape-right-1-color {
+          top: 15%;
+          right: 10%;
+          width: 100px;
+          height: 100px;
+          background-color: #FFD400;
+          border-radius: 50%;
+          box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+          animation: float 5s ease-in-out infinite;
+        }
+        
+        .shape-right-2 {
+          top: 35.5%;
+          right: 5%;
+          width: 200px;
+          height: 200px;
+          border-radius: 30px;
+          object-fit: cover;
+          box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+          animation: float 7s ease-in-out infinite reverse;
+        }
+        
+        .shape-right-3 {
+          bottom: 12%;
+          right: 15%;
+          width: 150px;
+          height: 150px;
+          border-radius: 50%;
+          object-fit: cover;
+          box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+          animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+          0% { transform: translateY(0px) rotate(0deg); }
+          50% { transform: translateY(-15px) rotate(3deg); }
+          100% { transform: translateY(0px) rotate(0deg); }
+        }
+        
+        @keyframes floatDiamond {
+          0% { transform: translateY(0px) rotate(45deg); }
+          50% { transform: translateY(-15px) rotate(48deg); }
+          100% { transform: translateY(0px) rotate(45deg); }
+        }
+        
+        @media (max-width: 1200px) {
+          .floating-element {
+            transform: scale(0.8) !important;
+          }
+        }
+        
+        @media (max-width: 992px) {
+          .title { font-size: 2.8rem; }
+          .shape-left-2, .shape-right-1-color, .shape-left-3-color, .shape-right-3 { display: none; }
+          .shape-left-1 { top: 5%; left: 5%; opacity: 0.4; z-index: 1; }
+          .shape-right-2 { bottom: 5%; top: auto; right: 5%; opacity: 0.4; z-index: 1; }
+        }
+        
+        @media (max-width: 576px) {
+          .title { font-size: 2.2rem; }
+          .subtitle { font-size: 1rem; }
+          .floating-element { display: none; }
+        }
       `}</style>
-
     </section>
   );
 }

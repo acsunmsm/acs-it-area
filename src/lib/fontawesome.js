@@ -7,7 +7,10 @@ import {
   faGlobe,
   faChevronDown,
   faBars,
-  faSignIn,faTachometerAlt // <--- ¡Añadido este icono!
+  faSignIn,
+  faTachometerAlt, // <--- ¡Añadido este icono!
+  faTools,
+  faArrowLeft
 } from '@fortawesome/free-solid-svg-icons';
 
 // Iconos de marcas (redes sociales)
@@ -27,7 +30,9 @@ library.add(
   faInstagram,
   faTachometerAlt,
   faFacebookF,
-  faLinkedinIn
+  faLinkedinIn,
+  faTools,
+  faArrowLeft
 );
 
 // Exportar los iconos individualmente
@@ -37,7 +42,10 @@ export {
   faChevronDown,
   faBars,
   faSignIn, 
-  faInstagram,faTachometerAlt,
+  faInstagram,
+  faTachometerAlt,
   faFacebookF,
-  faLinkedinIn
+  faLinkedinIn,
+  faTools,
+  faArrowLeft
 };

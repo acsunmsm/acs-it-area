@@ -38,7 +38,7 @@ export default function EventRegistrationPage() {
       icon: 'error',
       title: 'Error',
       text: msg,
-      confirmButtonColor: '#0054A6'
+      confirmButtonColor: '#412BFD'
     });
   };
 
@@ -47,7 +47,7 @@ export default function EventRegistrationPage() {
       icon: 'success',
       title: '¡Registro exitoso!',
       text: 'Gracias por registrarte. ¡Nos vemos en el evento!',
-      confirmButtonColor: '#0054A6'
+      confirmButtonColor: '#412BFD'
     }).then(() => {
       router.push('/events');
     });
@@ -124,7 +124,7 @@ export default function EventRegistrationPage() {
 
     try {
 
-       //Inserción en la tabla de registros de eventos
+      //Inserción en la tabla de registros de eventos
       const { error: insertError } = await supabase
         .from('event_registrations')
         .insert([data]);
@@ -156,7 +156,7 @@ export default function EventRegistrationPage() {
 
   return (
     <>
-    <style jsx global>{`
+      <style jsx global>{`
         header {
           background-color: #004080;
           color: white;
@@ -210,7 +210,7 @@ export default function EventRegistrationPage() {
           box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
         }
         h1 {
-          color: #0054A6;
+          color: #412BFD;
           text-align: center;
           margin-bottom: 10px;
         }
@@ -241,7 +241,7 @@ export default function EventRegistrationPage() {
         .social-links a {
           display: inline-block;
           margin-right: 10px;
-          color: #0054A6;
+          color: #412BFD;
           font-weight: bold;
           text-decoration: none;
         }
@@ -289,26 +289,26 @@ export default function EventRegistrationPage() {
         }
       `}</style>
 
-    <main>
-      <div style={{
-        width: '100%',
-        height: '250px', /* Altura fija del banner */
-        backgroundColor: '#333', /* Color de fondo de respaldo si no hay imagen */
-        backgroundImage: 'url("/assets/img/bannerForms.jpg")', /* URL de tu imagen de banner */
-        backgroundSize: 'cover', /* Cubre toda el área del banner */
-        backgroundPosition: 'center', /* Centra la imagen */
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        color: 'white',
-        fontSize: '2.5em',
-        fontWeight: 'bold',
-        textShadow: '2px 2px 4px rgba(0,0,0,0.5)',
-        borderRadius: '12px', /* Bordes redondeados para el banner */
-        overflow: 'hidden', /* Asegura que la imagen no se desborde */
-      }}>
-      </div>
-    </main>
+      <main>
+        <div style={{
+          width: '100%',
+          height: '250px', /* Altura fija del banner */
+          backgroundColor: '#333', /* Color de fondo de respaldo si no hay imagen */
+          backgroundImage: 'url("/assets/img/bannerForms.jpg")', /* URL de tu imagen de banner */
+          backgroundSize: 'cover', /* Cubre toda el área del banner */
+          backgroundPosition: 'center', /* Centra la imagen */
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: 'white',
+          fontSize: '2.5em',
+          fontWeight: 'bold',
+          textShadow: '2px 2px 4px rgba(0,0,0,0.5)',
+          borderRadius: '12px', /* Bordes redondeados para el banner */
+          overflow: 'hidden', /* Asegura que la imagen no se desborde */
+        }}>
+        </div>
+      </main>
 
       <div className="container">
         <h1>{event.titulo}</h1>
@@ -316,7 +316,7 @@ export default function EventRegistrationPage() {
           <span dangerouslySetInnerHTML={{ __html: event.descripcion }} />
           <br /><br />
           📅 <strong>Fecha:</strong> {formattedDate}
-                    <br /><br />
+          <br /><br />
           🕓 <strong>Hora:</strong> {formatTime12Hour(event.hora)}
                     <br /><br />
           🚀 <strong>Evento {event.modalidad?.toLowerCase() === 'en persona' ? 'presencial' : event.modalidad?.toLowerCase()}</strong> 

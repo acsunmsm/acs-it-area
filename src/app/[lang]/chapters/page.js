@@ -59,7 +59,7 @@ export default async function Officers({ params }) {
     <>
       <Navbar />
 
-      <section className="hero-section py-5 text-white" style={{ backgroundColor: '#0054a6' }}>
+      <section className="hero-section py-5 text-white" style={{ backgroundColor: '#0054A6' }}>
         <div className="container text-center">
           <h1 className="display-4 fw-bold mb-4" style={{ color: '#ffd400' }}>{t('title')}</h1>
         </div>
