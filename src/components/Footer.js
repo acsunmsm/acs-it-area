@@ -5,10 +5,10 @@
 import { useTranslations, useLocale } from 'next-intl';
 import { useRouter, usePathname } from '@/src/i18n/navigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faInstagram,
-  faFacebookF,
-  faLinkedinIn
+import { 
+  faInstagram, 
+  faFacebookF, 
+  faLinkedinIn 
 } from '@/src/lib/fontawesome';
 
 export default function Footer() {
@@ -19,7 +19,7 @@ export default function Footer() {
   return (
     <footer className="footer">
       <div className="footer-bg"></div>
-
+      
       <div className="footer-container">
         <h1 className="footer-title">{t('title')}</h1>
         <p className="footer-description">{t('description1')}</p>
@@ -36,47 +36,47 @@ export default function Footer() {
         <p className="footer-follow">{t('follow')}</p>
 
         <div className="footer-social-icons">
-          <a
-            href="https://instagram.com/acs.unmsm.pe"
-            target="_blank"
+          <a 
+            href="https://instagram.com/acs.unmsm.pe" 
+            target="_blank" 
             rel="noopener noreferrer"
             className="footer-social-link"
           >
             <div className="footer-social-icon-container">
-              <FontAwesomeIcon
-                icon={faInstagram}
+              <FontAwesomeIcon 
+                icon={faInstagram} 
                 className="footer-social-icon"
               />
             </div>
           </a>
-          <a
-            href="https://www.facebook.com/profile.php?id=61571451074801"
-            target="_blank"
+          <a 
+            href="https://www.facebook.com/profile.php?id=61571451074801" 
+            target="_blank" 
             rel="noopener noreferrer"
             className="footer-social-link"
           >
             <div className="footer-social-icon-container">
-              <FontAwesomeIcon
-                icon={faFacebookF}
+              <FontAwesomeIcon 
+                icon={faFacebookF} 
                 className="footer-social-icon"
               />
             </div>
           </a>
-          <a
-            href="https://www.linkedin.com/company/unmsmacs"
-            target="_blank"
+          <a 
+            href="https://www.linkedin.com/company/unmsmacs" 
+            target="_blank" 
             rel="noopener noreferrer"
             className="footer-social-link"
           >
             <div className="footer-social-icon-container">
-              <FontAwesomeIcon
-                icon={faLinkedinIn}
+              <FontAwesomeIcon 
+                icon={faLinkedinIn} 
                 className="footer-social-icon"
               />
             </div>
           </a>
         </div>
-
+        
         <div className="footer-copyright">
           <p>{t('copyright', { year })}</p>
         </div>

@@ -1,0 +1,701 @@
+/* ============================================================
+   BLOQUES DEL MENÚ — un efecto distinto por sección
+   ============================================================
+
+   LA IDEA
+   Cada elemento del menú deja de ser un enlace suelto y pasa a ser
+   un BLOQUE. Y cada bloque anticipa el concepto de su sección: al
+   pasar el ratón por "Eventos" el bloque se derrite con ácido, igual
+   que los botones de esa página; al pasar por "Recursos" se extiende
+   una mancha de tinta sobre papel.
+
+   Así el menú no es decoración: es una pista de lo que hay detrás.
+
+   CÓMO SE ELIGE EL EFECTO
+   Con el atributo data-efecto en el enlace:
+
+     <Link className="bloque-nav" data-efecto="acido"> Eventos </Link>
+
+   | data-efecto  | Sección   | Qué hace                              |
+   |--------------|-----------|---------------------------------------|
+   | efervescente | Inicio    | Burbujas subiendo dentro del bloque   |
+   | indicador    | Nosotros  | Barrido de color, como un indicador   |
+   |              |           | ácido-base que vira                    |
+   | orbital      | Directiva | Un anillo gira alrededor del texto     |
+   | acido        | Eventos   | Se derrite y gotea                     |
+   | tinta        | Recursos  | Mancha de tinta sobre papel            |
+   | titulacion   | Contacto  | Se llena de líquido de abajo arriba    |
+
+   REGLA QUE CUMPLEN TODOS
+   Ninguno cambia el TAMAÑO que el bloque ocupa en el flujo de la
+   página. Todo se hace con transform y con capas superpuestas. Si
+   un bloque creciera de verdad, empujaría a los de al lado y el menú
+   entero bailaría cada vez que pasas el ratón — que es exactamente
+   lo que no se quiere en una barra de navegación.
+   ============================================================ */
+
+/* ============================================================
+   EL LOGO: marca ACS + nombre del capítulo
+   ============================================================
+   La marca nueva de los 150 años ya no trae el nombre del capítulo
+   incrustado, así que se compone aquí: símbolo, una línea divisoria,
+   y el nombre en la tipografía de la web.
+
+   Ventaja de tenerlo en texto y no dentro del PNG: en móvil se puede
+   acortar. Con el nombre incrustado en la imagen no había forma.
+   ------------------------------------------------------------ */
+
+.marca-capitulo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.85rem;
+  text-decoration: none;
+}
+
+/*
+  Doble clase (.marca-capitulo .marca-capitulo__simbolo) a propósito.
+
+  En globals.css existe desde antes `.navbar-brand img { max-width: 100% }`,
+  pensada para el logo antiguo. Con la marca nueva daba problema: como el
+  logo es un elemento flexible dentro de la cabecera, ese max-width le
+  permitía encogerse, y acababa dibujándose a la mitad de su tamaño (87x22
+  en vez de 175x44) — o sea, borroso.
+
+  Y no bastaba con escribir la regla después: en CSS no gana la última,
+  gana la MÁS ESPECÍFICA, y `.navbar-brand img` (clase + etiqueta) pesa más
+  que `.marca-capitulo__simbolo` (una clase). Repitiendo la clase del padre
+  se sube el peso lo justo para ganar, sin recurrir a !important.
+
+  flex-shrink: 0 remata la jugada: el logo no se encoge aunque el menú vaya
+  justo de sitio.
+*/
+.marca-capitulo .marca-capitulo__simbolo {
+  /* 22px es la mitad del alto real del archivo (44px). A tamaño
+     completo la marca pesaba demasiado al lado del texto y engordaba
+     la barra; a esta altura el conjunto queda equilibrado.
+
+     Que se dibuje más pequeña que el archivo NO la vuelve borrosa: al
+     revés, reducir una imagen siempre se ve nítido. Lo que estropea es
+     ampliarla, y eso es justo lo que se evitó con flex-shrink: 0. */
+  height: 22px;
+  width: auto;
+  max-width: none;
+  max-height: none;
+  flex-shrink: 0;
+}
+
+.marca-capitulo__texto {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding-left: 0.85rem;
+  border-left: 2px solid rgba(0, 84, 166, 0.25);
+  line-height: 1.2;
+}
+
+.marca-capitulo__linea1 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--acs-azul, #0054a6);
+  letter-spacing: 0.01em;
+}
+
+.marca-capitulo__linea2 {
+  font-size: 0.72rem;
+  color: #55606b;
+  max-width: 200px;
+}
+
+/* La versión corta solo se enseña en pantallas pequeñas */
+.marca-capitulo__linea2-corta {
+  display: none;
+  font-size: 0.72rem;
+  color: #55606b;
+}
+
+@media (max-width: 575.98px) {
+  .marca-capitulo {
+    gap: 0.5rem;
+  }
+
+  .marca-capitulo .marca-capitulo__simbolo {
+    height: 19px;
+  }
+
+  .marca-capitulo__texto {
+    padding-left: 0.5rem;
+  }
+
+  .marca-capitulo__linea1 {
+    font-size: 0.85rem;
+  }
+
+  .marca-capitulo__linea2 {
+    display: none;
+  }
+
+  .marca-capitulo__linea2-corta {
+    display: block;
+  }
+}
+
+.bloque-nav {
+  --bloque-color: var(--acs-azul, #0054a6);
+
+  position: relative;
+  display: block;
+  padding: 0.55rem 1rem;
+  margin: 0 3px;
+  border-radius: 10px;
+
+  color: #2b3641;
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  white-space: nowrap;
+
+  /* Recorta las capas de los efectos al rectángulo del bloque.
+     El efecto "acido" lo desactiva, porque sus gotas tienen que
+     poder salirse por abajo. */
+  overflow: hidden;
+
+  /* Contexto propio de apilado: las capas de un bloque nunca se
+     mezclan con las de su vecino. */
+  isolation: isolate;
+
+  transition:
+    color 240ms ease,
+    transform 280ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* El texto siempre por encima de todas las capas del efecto */
+.bloque-nav__texto {
+  position: relative;
+  z-index: 3;
+}
+
+.bloque-nav:hover,
+.bloque-nav:focus-visible {
+  transform: translateY(-2px);
+}
+
+/* El foco de teclado NO se quita nunca. Quien navega con Tab
+   necesita ver dónde está, y estos bloques ya no parecen enlaces
+   corrientes. */
+.bloque-nav:focus-visible {
+  outline: 3px solid var(--bloque-color);
+  outline-offset: 2px;
+}
+
+/* La sección en la que estás ahora mismo, marcada de forma
+   permanente y discreta: una barra de color debajo. */
+.bloque-nav[aria-current='page'] {
+  color: var(--bloque-color);
+}
+
+/*
+  La barrita es un <span> de verdad, no un ::after. Y tiene motivo:
+  cuatro de los seis efectos ya usan ::after para su propia capa
+  (las burbujas, el anillo, la mancha de tinta, el menisco). Como un
+  elemento solo puede tener UN ::after, la barra y el efecto se
+  peleaban por el mismo sitio — y ganaba el efecto, así que en esas
+  cuatro secciones la marca de "estás aquí" desaparecía.
+
+  currentColor, no un color fijo: en reposo es azul; al pasar el ratón
+  el texto se vuelve blanco (o crema) y la barra lo sigue. Con un
+  color fijo se quedaba azul sobre el fucsia del indicador y cantaba.
+*/
+.bloque-nav__activo {
+  position: absolute;
+  left: 1rem;
+  right: 1rem;
+  bottom: 4px;
+  height: 3px;
+  border-radius: 2px;
+  background: currentColor;
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* ============================================================
+   1 · EFERVESCENTE  →  INICIO
+   El bloque se llena de azul y suben burbujas por dentro, como una
+   pastilla efervescente en un vaso.
+   ------------------------------------------------------------ */
+
+.bloque-nav[data-efecto='efervescente']::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: 10px;
+  background: var(--acs-azul, #0054a6);
+
+  /* Entra desde abajo, como el líquido llenando el vaso */
+  transform: translateY(100%);
+  transition: transform 380ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.bloque-nav[data-efecto='efervescente']:hover,
+.bloque-nav[data-efecto='efervescente']:focus-visible {
+  color: #fff;
+}
+
+.bloque-nav[data-efecto='efervescente']:hover::before,
+.bloque-nav[data-efecto='efervescente']:focus-visible::before {
+  transform: translateY(0);
+}
+
+/* Las burbujas. Son cinco degradados radiales dentro de UNA sola
+   capa: cero elementos extra en el HTML. Suben moviendo la posición
+   del fondo, y como el bloque recorta (overflow: hidden), parece que
+   nacen dentro y desaparecen arriba. */
+.bloque-nav[data-efecto='efervescente']::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 220ms ease 120ms;
+
+  /* Opacidades bajas (0.3–0.45) y burbujas pequeñas a propósito.
+     Con blancos más fuertes las burbujas pasaban justo por detrás del
+     texto —que también es blanco— y "Inicio" se leía sucio. Aquí
+     tienen que sentirse como textura del fondo, no como un segundo
+     objeto compitiendo con la palabra. */
+  background-repeat: no-repeat;
+  background-image:
+    radial-gradient(circle 3px at 50% 50%, rgba(255, 255, 255, 0.42) 96%, transparent 100%),
+    radial-gradient(circle 4px at 50% 50%, rgba(255, 255, 255, 0.3) 96%, transparent 100%),
+    radial-gradient(circle 2px at 50% 50%, rgba(255, 255, 255, 0.45) 96%, transparent 100%),
+    radial-gradient(circle 3px at 50% 50%, rgba(255, 255, 255, 0.32) 96%, transparent 100%),
+    radial-gradient(circle 2px at 50% 50%, rgba(255, 255, 255, 0.45) 96%, transparent 100%);
+  background-size: 10px 10px, 12px 12px, 8px 8px, 10px 10px, 8px 8px;
+  background-position: 14% 130%, 34% 130%, 52% 130%, 71% 130%, 88% 130%;
+}
+
+/* Una sombra mínima bajo el texto lo despega del fondo aunque una
+   burbuja le pase justo por detrás. */
+.bloque-nav[data-efecto='efervescente']:hover .bloque-nav__texto,
+.bloque-nav[data-efecto='efervescente']:focus-visible .bloque-nav__texto {
+  text-shadow: 0 1px 3px rgba(0, 32, 66, 0.55);
+}
+
+.bloque-nav[data-efecto='efervescente']:hover::after,
+.bloque-nav[data-efecto='efervescente']:focus-visible::after {
+  opacity: 1;
+  animation: nav-burbujas 1.7s linear infinite;
+}
+
+@keyframes nav-burbujas {
+  from {
+    background-position: 14% 130%, 34% 130%, 52% 130%, 71% 130%, 88% 130%;
+  }
+  to {
+    /* Cada burbuja acaba en un sitio distinto: si todas subieran
+       igual se vería el truco. */
+    background-position: 14% -40%, 34% -70%, 52% -25%, 71% -85%, 88% -50%;
+  }
+}
+
+/* ============================================================
+   2 · INDICADOR  →  NOSOTROS
+   Un barrido de color en diagonal, como la fenolftaleína virando a
+   fucsia cuando la disolución pasa de ácida a básica. Es el vire de
+   color más reconocible de un laboratorio de química.
+   ------------------------------------------------------------ */
+
+.bloque-nav[data-efecto='indicador']::before {
+  content: '';
+  position: absolute;
+  inset: -10% -30%;
+  z-index: 1;
+  background: linear-gradient(115deg, #b02a5b 0%, #d6336c 55%, #e8608f 100%);
+
+  /* skewX exagerado: el frente de la reacción entra en diagonal,
+     no como una persiana recta. */
+  transform: translateX(-115%) skewX(-18deg);
+  transition: transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.bloque-nav[data-efecto='indicador']:hover,
+.bloque-nav[data-efecto='indicador']:focus-visible {
+  color: #fff;
+}
+
+.bloque-nav[data-efecto='indicador']:hover::before,
+.bloque-nav[data-efecto='indicador']:focus-visible::before {
+  transform: translateX(0) skewX(-18deg);
+}
+
+.bloque-nav[data-efecto='indicador']:focus-visible {
+  outline-color: #b02a5b;
+}
+
+/* ============================================================
+   3 · ORBITAL  →  DIRECTIVA
+   Un anillo elíptico gira alrededor del texto, como un electrón
+   alrededor del núcleo. La directiva son las personas que sostienen
+   el capítulo: giran alrededor del centro.
+   ------------------------------------------------------------ */
+
+.bloque-nav[data-efecto='orbital'] {
+  /* El anillo se sale del rectángulo, así que aquí no se recorta */
+  overflow: visible;
+}
+
+.bloque-nav[data-efecto='orbital']::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: 10px;
+  background: #eaf2fb;
+  opacity: 0;
+  transform: scale(0.85);
+  transition:
+    opacity 260ms ease,
+    transform 320ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.bloque-nav[data-efecto='orbital']::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 116%;
+  height: 116%;
+  z-index: 2;
+  pointer-events: none;
+
+  border: 2px solid var(--acs-azul, #0054a6);
+  border-radius: 50%;
+  opacity: 0;
+
+  /*
+    El centrado se hace con translate(-50%, -50%) y NO con márgenes
+    negativos en porcentaje. Motivo, y es una trampa clásica de CSS:
+    los márgenes en % —incluso el de arriba— se calculan sobre el
+    ANCHO del contenedor, nunca sobre el alto. Con un bloque más ancho
+    que alto, un margin-top: -58% lo empujaba muy por encima del menú.
+    El porcentaje de translate() sí se refiere a cada eje del propio
+    elemento, que es lo que aquí hace falta.
+
+    scaleY aplasta el círculo hasta la elipse que dibuja una órbita
+    vista de canto.
+  */
+  transform: translate(-50%, -50%) rotate(0deg) scaleY(0.34);
+  transition: opacity 260ms ease;
+}
+
+.bloque-nav[data-efecto='orbital']:hover,
+.bloque-nav[data-efecto='orbital']:focus-visible {
+  color: var(--acs-azul, #0054a6);
+}
+
+.bloque-nav[data-efecto='orbital']:hover::before,
+.bloque-nav[data-efecto='orbital']:focus-visible::before {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.bloque-nav[data-efecto='orbital']:hover::after,
+.bloque-nav[data-efecto='orbital']:focus-visible::after {
+  opacity: 0.85;
+  animation: nav-orbita 2.4s linear infinite;
+}
+
+/* El translate se repite en los dos fotogramas: transform es una sola
+   propiedad, así que si el keyframe solo pusiera rotate() perdería el
+   centrado y el anillo saltaría de sitio al empezar a girar. */
+@keyframes nav-orbita {
+  from { transform: translate(-50%, -50%) rotate(0deg) scaleY(0.34); }
+  to   { transform: translate(-50%, -50%) rotate(360deg) scaleY(0.34); }
+}
+
+/* ============================================================
+   4 · ÁCIDO  →  EVENTOS
+   El mismo efecto que los botones de la página de Eventos: el
+   bloque se derrite y gotea. La capa la pinta el componente
+   CapaAcido; aquí solo se le dan las medidas y se enciende al pasar
+   el ratón.
+   ------------------------------------------------------------ */
+
+.bloque-nav[data-efecto='acido'] {
+  /* Sin recorte: las gotas tienen que poder salirse por abajo,
+     hasta fuera de la propia barra de navegación. */
+  overflow: visible;
+
+  /* Estas dos variables las lee .capa-acido (quimica.css §1) */
+  --capa-caida: 22px;
+  --capa-radio: 10px;
+  --btn-acido-color: #23a455;   /* el verde de reactivo de Eventos */
+}
+
+.bloque-nav[data-efecto='acido'] .capa-acido {
+  opacity: 0;
+  z-index: 1;
+}
+
+.bloque-nav[data-efecto='acido']:hover,
+.bloque-nav[data-efecto='acido']:focus-visible {
+  color: #fff;
+}
+
+.bloque-nav[data-efecto='acido']:hover .capa-acido,
+.bloque-nav[data-efecto='acido']:focus-visible .capa-acido {
+  opacity: 1;
+}
+
+.bloque-nav[data-efecto='acido']:focus-visible {
+  outline-color: #23a455;
+}
+
+/* ============================================================
+   5 · TINTA  →  RECURSOS
+   Una mancha de tinta que se extiende sobre el papel, desde abajo a
+   la izquierda, hasta empapar el bloque entero.
+   ------------------------------------------------------------ */
+
+.bloque-nav[data-efecto='tinta']::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: 10px;
+  background: #f5eee1;                    /* el papel */
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+
+.bloque-nav[data-efecto='tinta']::after {
+  content: '';
+  position: absolute;
+  z-index: 2;
+  left: 12%;
+  bottom: 0;
+  width: 230%;
+  padding-bottom: 230%;                   /* truco: círculo perfecto */
+  margin-left: -115%;
+  border-radius: 50%;
+  background: #6b5333;                    /* la tinta */
+
+  transform: scale(0);
+  transform-origin: center bottom;
+  transition: transform 460ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.bloque-nav[data-efecto='tinta']:hover,
+.bloque-nav[data-efecto='tinta']:focus-visible {
+  color: #fffdf7;
+}
+
+.bloque-nav[data-efecto='tinta']:hover::before,
+.bloque-nav[data-efecto='tinta']:focus-visible::before {
+  opacity: 1;
+}
+
+.bloque-nav[data-efecto='tinta']:hover::after,
+.bloque-nav[data-efecto='tinta']:focus-visible::after {
+  transform: scale(1);
+}
+
+.bloque-nav[data-efecto='tinta']:focus-visible {
+  outline-color: #8a6d3b;
+}
+
+/* ============================================================
+   7 · PERIÓDICO  →  NOTICIAS
+   Cae una hoja de papel de diario desde arriba y, debajo, aparece el
+   filete rojo de una cabecera de periódico. El texto pasa a negro.
+   ------------------------------------------------------------ */
+
+.bloque-nav[data-efecto='periodico']::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: 8px;      /* menos redondeo: el papel tiene esquinas */
+  background: #f4f2ec;
+
+  /* transform-origin arriba: la hoja se despliega hacia abajo desde
+     el borde superior, como al pasar una página. */
+  transform: scaleY(0);
+  transform-origin: top center;
+  transition: transform 320ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* El filete de la cabecera. Entra desde el centro hacia los lados y
+   con un poco de retraso, para que se lea "primero el papel, después
+   la línea" y no las dos cosas a la vez. */
+.bloque-nav[data-efecto='periodico']::after {
+  content: '';
+  position: absolute;
+  left: 0.7rem;
+  right: 0.7rem;
+  bottom: 7px;
+  height: 2px;
+  z-index: 2;
+  background: #8b1e1e;
+
+  transform: scaleX(0);
+  transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1) 140ms;
+}
+
+.bloque-nav[data-efecto='periodico']:hover,
+.bloque-nav[data-efecto='periodico']:focus-visible {
+  color: #1a1a1a;
+}
+
+.bloque-nav[data-efecto='periodico']:hover::before,
+.bloque-nav[data-efecto='periodico']:focus-visible::before {
+  transform: scaleY(1);
+}
+
+.bloque-nav[data-efecto='periodico']:hover::after,
+.bloque-nav[data-efecto='periodico']:focus-visible::after {
+  transform: scaleX(1);
+}
+
+.bloque-nav[data-efecto='periodico']:focus-visible {
+  outline-color: #8b1e1e;
+}
+
+/* ============================================================
+   6 · TITULACIÓN  →  CONTACTO
+   El bloque se llena de líquido de abajo arriba, como una bureta
+   vaciándose en el matraz. Es lo que hace un formulario: se va
+   llenando hasta que está completo.
+   ------------------------------------------------------------ */
+
+.bloque-nav[data-efecto='titulacion']::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 100%;
+  z-index: 1;
+  background: linear-gradient(180deg, #1477d6 0%, var(--acs-azul, #0054a6) 100%);
+
+  transform: scaleY(0);
+  transform-origin: bottom center;
+  transition: transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* El menisco: la curva que forma la superficie de un líquido dentro
+   del vidrio. Es una elipse clara que viaja pegada al frente que
+   sube — el detalle que convierte "una barra que crece" en "líquido". */
+.bloque-nav[data-efecto='titulacion']::after {
+  content: '';
+  position: absolute;
+  left: -10%;
+  right: -10%;
+  bottom: 0;
+  height: 12px;
+  z-index: 2;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.45);
+
+  opacity: 0;
+  transform: translateY(0);
+  transition:
+    opacity 200ms ease,
+    transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.bloque-nav[data-efecto='titulacion']:hover,
+.bloque-nav[data-efecto='titulacion']:focus-visible {
+  color: #fff;
+}
+
+.bloque-nav[data-efecto='titulacion']:hover::before,
+.bloque-nav[data-efecto='titulacion']:focus-visible::before {
+  transform: scaleY(1);
+}
+
+.bloque-nav[data-efecto='titulacion']:hover::after,
+.bloque-nav[data-efecto='titulacion']:focus-visible::after {
+  opacity: 1;
+  transform: translateY(calc(-100% + 6px));
+}
+
+/* ============================================================
+   MÓVIL
+   Con el menú desplegado los bloques van uno debajo de otro. Ahí las
+   gotas del ácido caerían encima del bloque siguiente y el anillo
+   orbital se solaparía con sus vecinos. Se recortan los dos efectos
+   que se salen de su caja; los otros cuatro funcionan igual.
+   ------------------------------------------------------------ */
+@media (max-width: 991.98px) {
+  .bloque-nav {
+    margin: 2px 0;
+    padding: 0.7rem 1rem;
+  }
+
+  .bloque-nav[data-efecto='acido'],
+  .bloque-nav[data-efecto='orbital'] {
+    overflow: hidden;
+  }
+
+  .bloque-nav[data-efecto='acido'] {
+    --capa-caida: 0px;
+  }
+
+  .bloque-nav:hover,
+  .bloque-nav:focus-visible {
+    transform: none;
+  }
+}
+
+/* ============================================================
+   ACCESIBILIDAD
+   Si la persona pidió menos movimiento, no se mueve nada: ni
+   burbujas, ni barridos, ni órbitas, ni gotas. Pero el bloque SIGUE
+   respondiendo — se pinta del color de su sección de golpe, sin
+   transición. Saber dónde estás pulsando no es un adorno.
+   ------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  .bloque-nav,
+  .bloque-nav::before,
+  .bloque-nav::after {
+    transition: none !important;
+    animation: none !important;
+  }
+
+  .bloque-nav:hover,
+  .bloque-nav:focus-visible {
+    transform: none !important;
+  }
+
+  /* El relleno aparece igual, solo que instantáneo */
+  .bloque-nav[data-efecto='efervescente']:hover::before,
+  .bloque-nav[data-efecto='titulacion']:hover::before,
+  .bloque-nav[data-efecto='periodico']:hover::before {
+    transform: none !important;
+  }
+
+  .bloque-nav[data-efecto='periodico']:hover::after {
+    transform: scaleX(1) !important;
+  }
+
+  .bloque-nav[data-efecto='indicador']:hover::before {
+    transform: translateX(0) skewX(0deg) !important;
+  }
+
+  .bloque-nav[data-efecto='tinta']:hover::after {
+    transform: scale(1) !important;
+  }
+
+  .bloque-nav[data-efecto='orbital']:hover::before {
+    transform: scale(1) !important;
+  }
+
+  /* Estas capas son puro movimiento: sin él no aportan nada */
+  .bloque-nav[data-efecto='efervescente']::after,
+  .bloque-nav[data-efecto='orbital']::after {
+    display: none !important;
+  }
+}

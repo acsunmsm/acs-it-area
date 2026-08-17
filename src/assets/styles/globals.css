@@ -498,7 +498,7 @@ h2 {
   }
 
   body {
-    padding-top: 70px;
+    padding-top: 56px;
   }
 
   .sponsors-container {
@@ -1189,4 +1189,4 @@ h2 {
 .news-read-more:hover {
   gap: 10px;
   color: #0054A6;
-}
+}

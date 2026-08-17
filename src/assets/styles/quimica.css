@@ -1,0 +1,550 @@
+/* ============================================================
+   IDENTIDAD VISUAL QUÍMICA — ACS UNMSM
+   ============================================================
+
+   Este archivo agrupa TODO el aspecto "de laboratorio" de la web:
+   el botón que se derrite con ácido, el fondo molecular, el cargador
+   con forma de átomo y las tarjetas con anillo hexagonal.
+
+   Está separado de globals.css a propósito: si algún día el equipo
+   decide que esto no va, se quita el @import de globals.css y la web
+   vuelve a su aspecto anterior. Un solo renglón.
+
+   Reglas que sigue todo lo de aquí:
+   1. Nada tapa ni desplaza contenido: los efectos son decorativos y
+      llevan pointer-events:none, así que nunca roban un clic.
+   2. Todo se apaga solo si la persona pidió menos movimiento en su
+      sistema (bloque prefers-reduced-motion al final).
+   3. Sin JavaScript ni librerías. Es CSS y un filtro SVG.
+   ============================================================ */
+
+:root {
+  /* Paleta institucional de la ACS, ya usada en el resto del proyecto */
+  --acs-azul: #0054a6;
+  --acs-amarillo: #ffd400;
+  --acs-tinta: #0b1b2b;
+
+  /* Acento "corrosivo": el verde de reactivo. Se usa SOLO como brillo
+     alrededor de los bordes, nunca como color de texto o de fondo,
+     porque sobre blanco no tiene contraste suficiente para leerse. */
+  --acs-acido: #7bd60a;
+}
+
+/* ============================================================
+   1. BOTÓN QUE SE DERRITE CON ÁCIDO
+   ============================================================
+
+   Cómo está hecho, porque no es evidente:
+
+   El botón NO tiene fondo propio. Su color lo pinta una capa que va
+   por detrás (.btn-acido__liquido), y esa capa lleva aplicado un
+   filtro SVG llamado "goo" (definido en src/app/layout.js).
+
+   El truco del filtro goo: desenfoca la capa y después sube
+   brutalmente el contraste del canal alfa. ¿Resultado? Dos formas
+   que se acercan dejan de verse como dos formas y se funden en una
+   sola, con esa unión curva y viscosa que hace el líquido de verdad.
+   Es el mismo principio de las "metabolas" de los salvapantallas.
+
+   Por eso hay dos tipos de gota:
+     · .gota-cuelgue → se hincha y cuelga del borde inferior, como una
+                       gota a punto de caer. Da la sensación de que el
+                       botón se está reblandeciendo.
+     · .gota-cae     → se desprende y cae.
+
+   El TEXTO va en su propia capa por encima, sin filtro. Es
+   importante: si el texto pasara por el goo, saldría borroso e
+   ilegible. Aquí sigue perfectamente nítido.
+   ------------------------------------------------------------ */
+
+.btn-acido {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+
+  padding: 0.8rem 2rem;
+  border: none;
+  background: transparent;   /* el color lo pone la capa de líquido */
+  color: var(--acs-tinta);
+  font-weight: 700;
+  font-size: 1rem;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+
+  /* Sitio por debajo para que las gotas puedan caer fuera del botón
+     sin que nada las recorte. */
+  margin-bottom: 6px;
+
+  /* isolation crea un contexto propio: el filtro de la capa interna
+     no se "escapa" ni afecta a lo que haya alrededor en la página. */
+  isolation: isolate;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Capa del texto: por encima de todo y SIN filtro, para que se lea */
+.btn-acido__texto {
+  position: relative;
+  z-index: 2;
+  transition: transform 180ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* --- LA CAPA DE LÍQUIDO (reutilizable) ------------------------
+   Esta capa NO es exclusiva del botón. La usan también los bloques
+   del menú de navegación. Por eso su clase es genérica (.capa-acido)
+   y todas sus medidas salen de variables: quien la use decide cuánto
+   caen las gotas y cuánto se redondea el cuerpo.
+
+     --capa-caida → cuántos píxeles de sitio hay por debajo
+     --capa-radio → el redondeo de las esquinas
+
+   El componente que la pinta es src/components/CapaAcido.js.
+   ------------------------------------------------------------ */
+
+.capa-acido {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: calc(-1 * var(--capa-caida, 44px));   /* sitio para las gotas */
+  z-index: 1;
+  pointer-events: none;      /* nunca roba un clic */
+
+  /* Los dos filtros se aplican en cadena: primero se funden las
+     formas (goo) y después se les añade el halo corrosivo. */
+  filter: url('#acido-goo') drop-shadow(0 0 0 rgba(123, 214, 10, 0));
+  transition: filter 300ms ease, opacity 220ms ease;
+}
+
+/* El cuerpo: el rectángulo de color de toda la vida */
+.capa-acido::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 var(--capa-caida, 44px) 0;
+  border-radius: var(--capa-radio, 10px);
+  background: var(--btn-acido-color, var(--acs-amarillo));
+  transition: background 220ms ease;
+}
+
+/* --- Las gotas ------------------------------------------------ */
+
+.capa-acido .gota {
+  position: absolute;
+  bottom: var(--capa-caida, 44px);   /* justo en el borde inferior */
+  border-radius: 50%;
+  background: var(--btn-acido-color, var(--acs-amarillo));
+  opacity: 0;
+  transform: translate(-50%, -4px) scale(0.2);
+}
+
+/* El disparador es genérico a propósito: "cualquier elemento sobre el
+   que esté el ratón, que tenga una capa de ácido como hijo directo".
+   Así el mismo CSS sirve para el botón y para los bloques del menú,
+   sin repetir nada ni tener que enumerar cada caso. */
+:hover > .capa-acido .gota-cuelgue,
+:focus-visible > .capa-acido .gota-cuelgue {
+  animation: acido-colgar 2200ms cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+:hover > .capa-acido .gota-cae,
+:focus-visible > .capa-acido .gota-cae {
+  animation: acido-caer 2600ms cubic-bezier(0.55, 0, 0.9, 0.5) infinite;
+}
+
+/* Cuando hay poco sitio abajo (botones pequeños, bloques del menú),
+   la gota recorre menos distancia para no salirse de la capa. */
+:hover > .capa-acido--corta .gota-cae,
+:focus-visible > .capa-acido--corta .gota-cae {
+  animation-name: acido-caer-corto;
+}
+
+@keyframes acido-colgar {
+  0%,
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -6px) scale(0.55);
+  }
+  50% {
+    opacity: 1;
+    transform: translate(-50%, 7px) scale(1.05);
+  }
+}
+
+@keyframes acido-caer {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -8px) scale(0.35);
+  }
+  18% {
+    opacity: 1;
+    transform: translate(-50%, 2px) scale(1);
+  }
+  70% {
+    opacity: 1;
+    transform: translate(-50%, 26px) scale(0.8);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, 42px) scale(0.3);
+  }
+}
+
+/* --- Estados -------------------------------------------------- */
+
+/* Al pasar el ratón: el color se oscurece un punto (como si el
+   reactivo estuviera atacando la superficie) y aparece el halo verde */
+:hover > .capa-acido,
+:focus-visible > .capa-acido {
+  filter: url('#acido-goo') drop-shadow(0 3px 10px rgba(123, 214, 10, 0.55));
+}
+
+.btn-acido:hover .btn-acido__texto {
+  transform: translateY(-1px);
+}
+
+/* Al pulsar: el botón "se hunde" en el líquido. Este es el único
+   movimiento del rectángulo, y es hacia abajo 2px — lo justo para
+   confirmar la pulsación sin que el botón se escape del dedo. */
+.btn-acido:active .btn-acido__texto {
+  transform: translateY(2px);
+}
+
+.btn-acido:active .capa-acido::before {
+  transform: translateY(2px);
+}
+
+/* Foco por teclado. NO se quita nunca: quien navega con Tab necesita
+   ver dónde está. El outline va sobre el botón entero, no sobre la
+   capa de líquido, para que no lo deforme el filtro. */
+.btn-acido:focus-visible {
+  outline: 3px solid var(--acs-azul);
+  outline-offset: 3px;
+  border-radius: 12px;
+}
+
+/* --- Variantes de color --------------------------------------- */
+
+.btn-acido--azul {
+  --btn-acido-color: var(--acs-azul);
+  color: #fff;
+}
+
+.btn-acido--azul:focus-visible {
+  outline-color: var(--acs-amarillo);
+}
+
+.btn-acido--amarillo {
+  --btn-acido-color: var(--acs-amarillo);
+  color: var(--acs-tinta);
+}
+
+/* Menta: el acento del ACS renovado. Se usa sobre el violeta de la
+   portada, donde el amarillo institucional vibraría y el azul se
+   perdería contra el fondo. */
+.btn-acido--menta {
+  --btn-acido-color: #6ff2c8;
+  color: #0b2b22;
+  text-decoration: none;   /* se usa como <a>, no como <button> */
+}
+
+.btn-acido--menta:hover,
+.btn-acido--menta:focus-visible {
+  color: #0b2b22;
+}
+
+.btn-acido--menta:focus-visible {
+  outline-color: #fff;
+}
+
+/* --- Tamaño pequeño ------------------------------------------- */
+/* Para los botones dentro de tarjetas, donde uno de tamaño normal
+   se comería la composición. Se reduce el relleno Y el espacio de
+   caída: si las gotas cayeran los mismos 44px en un botón pequeño,
+   el goteo pesaría más que el propio botón. */
+
+.btn-acido--pequeno {
+  --capa-caida: 26px;   /* menos sitio abajo: la capa se ajusta sola */
+  --capa-radio: 7px;
+  padding: 0.5rem 1.1rem;
+  font-size: 0.9rem;
+  margin-bottom: 2px;
+}
+
+@keyframes acido-caer-corto {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -6px) scale(0.35);
+  }
+  18% {
+    opacity: 1;
+    transform: translate(-50%, 1px) scale(1);
+  }
+  70% {
+    opacity: 1;
+    transform: translate(-50%, 14px) scale(0.8);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, 24px) scale(0.3);
+  }
+}
+
+/* Botón deshabilitado: sin goteo y con aspecto apagado */
+.btn-acido:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.btn-acido:disabled .gota {
+  animation: none !important;
+  opacity: 0;
+}
+
+.btn-acido:disabled .capa-acido {
+  filter: url('#acido-goo') !important;   /* sin halo corrosivo */
+}
+
+/* ============================================================
+   2. FONDO MOLECULAR
+   ============================================================
+
+   Una retícula de nodos unidos por enlaces, como un modelo de
+   moléculas. Va en opacidad muy baja: tiene que notarse como
+   textura, no competir con el texto. Si se lee peor, está mal hecho.
+
+   El dibujo es un SVG escrito directamente en el CSS (data URI),
+   así que no supone ninguna petición extra al servidor.
+   ------------------------------------------------------------ */
+
+.fondo-molecular {
+  position: relative;
+  isolation: isolate;
+}
+
+.fondo-molecular::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='90' viewBox='0 0 90 90'%3E%3Cg stroke='%230054a6' stroke-width='1' fill='none'%3E%3Cpath d='M0 0 L45 45 L90 0 M0 90 L45 45 L90 90'/%3E%3C/g%3E%3Cg fill='%230054a6'%3E%3Ccircle cx='45' cy='45' r='3.2'/%3E%3Ccircle cx='0' cy='0' r='3.2'/%3E%3Ccircle cx='90' cy='0' r='3.2'/%3E%3Ccircle cx='0' cy='90' r='3.2'/%3E%3Ccircle cx='90' cy='90' r='3.2'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 90px 90px;
+  opacity: 0.07;
+}
+
+/* Variante clara: para pintar la retícula ENCIMA de un fondo de color
+   (por ejemplo la capa azul del hero de "Nosotros").
+   Ojo con el z-index: aquí es 0, no -1. Se dibuja por encima del fondo
+   del propio elemento pero por debajo de sus hijos. Por eso esta
+   variante se pone en la capa de color, que no tiene contenido dentro,
+   y no en la sección entera. */
+.fondo-molecular--claro::before {
+  z-index: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='90' viewBox='0 0 90 90'%3E%3Cg stroke='%23ffffff' stroke-width='1' fill='none'%3E%3Cpath d='M0 0 L45 45 L90 0 M0 90 L45 45 L90 90'/%3E%3C/g%3E%3Cg fill='%23ffffff'%3E%3Ccircle cx='45' cy='45' r='3.2'/%3E%3Ccircle cx='0' cy='0' r='3.2'/%3E%3Ccircle cx='90' cy='0' r='3.2'/%3E%3Ccircle cx='0' cy='90' r='3.2'/%3E%3Ccircle cx='90' cy='90' r='3.2'/%3E%3C/g%3E%3C/svg%3E");
+  opacity: 0.16;
+}
+
+/* Deriva lentísima: 60 segundos por ciclo. Tan lenta que no se
+   "ve" moverse, solo hace que el fondo no se sienta muerto. */
+.fondo-molecular--vivo::before {
+  animation: molecular-deriva 60s linear infinite;
+}
+
+@keyframes molecular-deriva {
+  from { background-position: 0 0; }
+  to   { background-position: 90px 90px; }
+}
+
+/* ============================================================
+   3. CARGADOR: UN ÁTOMO
+   ============================================================
+   Sustituye al texto pelado de "Cargando...". CSS puro, cero
+   JavaScript, cero imágenes.
+   ------------------------------------------------------------ */
+
+.cargando-atomo {
+  position: relative;
+  width: 84px;
+  height: 84px;
+  margin: 0 auto 1.25rem;
+}
+
+.cargando-atomo .anillo {
+  position: absolute;
+  inset: 0;
+  border: 2px solid var(--acs-azul);
+  border-radius: 50%;
+  opacity: 0.55;
+}
+
+/* Tres órbitas giradas entre sí: el dibujo clásico del átomo */
+.cargando-atomo .anillo:nth-child(1) {
+  transform: rotate(0deg) scaleY(0.38);
+  animation: atomo-girar 2.6s linear infinite;
+}
+
+.cargando-atomo .anillo:nth-child(2) {
+  transform: rotate(60deg) scaleY(0.38);
+  animation: atomo-girar 2.6s linear infinite reverse;
+}
+
+.cargando-atomo .anillo:nth-child(3) {
+  transform: rotate(120deg) scaleY(0.38);
+  animation: atomo-girar 3.4s linear infinite;
+}
+
+.cargando-atomo .nucleo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 16px;
+  height: 16px;
+  margin: -8px 0 0 -8px;
+  border-radius: 50%;
+  background: var(--acs-amarillo);
+  box-shadow: 0 0 12px rgba(255, 212, 0, 0.8);
+  animation: atomo-latir 1.8s ease-in-out infinite;
+}
+
+@keyframes atomo-girar {
+  from { transform: rotate(0deg) scaleY(0.38); }
+  to   { transform: rotate(360deg) scaleY(0.38); }
+}
+
+@keyframes atomo-latir {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.22); }
+}
+
+.cargando-texto {
+  text-align: center;
+  color: #55606b;
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+}
+
+/* ============================================================
+   4. TARJETAS CON ANILLO HEXAGONAL
+   ============================================================
+   Al pasar el ratón se dibuja un hexágono, como el anillo del
+   benceno formándose. Para quien lo reconoce es un guiño; para
+   quien no, es una tarjeta que responde bien al ratón.
+   ------------------------------------------------------------ */
+
+.tarjeta-quimica {
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform 320ms cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 320ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.tarjeta-quimica::after {
+  content: '';
+  position: absolute;
+  top: -28px;
+  right: -28px;
+  width: 120px;
+  height: 120px;
+  pointer-events: none;
+
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 8 L86 29 L86 71 L50 92 L14 71 L14 29 Z' fill='none' stroke='%230054a6' stroke-width='4'/%3E%3C/svg%3E");
+  background-size: contain;
+  background-repeat: no-repeat;
+
+  opacity: 0;
+  transform: rotate(-25deg) scale(0.7);
+  transition:
+    opacity 420ms ease,
+    transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.tarjeta-quimica:hover,
+.tarjeta-quimica:focus-within {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 30px rgba(0, 84, 166, 0.16);
+}
+
+.tarjeta-quimica:hover::after,
+.tarjeta-quimica:focus-within::after {
+  opacity: 0.22;
+  transform: rotate(0deg) scale(1);
+}
+
+/* ============================================================
+   5. SEPARADOR DE ENLACE QUÍMICO
+   ============================================================
+   Una línea con un nodo en medio, para separar secciones.
+   ------------------------------------------------------------ */
+
+.separador-enlace {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 2.5rem auto;
+  max-width: 320px;
+  color: var(--acs-azul);
+}
+
+.separador-enlace::before,
+.separador-enlace::after {
+  content: '';
+  height: 2px;
+  flex: 1;
+  background: currentColor;
+  opacity: 0.35;
+}
+
+.separador-enlace span {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--acs-amarillo);
+  border: 2px solid currentColor;
+  flex-shrink: 0;
+}
+
+/* ============================================================
+   ACCESIBILIDAD — no es opcional
+   ============================================================
+
+   Hay personas que configuran su sistema para reducir el movimiento
+   por vértigo, migrañas o epilepsia fotosensible. Para ellas: cero
+   animación. Nada se oculta, nada se pierde — el botón sigue siendo
+   un botón amarillo con su texto, el cargador sigue siendo un átomo
+   quieto. Solo desaparece el movimiento.
+   ------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  .capa-acido .gota {
+    animation: none !important;
+    opacity: 0 !important;
+  }
+
+  .btn-acido__texto,
+  .capa-acido,
+  .capa-acido::before,
+  .tarjeta-quimica,
+  .tarjeta-quimica::after {
+    transition: none !important;
+  }
+
+  :hover > .capa-acido::before {
+    /* Sin movimiento, el aviso de "estás encima" lo da el color */
+    filter: brightness(0.92);
+  }
+
+  .fondo-molecular--vivo::before,
+  .cargando-atomo .anillo,
+  .cargando-atomo .nucleo {
+    animation: none !important;
+  }
+
+  .tarjeta-quimica:hover,
+  .tarjeta-quimica:focus-within {
+    transform: none !important;
+  }
+}
