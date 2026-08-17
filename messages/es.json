@@ -88,9 +88,38 @@
     "secretary": "Secretaría ACS UNMSM",
     "message": "¿Tienes preguntas sobre membresía, eventos o colaboraciones?",
     "messagePlaceholder": "Quiero saber más sobre el próximo evento..."
+  },
+  "mascota": {
+    "nombre": "Carbonito",
+    "abrir": "Chatea con Carbonito, nuestra mascota",
+    "cerrar": "Cerrar",
+    "enviar": "Enviar",
+    "saludoManana": "¡Buenos días! ☀️",
+    "saludoTarde": "¡Buenas tardes! 🧪",
+    "saludoNoche": "¡Buenas noches! 🌙",
+    "bienvenida": "Soy Carbonito, la mascota del ACS UNMSM. Puedo contarte sobre el capítulo, los eventos, cómo unirte o soltarte alguna curiosidad química. ¿Qué quieres saber?",
+    "placeholder": "Escríbeme algo…",
+    "noEntiendo": "Mmm, esa no me la sé todavía 😅. Estoy aprendiendo. Prueba con los botones de abajo, pregúntame por eventos o curiosidades, o escríbenos desde la página de Contacto.",
+    "sugerencias": {
+      "quienes": "¿Qué es el ACS UNMSM?",
+      "unirse": "¿Cómo me uno?",
+      "eventos": "¿Qué eventos hay?",
+      "curiosidad": "Cuéntame una curiosidad"
+    },
+    "respuestas": {
+      "saludo": "¡Hola! 👋 Qué bueno verte por aquí. ¿En qué te ayudo?",
+      "presentacion": "¡Soy Carbonito! 🦦 La mascota del capítulo. Me llamo así por el carbono, el elemento base de toda la química orgánica. Llevo mi bata, mis lentes de seguridad y mi tubo de ensayo a todos lados.",
+      "quienes": "Somos el capítulo estudiantil de la American Chemical Society en la UNMSM. Promovemos la química con propósito, desde San Marcos para el mundo. 💙⚗️",
+      "unirse": "¡Genial que quieras unirte! Estamos abiertos a estudiantes de cualquier año. Escríbenos desde la página de Contacto y te contamos los siguientes pasos.",
+      "eventos": "Organizamos charlas, talleres y actividades de divulgación. Puedes ver los próximos en la sección Eventos del menú. ¡Te esperamos!",
+      "contacto": "Puedes escribirnos desde la página de Contacto del menú, o por nuestras redes sociales. Te responderemos lo antes posible.",
+      "redes": "¡Síguenos en nuestras redes! 📱 Encontrarás los enlaces en el pie de página (abajo del todo). Ahí publicamos eventos, logros y contenido de divulgación.",
+      "ubicacion": "Estamos en la Universidad Nacional Mayor de San Marcos, en Lima, Perú. 🏛️ La mayoría de nuestras actividades son en la Facultad de Química e Ingeniería Química.",
+      "curiosidad": "¿Sabías que el agua es de las poquísimas sustancias que ocupan MÁS volumen sólidas que líquidas? 🧊 Por eso el hielo flota. Si no fuera así, los lagos se congelarían desde el fondo y la vida acuática lo pasaría fatal.",
+      "chiste": "¿Qué le dice un átomo a otro? 😄 «Creo que he perdido un electrón.» «¿Estás seguro?» «¡Estoy positivo!» ⚡",
+      "animo": "¡Yo de maravilla, con mi tubo de ensayo listo! 🧪 Espero que tu día también vaya genial. Si necesitas algo del capítulo, aquí estoy.",
+      "gracias": "¡De nada! 😊 Para eso estoy. Cualquier otra cosa, pregúntame.",
+      "despedida": "¡Hasta pronto! 👋 Fue un gusto. Vuelve cuando quieras y no te pierdas nuestros eventos. 💙⚗️"
+    }
   }
-}   "secretary": "Secretaría {brandName}",
-"message": "¿Tienes preguntas sobre membresía, eventos o colaboraciones?",
-"messagePlaceholder": "Quiero saber más sobre el próximo evento..."
-}
 }
