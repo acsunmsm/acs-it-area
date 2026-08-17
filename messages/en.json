@@ -156,7 +156,8 @@
         "secretary": "Secretary ACS UNMSM",
         "message": "Do you have questions about membership, events or collaborations?",
         "messagePlaceholder": "I want to know more about the upcoming event..."
-    },
+    }
+  },
   "mascota": {
     "nombre": "Carbonito",
     "abrir": "Chat with Carbonito, our mascot",
