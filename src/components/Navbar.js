@@ -31,6 +31,8 @@ const MARCA_ANTIGUA = {
   alto: 100,
 };
 
+const USAR_MARCA_NUEVA = process.env.NEXT_PUBLIC_USAR_MARCA_NUEVA === 'true';
+
 function LogoCapitulo({ href }) {
   const marca = USAR_MARCA_NUEVA ? MARCA_NUEVA : MARCA_ANTIGUA;
 
