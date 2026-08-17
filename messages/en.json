@@ -151,27 +151,43 @@
       "convocatoria": "Open call",
       "comunidad": "Community"
     },
-    "notas": {
-      "semanaQuimica": {
-        "titulo": "Chemistry Week returns to San Marcos",
-        "resumen": "Five days of talks, workshops and demonstrations open to the whole university community. This year the focus is green chemistry and its role in Peruvian industry. The full programme will be published in the Events section."
-      },
-      "divulgacionEscolar": {
-        "titulo": "Over 200 schoolchildren at our outreach day",
-        "resumen": "The chapter brought experiments and teaching material to a school in Lima. Secondary students prepared their own posters on everyday reactions and presented them to the younger children."
-      },
-      "congresoNacional": {
-        "titulo": "Two members present at the national chemistry congress",
-        "resumen": "Their work on soil remediation and water analysis was selected from more than a hundred abstracts. It is the first time the chapter presents at this edition of the congress."
-      },
-      "convocatoriaMiembros": {
-        "titulo": "Applications open for new members",
-        "resumen": "We are looking for students from any year interested in outreach, research or project management. No previous experience needed, just the willingness to take part."
-      },
-      "laboratorioAbierto": {
-        "titulo": "Open lab: guided tour of the faculty laboratories",
-        "resumen": "An afternoon to see inside the laboratories where the faculty research groups work, guided by the thesis students themselves."
-      }
+    "whatsAppButton": {
+        "contactUs": "Contact Us",
+        "secretary": "Secretary ACS UNMSM",
+        "message": "Do you have questions about membership, events or collaborations?",
+        "messagePlaceholder": "I want to know more about the upcoming event..."
+    },
+  "mascota": {
+    "nombre": "Carbonito",
+    "abrir": "Chat with Carbonito, our mascot",
+    "cerrar": "Close",
+    "enviar": "Send",
+    "saludoManana": "Good morning! ☀️",
+    "saludoTarde": "Good afternoon! 🧪",
+    "saludoNoche": "Good evening! 🌙",
+    "bienvenida": "I'm Carbonito, the ACS UNMSM mascot. I can tell you about the chapter, our events, how to join, or share a fun chemistry fact. What would you like to know?",
+    "placeholder": "Type something…",
+    "noEntiendo": "Hmm, I don't know that one yet 😅. I'm still learning. Try the buttons below, ask me about events or fun facts, or reach us through the Contact page.",
+    "sugerencias": {
+      "quienes": "What is ACS UNMSM?",
+      "unirse": "How do I join?",
+      "eventos": "What events are there?",
+      "curiosidad": "Tell me a fun fact"
+    },
+    "respuestas": {
+      "saludo": "Hi there! 👋 Great to see you. How can I help?",
+      "presentacion": "I'm Carbonito! 🦦 The chapter's mascot. I'm named after carbon, the base element of all organic chemistry. I take my lab coat, safety goggles and test tube everywhere.",
+      "quienes": "We're the American Chemical Society student chapter at UNMSM. We promote chemistry with purpose, from San Marcos to the world. 💙⚗️",
+      "unirse": "Awesome that you want to join! We welcome students from any year. Reach us through the Contact page and we'll tell you the next steps.",
+      "eventos": "We run talks, workshops and outreach activities. You can see what's coming up in the Events section of the menu. See you there!",
+      "contacto": "You can reach us through the Contact page in the menu, or via our social media. We'll reply as soon as we can.",
+      "redes": "Follow us on social media! 📱 You'll find the links in the footer (at the very bottom). We post events, achievements and outreach content there.",
+      "ubicacion": "We're at the National University of San Marcos, in Lima, Peru. 🏛️ Most of our activities are held at the Faculty of Chemistry and Chemical Engineering.",
+      "curiosidad": "Did you know water is one of the very few substances that take up MORE space as a solid than as a liquid? 🧊 That's why ice floats. Otherwise lakes would freeze from the bottom up and aquatic life would have a rough time.",
+      "chiste": "What does one atom say to another? 😄 \"I think I lost an electron.\" \"Are you sure?\" \"I'm positive!\" ⚡",
+      "animo": "I'm doing great, test tube in hand! 🧪 Hope your day is going great too. If you need anything from the chapter, I'm here.",
+      "gracias": "You're welcome! 😊 That's what I'm here for. Ask me anything else.",
+      "despedida": "See you soon! 👋 It was a pleasure. Come back anytime and don't miss our events. 💙⚗️"
     }
   }
 }

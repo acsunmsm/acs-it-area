@@ -93,85 +93,37 @@
     "message": "¿Tienes preguntas sobre membresía, eventos o colaboraciones?",
     "messagePlaceholder": "Quiero saber más sobre el próximo evento..."
   },
-  "resources": {
-    "title": "Recursos",
-    "intro": "Una biblioteca abierta para el capítulo: bases de datos, herramientas de cálculo, revistas y convocatorias. Todo lo que usamos, en un solo sitio.",
-    "aviso": "Sección en construcción. Los enlaces son un punto de partida; si conoces alguno que falte, escríbenos.",
-    "visitar": "Abrir recurso",
-    "categorias": {
-      "bases": "Bases de datos",
-      "herramientas": "Herramientas",
-      "revistas": "Revistas y lectura",
-      "formacion": "Formación y becas"
+  "mascota": {
+    "nombre": "Carbonito",
+    "abrir": "Chatea con Carbonito, nuestra mascota",
+    "cerrar": "Cerrar",
+    "enviar": "Enviar",
+    "saludoManana": "¡Buenos días! ☀️",
+    "saludoTarde": "¡Buenas tardes! 🧪",
+    "saludoNoche": "¡Buenas noches! 🌙",
+    "bienvenida": "Soy Carbonito, la mascota del ACS UNMSM. Puedo contarte sobre el capítulo, los eventos, cómo unirte o soltarte alguna curiosidad química. ¿Qué quieres saber?",
+    "placeholder": "Escríbeme algo…",
+    "noEntiendo": "Mmm, esa no me la sé todavía 😅. Estoy aprendiendo. Prueba con los botones de abajo, pregúntame por eventos o curiosidades, o escríbenos desde la página de Contacto.",
+    "sugerencias": {
+      "quienes": "¿Qué es el ACS UNMSM?",
+      "unirse": "¿Cómo me uno?",
+      "eventos": "¿Qué eventos hay?",
+      "curiosidad": "Cuéntame una curiosidad"
     },
-    "fichas": {
-      "pubchem": {
-        "titulo": "PubChem",
-        "texto": "La mayor base de datos pública de moléculas: estructuras, propiedades y seguridad. Punto de partida para casi cualquier consulta."
-      },
-      "acsPubs": {
-        "titulo": "ACS Publications",
-        "texto": "El catálogo de revistas de la American Chemical Society. Como capítulo estudiantil tenemos acceso a parte del contenido."
-      },
-      "rsc": {
-        "titulo": "Royal Society of Chemistry",
-        "texto": "Revistas, material didáctico y recursos de divulgación de la sociedad química británica."
-      },
-      "chemdraw": {
-        "titulo": "Dibujo de estructuras",
-        "texto": "Editores para dibujar moléculas y reacciones en informes y presentaciones. Hay alternativas libres como MolView y Ketcher."
-      },
-      "nist": {
-        "titulo": "NIST WebBook",
-        "texto": "Datos termodinámicos y espectros de referencia contrastados. Cuando necesitas un valor fiable y citable."
-      },
-      "sds": {
-        "titulo": "Fichas de seguridad (SDS)",
-        "texto": "Antes de tocar un reactivo, léelo. Cómo encontrar e interpretar una ficha de datos de seguridad."
-      },
-      "becas": {
-        "titulo": "Becas y convocatorias",
-        "texto": "Programas de la ACS, congresos estudiantiles y ayudas de movilidad abiertas a estudiantes de pregrado."
-      },
-      "ceviche": {
-        "titulo": "Guía de estilo del capítulo",
-        "texto": "Cómo citar, cómo preparar un póster y cómo presentar en los eventos del capítulo. Documento interno del área académica."
-      }
-    }
-  },
-  "news": {
-    "title": "Noticias",
-    "intro": "Lo que va pasando en el capítulo: eventos, logros de nuestros miembros y convocatorias abiertas.",
-    "cabecera": "Boletín del capítulo",
-    "edicion": "Edición estudiantil",
-    "leerMas": "Leer la nota completa",
-    "categorias": {
-      "evento": "Evento",
-      "logro": "Logro",
-      "convocatoria": "Convocatoria",
-      "comunidad": "Comunidad"
-    },
-    "notas": {
-      "semanaQuimica": {
-        "titulo": "La Semana de la Química vuelve a San Marcos",
-        "resumen": "Cinco días de charlas, talleres y demostraciones abiertas a toda la comunidad universitaria. Este año el eje es la química verde y su papel en la industria peruana. El programa completo se publicará en la sección de Eventos."
-      },
-      "divulgacionEscolar": {
-        "titulo": "Más de 200 escolares en nuestra jornada de divulgación",
-        "resumen": "El capítulo llevó experimentos y material didáctico a un colegio de Lima. Los estudiantes de secundaria prepararon sus propios pósters sobre reacciones cotidianas y los presentaron a los más pequeños."
-      },
-      "congresoNacional": {
-        "titulo": "Dos miembros presentan en el congreso nacional de química",
-        "resumen": "Sus trabajos sobre remediación de suelos y análisis de aguas fueron seleccionados entre más de cien resúmenes. Es la primera vez que el capítulo presenta en esta edición del congreso."
-      },
-      "convocatoriaMiembros": {
-        "titulo": "Abierta la convocatoria para nuevos miembros",
-        "resumen": "Buscamos estudiantes de cualquier año interesados en divulgación, investigación o gestión de proyectos. No hace falta experiencia previa, solo ganas de participar."
-      },
-      "laboratorioAbierto": {
-        "titulo": "Laboratorio abierto: visita guiada a los laboratorios de la facultad",
-        "resumen": "Una tarde para conocer por dentro los laboratorios donde trabajan los grupos de investigación de la facultad, guiados por los propios tesistas."
-      }
+    "respuestas": {
+      "saludo": "¡Hola! 👋 Qué bueno verte por aquí. ¿En qué te ayudo?",
+      "presentacion": "¡Soy Carbonito! 🦦 La mascota del capítulo. Me llamo así por el carbono, el elemento base de toda la química orgánica. Llevo mi bata, mis lentes de seguridad y mi tubo de ensayo a todos lados.",
+      "quienes": "Somos el capítulo estudiantil de la American Chemical Society en la UNMSM. Promovemos la química con propósito, desde San Marcos para el mundo. 💙⚗️",
+      "unirse": "¡Genial que quieras unirte! Estamos abiertos a estudiantes de cualquier año. Escríbenos desde la página de Contacto y te contamos los siguientes pasos.",
+      "eventos": "Organizamos charlas, talleres y actividades de divulgación. Puedes ver los próximos en la sección Eventos del menú. ¡Te esperamos!",
+      "contacto": "Puedes escribirnos desde la página de Contacto del menú, o por nuestras redes sociales. Te responderemos lo antes posible.",
+      "redes": "¡Síguenos en nuestras redes! 📱 Encontrarás los enlaces en el pie de página (abajo del todo). Ahí publicamos eventos, logros y contenido de divulgación.",
+      "ubicacion": "Estamos en la Universidad Nacional Mayor de San Marcos, en Lima, Perú. 🏛️ La mayoría de nuestras actividades son en la Facultad de Química e Ingeniería Química.",
+      "curiosidad": "¿Sabías que el agua es de las poquísimas sustancias que ocupan MÁS volumen sólidas que líquidas? 🧊 Por eso el hielo flota. Si no fuera así, los lagos se congelarían desde el fondo y la vida acuática lo pasaría fatal.",
+      "chiste": "¿Qué le dice un átomo a otro? 😄 «Creo que he perdido un electrón.» «¿Estás seguro?» «¡Estoy positivo!» ⚡",
+      "animo": "¡Yo de maravilla, con mi tubo de ensayo listo! 🧪 Espero que tu día también vaya genial. Si necesitas algo del capítulo, aquí estoy.",
+      "gracias": "¡De nada! 😊 Para eso estoy. Cualquier otra cosa, pregúntame.",
+      "despedida": "¡Hasta pronto! 👋 Fue un gusto. Vuelve cuando quieras y no te pierdas nuestros eventos. 💙⚗️"
     }
   }
 }
