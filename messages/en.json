@@ -150,12 +150,6 @@
       "logro": "Achievement",
       "convocatoria": "Open call",
       "comunidad": "Community"
-    },
-    "whatsAppButton": {
-        "contactUs": "Contact Us",
-        "secretary": "Secretary ACS UNMSM",
-        "message": "Do you have questions about membership, events or collaborations?",
-        "messagePlaceholder": "I want to know more about the upcoming event..."
     }
   },
   "mascota": {
