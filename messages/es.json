@@ -38,7 +38,11 @@
     "welcomePart1": "¡Bienvenidos al ACS International Student Chapter UNMSM! Nos emociona darte la bienvenida a nuestro capítulo estudiantil de la American Chemical Society en la Universidad Nacional Mayor de San Marcos. Aquí encontrarás información sobre nuestras actividades, proyectos y oportunidades para crecer junto a una comunidad apasionada por la química. Creemos en el aprendizaje continuo y la colaboración, por eso estamos abiertos a escuchar tus ideas, comentarios y sugerencias.Si quieres ser parte de este espacio, contribuir con iniciativas o simplemente conocer más sobre nosotros, contáctanos.",
     "welcomePart2": "¡Juntos podemos impulsar la química y generar un impacto positivo!",
     "welcomePart3": "¡Te esperamos! 💙⚗️",
-    "JoinUs": "Hazte miembro"
+    "JoinUs": "Hazte miembro",
+    "portadaTitulo": "Química que transforma",
+    "portadaDestacado": "el Perú",
+    "portadaTexto": "Somos el capítulo estudiantil de la American Chemical Society en la Universidad Nacional Mayor de San Marcos, Decana de América. Divulgamos, investigamos y formamos comunidad.",
+    "portadaCta": "Conócenos"
   },
   "officers": {
     "title": "Directiva del Capítulo",

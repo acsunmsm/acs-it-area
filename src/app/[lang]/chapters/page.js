@@ -2,6 +2,7 @@ import Navbar from '@/src/components/Navbar';
 import Footer from '@/src/components/Footer';
 import OfficersList from '@/src/components/OfficersList';
 import { getTranslations } from 'next-intl/server';
+import { RevealWords } from '@/src/components/Reveal';
 import '@/src/assets/styles/globals.css';
 
 export async function generateMetadata({ params }) {
@@ -52,16 +53,21 @@ export default async function Officers({ params }) {
     [cio, 'Gonzalo Manuel Aguilar Espinoza', 'cio@acs-unmsm.org', 'gonzalo.jpg'],
     [dcio, 'Paolo Jesus Pichilingue La Torre', 'dcio@acs-unmsm.org', 'paolo.jpeg'],
     [k12Coordinator, 'Lucero Lidia Ventura Cruz', 'k12@acs-unmsm.org', 'lucero_ventura.jpg'],
-    [k12SubCoordinator, 'Ricardo Javier Gomez Sangay', 'subk12@acs-unmsm.org', 'ricardo.jpeg']
+    [k12SubCoordinator, 'Ricardo Gomez', 'subk12@acs-unmsm.org', 'ricardo.jpg']
   ];
 
   return (
     <>
       <Navbar />
 
-      <section className="hero-section py-5 text-white" style={{ backgroundColor: '#0054A6' }}>
-        <div className="container text-center">
-          <h1 className="display-4 fw-bold mb-4" style={{ color: '#ffd400' }}>{t('title')}</h1>
+      <section className="hero-section py-5 text-white fondo-molecular fondo-molecular--claro" style={{ backgroundColor: '#0054a6' }}>
+        <div className="container text-center position-relative">
+          <RevealWords
+            as="h1"
+            text={t('title')}
+            className="display-4 fw-bold mb-4"
+            style={{ color: '#ffd400' }}
+          />
         </div>
       </section>
       <OfficersList officers={officers} title={t('title')} />

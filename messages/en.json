@@ -1,87 +1,155 @@
 {
-    "about": {
-        "title": "Who are we?",
-        "intro": "We are the American Chemical Society Student Chapter of the National University of San Marcos, dedicated to fostering interest in chemistry and science within the student community.",
-        "missionTitle": "Mission",
-        "missionText": "To awaken interest in science in young people, promoting participation in scientific and academic activities that enrich their education.",
-        "visionTitle": "Vision",
-        "visionText": "To become the leading student reference for scientific dissemination and professional development in the field of chemistry in Peru."
+  "about": {
+    "title": "Who are we?",
+    "intro": "We are the American Chemical Society Student Chapter of the National University of San Marcos, dedicated to fostering interest in chemistry and science within the student community.",
+    "missionTitle": "Mission",
+    "missionText": "To awaken interest in science in young people, promoting participation in scientific and academic activities that enrich their education.",
+    "visionTitle": "Vision",
+    "visionText": "To become the leading student reference for scientific dissemination and professional development in the field of chemistry in Peru."
+  },
+  "navbar": {
+    "home": "Home",
+    "about": "About",
+    "officers": "Officers",
+    "hidroinnova": "Hidroinnova Challenge",
+    "events": "Events",
+    "contact": "Contact",
+    "news": "News",
+    "resources": "Resources",
+    "dashboard": "Dashboard",
+    "login": "Login",
+    "language": "Language",
+    "english": "English",
+    "spanish": "Spanish"
+  },
+  "footer": {
+    "title": "Welcome to ACS UNMSM",
+    "description1": "We are the official student section of the American Chemical Society at UNMSM.",
+    "description2": "We promote chemistry with purpose, from San Marcos to the world.",
+    "follow": "Follow us on our social networks",
+    "copyright": "© {year} ACS UNMSM Student Chapter. All rights reserved."
+  },
+  "debug": {
+    "title": "This is a debug page",
+    "description": "If you see this message in English, localization works."
+  },
+  "homePage": {
+    "welcome": "Welcome to ACS UNMSM",
+    "welcomePart1": "Welcome to the ACS International Student Chapter UNMSM! We are excited to welcome you to our student chapter of the American Chemical Society at the National University of San Marcos. Here you will find information about our activities, projects, and opportunities to grow alongside a community passionate about chemistry. We believe in continuous learning and collaboration, which is why we are open to hearing your ideas, comments, and suggestions. If you want to be part of this space, contribute with initiatives, or simply learn more about us, contact us.",
+    "welcomePart2": "Together we can promote chemistry and make a positive impact!",
+    "welcomePart3": "We look forward to seeing you! 💙⚗️",
+    "JoinUs": "Become a member",
+    "portadaTitulo": "Chemistry that transforms",
+    "portadaDestacado": "Peru",
+    "portadaTexto": "We are the student chapter of the American Chemical Society at the Universidad Nacional Mayor de San Marcos, the oldest university in the Americas. We share science, do research and build community.",
+    "portadaCta": "Get to know us"
+  },
+  "officers": {
+    "title": "Chapter officers",
+    "roles": {
+      "facultyAdvisor": "Faculty Advisor",
+      "president": "President",
+      "vicePresident": "Vice President",
+      "treasurer": "Treasurer",
+      "secretary": "Secretary",
+      "marketingCoordinator": "Marketing Coordinator",
+      "marketingSubCoordinator": "Marketing Subcoordinator",
+      "eventsCoordinator": "Events Coordinator",
+      "eventsSubCoordinator": "Events Subcoordinator",
+      "humanResources": "Human Resources Coordinator",
+      "humanResourcesSubCoordinator": "Human Resources Subcoordinator",
+      "internalLiaison": "Liaison Subcoordinator",
+      "externalLiaison": "Liaison Coordinator",
+      "cio": "Information Technology Coordinator",
+      "dcio": "Information Technology Subcoordinator",
+      "k12Coordinator": "K-12 Coordinator",
+      "k12SubCoordinator": "K-12 Subcoordinator"
+    }
+  },
+  "contact": {
+    "title": "Contact Us",
+    "form": {
+      "name": "Your name",
+      "email": "Your email",
+      "subject": "Subject",
+      "message": "Message",
+      "submit": "Send"
+    }
+  },
+  "events": {
+    "title": "Events",
+    "loadingMessage": "Loading events and verifying auth...",
+    "errorFetch": "Events could not be loaded. Please try again."
+  },
+  "heroCarousel": {
+    "slide1": "Join the most active chemistry community in San Marcos",
+    "slide2": "From San Marcos to the world: chemistry with purpose",
+    "slide3": "Ready to innovate? Be part of our initiatives!",
+    "slide4": "Discover opportunities, share knowledge, make history"
+  },
+  "whatsAppButton": {
+    "contactUs": "Contact Us",
+    "secretary": "Secretary ACS UNMSM",
+    "message": "Do you have questions about membership, events or collaborations?",
+    "messagePlaceholder": "I want to know more about the upcoming event..."
+  },
+  "resources": {
+    "title": "Resources",
+    "intro": "An open library for the chapter: databases, calculation tools, journals and open calls. Everything we use, in one place.",
+    "aviso": "Section under construction. These links are a starting point; if you know of one that is missing, write to us.",
+    "visitar": "Open resource",
+    "categorias": {
+      "bases": "Databases",
+      "herramientas": "Tools",
+      "revistas": "Journals and reading",
+      "formacion": "Training and scholarships"
     },
-    "navbar": {
-        "home": "Home",
-        "about": "About",
-        "officers": "Officers",
-        "hidroinnova": "Hidroinnova Challenge",
-        "events": "Events",
-        "contact": "Contact",
-        "news": "News",
-        "resources": "Resources",
-        "dashboard": "Dashboard",
-        "login": "Login",
-        "language": "Language",
-        "english": "English",
-        "spanish": "Spanish"
-    },
-    "footer": {
-        "title": "Welcome to ACS UNMSM",
-        "description1": "We are the official student section of the American Chemical Society at UNMSM.",
-        "description2": "We promote chemistry with purpose, from San Marcos to the world.",
-        "follow": "Follow us on our social networks",
-        "copyright": "© {year} ACS UNMSM Student Chapter. All rights reserved."
-    },
-    "debug": {
-        "title": "This is a debug page",
-        "description": "If you see this message in English, localization works."
-    },
-    "homePage": {
-        "welcome": "Welcome to ACS UNMSM",
-        "welcomePart1": "Welcome to the ACS International Student Chapter UNMSM! We are excited to welcome you to our student chapter of the American Chemical Society at the National University of San Marcos. Here you will find information about our activities, projects, and opportunities to grow alongside a community passionate about chemistry. We believe in continuous learning and collaboration, which is why we are open to hearing your ideas, comments, and suggestions. If you want to be part of this space, contribute with initiatives, or simply learn more about us, contact us.",
-        "welcomePart2": "Together we can promote chemistry and make a positive impact!",
-        "welcomePart3": "We look forward to seeing you! 💙⚗️",
-        "JoinUs": "Become a member"
-    },
-    "officers": {
-        "title": "Chapter officers",
-        "roles": {
-            "facultyAdvisor": "Faculty Advisor",
-            "president": "President",
-            "vicePresident": "Vice President",
-            "treasurer": "Treasurer",
-            "secretary": "Secretary",
-            "marketingCoordinator": "Marketing Coordinator",
-            "marketingSubCoordinator": "Marketing Subcoordinator",
-            "eventsCoordinator": "Events Coordinator",
-            "eventsSubCoordinator": "Events Subcoordinator",
-            "humanResources": "Human Resources Coordinator",
-            "humanResourcesSubCoordinator": "Human Resources Subcoordinator",
-            "internalLiaison": "Liaison Subcoordinator",
-            "externalLiaison": "Liaison Coordinator",
-            "cio": "Information Technology Coordinator",
-            "dcio": "Information Technology Subcoordinator",
-            "k12Coordinator": "K-12 Coordinator",
-            "k12SubCoordinator": "K-12 Subcoordinator"
-        }
-    },
-    "contact": {
-        "title": "Contact Us",
-        "form": {
-            "name": "Your name",
-            "email": "Your email",
-            "subject": "Subject",
-            "message": "Message",
-            "submit": "Send"
-        }
-    },
-    "events": {
-        "title": "Events",
-        "loadingMessage": "Loading events and verifying auth...",
-        "errorFetch": "Events could not be loaded. Please try again."
-    },
-    "heroCarousel": {
-        "slide1": "Join the most active chemistry community in San Marcos",
-        "slide2": "From San Marcos to the world: chemistry with purpose",
-        "slide3": "Ready to innovate? Be part of our initiatives!",
-        "slide4": "Discover opportunities, share knowledge, make history"
+    "fichas": {
+      "pubchem": {
+        "titulo": "PubChem",
+        "texto": "The largest public molecule database: structures, properties and safety data. The starting point for almost any query."
+      },
+      "acsPubs": {
+        "titulo": "ACS Publications",
+        "texto": "The American Chemical Society journal catalogue. As a student chapter we have access to part of the content."
+      },
+      "rsc": {
+        "titulo": "Royal Society of Chemistry",
+        "texto": "Journals, teaching material and outreach resources from the British chemical society."
+      },
+      "chemdraw": {
+        "titulo": "Structure drawing",
+        "texto": "Editors for drawing molecules and reactions for reports and presentations. Free alternatives include MolView and Ketcher."
+      },
+      "nist": {
+        "titulo": "NIST WebBook",
+        "texto": "Peer-checked thermodynamic data and reference spectra. For when you need a reliable, citable value."
+      },
+      "sds": {
+        "titulo": "Safety data sheets (SDS)",
+        "texto": "Before touching a reagent, read it. How to find and interpret a safety data sheet."
+      },
+      "becas": {
+        "titulo": "Scholarships and open calls",
+        "texto": "ACS programmes, student conferences and mobility grants open to undergraduate students."
+      },
+      "ceviche": {
+        "titulo": "Chapter style guide",
+        "texto": "How to cite, how to prepare a poster and how to present at chapter events. Internal document of the academic area."
+      }
+    }
+  },
+  "news": {
+    "title": "News",
+    "intro": "What is happening in the chapter: events, achievements by our members and open calls.",
+    "cabecera": "Chapter bulletin",
+    "edicion": "Student edition",
+    "leerMas": "Read the full story",
+    "categorias": {
+      "evento": "Event",
+      "logro": "Achievement",
+      "convocatoria": "Open call",
+      "comunidad": "Community"
     },
     "whatsAppButton": {
         "contactUs": "Contact Us",

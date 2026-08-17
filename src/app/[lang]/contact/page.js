@@ -4,6 +4,8 @@ import { useState } from 'react';
 import Header from '../../../components/Navbar';
 import Footer from '../../../components/Footer';
 import Script from 'next/script';
+import Reveal, { RevealWords } from '@/src/components/Reveal';
+import BotonAcido from '@/src/components/BotonAcido';
 import { useTranslations, useLocale } from 'next-intl';
 
 export default function ContactPage() {
@@ -17,10 +19,10 @@ export default function ContactPage() {
     const formData = new FormData(form); // recoge los datos del formulario
 
     if (typeof grecaptcha === 'undefined') {
-      setStatus('Error: reCAPTCHA no está listo.');
-      return;
+    setStatus('Error: reCAPTCHA no está listo.');
+    return;
     }
-
+    
     const captcha = grecaptcha.getResponse();
 
     if (!captcha) {
@@ -53,10 +55,10 @@ export default function ContactPage() {
     <>
       <Header />
 
-      <section className="contact-section section py-5">
+      <section className="contact-section section py-5 fondo-molecular">
         <div className="container">
-          <h1 className="text-center">{t('title')}</h1>
-          <div className="contact-form mt-4">
+          <RevealWords as="h1" text={t('title')} className="text-center" />
+          <Reveal delay={1} className="contact-form mt-4">
             <form onSubmit={handleSubmit} className="d-flex flex-column gap-3">
               <input
                 id="name"
@@ -94,21 +96,18 @@ export default function ContactPage() {
                 className="g-recaptcha d-flex justify-content-center"
                 data-sitekey="6LfEtTYtAAAAAJ3lT83NkLxmvPsGpsgPAI-Uqr98"
               ></div>
-              <button
-                id="submit-btn"
-                type="submit"
-                className="btn"
-                style={{ backgroundColor: '#412BFD', color: 'white' }}
-              >
-                {t('form.submit')}
-              </button>
+              <div className="d-flex justify-content-center">
+                <BotonAcido id="submit-btn" type="submit" color="azul">
+                  {t('form.submit')}
+                </BotonAcido>
+              </div>
               {status && (
                 <p className="text-center mt-3" style={{ color: status.includes('¡') ? 'green' : 'red' }}>
                   {status}
                 </p>
               )}
             </form>
-          </div>
+          </Reveal>
         </div>
       </section>
 

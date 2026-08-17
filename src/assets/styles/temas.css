@@ -1,0 +1,538 @@
+/* ============================================================
+   TEMAS POR SECCIÓN
+   ============================================================
+
+   LA IDEA
+   Cada sección de la web tiene su propio "ambiente", pero todas
+   siguen pareciendo la misma web. Eventos se siente como una
+   reacción en marcha; Recursos, como una biblioteca.
+
+   CÓMO FUNCIONA — esto es lo que hay que entender para añadir
+   temas nuevos sin romper nada:
+
+   Un tema NO redefine estilos. Solo cambia unas cuantas
+   VARIABLES DE CSS (esas cosas que empiezan por --). Los
+   componentes compartidos —el botón de ácido, las tarjetas, los
+   fondos— leen esas variables y se adaptan solos.
+
+     .tema-biblioteca { --tema-acento: #8a6d3b; }
+                                 ↓
+     .btn-acido usa var(--tema-boton) → sale marrón dorado
+
+   Ventaja: para inventar un tema nuevo basta con añadir un bloque
+   de variables aquí abajo y poner la clase en el <main> de la
+   página. No hay que tocar ni un componente.
+
+   CÓMO SE USA EN UNA PÁGINA
+
+     <main className="tema-reaccion">   ...toda la página...   </main>
+
+   ============================================================ */
+
+/* ------------------------------------------------------------
+   TEMA 1 — LABORATORIO  (Inicio, Nosotros, Directiva)
+   Azul institucional de la ACS sobre blanco. Es el tema base:
+   sobrio, el que sostiene la identidad del capítulo.
+   ------------------------------------------------------------ */
+.tema-laboratorio {
+  --tema-fondo: #ffffff;
+  --tema-tinta: #0b1b2b;
+  --tema-suave: #55606b;
+  --tema-acento: #0054a6;
+  --tema-boton: #ffd400;
+  --tema-boton-texto: #0b1b2b;
+  --tema-halo: rgba(123, 214, 10, 0.55);
+}
+
+/* ------------------------------------------------------------
+   TEMA 2 — REACCIÓN  (Eventos)
+   Más energía: el verde de reactivo pasa a ser protagonista y el
+   fondo tiene burbujas subiendo, como una disolución en marcha.
+   Es la sección donde pasan cosas, y se nota.
+   ------------------------------------------------------------ */
+.tema-reaccion {
+  --tema-fondo: #f7fbf4;
+  --tema-tinta: #10261a;
+  --tema-suave: #4a6153;
+  --tema-acento: #0054a6;
+  --tema-boton: #23a455;
+  --tema-boton-texto: #ffffff;
+  --tema-halo: rgba(123, 214, 10, 0.7);
+
+  background-color: var(--tema-fondo);
+}
+
+/* ------------------------------------------------------------
+   TEMA 3 — BIBLIOTECA  (Recursos)
+   Beige de papel viejo, tinta marrón y una textura de renglones.
+   Aquí no hay reacciones: hay documentos que se consultan con
+   calma. El movimiento es más lento y más corto a propósito.
+   ------------------------------------------------------------ */
+.tema-biblioteca {
+  --tema-fondo: #f5eee1;
+  --tema-tinta: #3a2e21;
+  --tema-suave: #6b5b47;
+  --tema-acento: #8a6d3b;
+  --tema-boton: #c9a227;
+  --tema-boton-texto: #2b2115;
+  --tema-halo: rgba(138, 109, 59, 0.5);
+
+  background-color: var(--tema-fondo);
+  color: var(--tema-tinta);
+}
+
+/* ------------------------------------------------------------
+   TEMA 4 — PERIÓDICO  (Noticias)
+   Papel de diario: blanco hueso, tinta negra —no azul— y un burdeos
+   de cabecera usado con cuentagotas. Los titulares van en serif,
+   que es lo que da el carácter editorial; el cuerpo sigue en sans
+   para que se lea cómodo en pantalla.
+   ------------------------------------------------------------ */
+.tema-periodico {
+  --tema-fondo: #f4f2ec;
+  --tema-tinta: #1a1a1a;
+  --tema-suave: #5a564e;
+  --tema-acento: #8b1e1e;
+  --tema-boton: #1a1a1a;
+  --tema-boton-texto: #f4f2ec;
+  --tema-halo: rgba(139, 30, 30, 0.45);
+
+  /* La serif de titulares. Se usan fuentes del sistema en vez de
+     cargar una de fuera: una tipografía web son 30-80 KB más que
+     descargar, y aquí el carácter editorial ya lo da la forma serif,
+     venga de donde venga. */
+  --tema-titular: Georgia, 'Times New Roman', 'Nimbus Roman', serif;
+
+  background-color: var(--tema-fondo);
+  color: var(--tema-tinta);
+}
+
+/* ============================================================
+   CÓMO CONSUMEN LOS COMPONENTES ESTAS VARIABLES
+   ============================================================
+   Estas reglas son el puente. El botón de ácido y las tarjetas
+   ya sabían pintarse; aquí solo se les dice de qué color, según
+   el tema en el que estén metidos.
+
+   Se usa el selector descendiente (.tema-x .componente) para que
+   un componente adopte el tema del bloque donde vive, sin que
+   haya que pasarle nada por parámetro.
+   ------------------------------------------------------------ */
+
+.tema-reaccion .btn-acido,
+.tema-biblioteca .btn-acido,
+.tema-periodico .btn-acido {
+  --btn-acido-color: var(--tema-boton);
+  color: var(--tema-boton-texto);
+}
+
+.tema-reaccion :hover > .capa-acido,
+.tema-biblioteca :hover > .capa-acido,
+.tema-periodico :hover > .capa-acido,
+.tema-reaccion :focus-visible > .capa-acido,
+.tema-biblioteca :focus-visible > .capa-acido,
+.tema-periodico :focus-visible > .capa-acido {
+  filter: url('#acido-goo') drop-shadow(0 3px 10px var(--tema-halo));
+}
+
+.tema-reaccion .btn-acido:focus-visible,
+.tema-biblioteca .btn-acido:focus-visible,
+.tema-periodico .btn-acido:focus-visible {
+  outline-color: var(--tema-acento);
+}
+
+/* Las variantes explícitas (color="azul") mandan sobre el tema.
+   Si alguien pidió azul, es azul, esté donde esté. */
+.tema-reaccion .btn-acido--azul,
+.tema-biblioteca .btn-acido--azul,
+.tema-periodico .btn-acido--azul {
+  --btn-acido-color: var(--acs-azul);
+  color: #fff;
+}
+
+/* La sección de eventos reutiliza la clase .chapters-section, que trae
+   una imagen de fondo suelta (chapter-bg.png) sin repetición. Sobre el
+   blanco de antes no se notaba; sobre el verde del tema deja un corte
+   horizontal muy visible a media página, donde acaba la imagen.
+
+   Se sustituye por nuestra propia retícula, que sí tesela sin costuras. */
+.tema-reaccion .chapters-section {
+  background-image: none;
+  background-color: var(--tema-fondo);
+}
+
+/* ============================================================
+   FONDO DE BURBUJAS  (tema reacción)
+   ============================================================
+   Burbujas subiendo despacio, como en un vaso de precipitados.
+   Son 6 elementos generados con gradientes radiales dentro de una
+   sola capa: cero <div> extra en el HTML, cero JavaScript.
+   ------------------------------------------------------------ */
+
+.fondo-burbujas {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.fondo-burbujas::after {
+  content: '';
+  position: absolute;
+  inset: -20% 0 -20% 0;
+  z-index: -1;
+  pointer-events: none;
+
+  background-image:
+    radial-gradient(circle 9px at 12% 90%, rgba(255, 255, 255, 0.55) 96%, transparent 100%),
+    radial-gradient(circle 6px at 27% 90%, rgba(255, 255, 255, 0.45) 96%, transparent 100%),
+    radial-gradient(circle 12px at 43% 90%, rgba(255, 255, 255, 0.35) 96%, transparent 100%),
+    radial-gradient(circle 7px at 61% 90%, rgba(255, 255, 255, 0.5) 96%, transparent 100%),
+    radial-gradient(circle 10px at 78% 90%, rgba(255, 255, 255, 0.4) 96%, transparent 100%),
+    radial-gradient(circle 5px at 91% 90%, rgba(255, 255, 255, 0.55) 96%, transparent 100%);
+  background-repeat: no-repeat;
+
+  animation: burbujas-subir 14s linear infinite;
+}
+
+@keyframes burbujas-subir {
+  from {
+    background-position: 0 0, 0 0, 0 0, 0 0, 0 0, 0 0;
+  }
+  to {
+    /* Cada burbuja sube a un ritmo distinto. Si subieran todas
+       igual se vería la trampa: parecería un patrón, no burbujas. */
+    background-position:
+      0 -520px, 0 -700px, 0 -430px,
+      0 -640px, 0 -560px, 0 -760px;
+  }
+}
+
+/* ============================================================
+   TEXTURA DE PAPEL  (tema biblioteca)
+   ============================================================
+   Renglones muy tenues, como los de un cuaderno, más un margen
+   vertical a la izquierda. Se lee como papel sin estorbar al texto.
+   ------------------------------------------------------------ */
+
+.fondo-papel {
+  position: relative;
+  isolation: isolate;
+}
+
+.fondo-papel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+
+  background-image:
+    /* renglones horizontales */
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 31px,
+      rgba(138, 109, 59, 0.16) 31px,
+      rgba(138, 109, 59, 0.16) 32px
+    ),
+    /* grano suave del papel */
+    radial-gradient(circle at 20% 30%, rgba(180, 150, 105, 0.1), transparent 45%),
+    radial-gradient(circle at 80% 70%, rgba(180, 150, 105, 0.1), transparent 45%);
+}
+
+/* Ficha de recurso: una tarjeta con aire de ficha de catálogo */
+.ficha-recurso {
+  position: relative;
+  background: #fffdf7;
+  border: 1px solid rgba(138, 109, 59, 0.28);
+  border-left: 5px solid var(--tema-acento, #8a6d3b);
+  border-radius: 6px;
+  padding: 1.4rem 1.5rem;
+  height: 100%;
+  box-shadow: 0 2px 6px rgba(58, 46, 33, 0.08);
+
+  transition:
+    transform 380ms cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 380ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-left-width 380ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Al pasar el ratón la ficha "se saca del cajón": se desplaza a la
+   derecha, no hacia arriba. Es el gesto de coger una ficha de un
+   fichero, y encaja mejor con el tema que un rebote. */
+.ficha-recurso:hover,
+.ficha-recurso:focus-within {
+  transform: translateX(6px);
+  border-left-width: 9px;
+  box-shadow: 0 8px 20px rgba(58, 46, 33, 0.16);
+}
+
+.ficha-recurso__etiqueta {
+  display: inline-block;
+  font-size: 0.72rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--tema-acento, #8a6d3b);
+  border: 1px solid currentColor;
+  border-radius: 3px;
+  padding: 2px 8px;
+  margin-bottom: 0.75rem;
+}
+
+.ficha-recurso__titulo {
+  font-size: 1.12rem;
+  font-weight: 700;
+  color: var(--tema-tinta, #3a2e21);
+  margin-bottom: 0.4rem;
+}
+
+.ficha-recurso__texto {
+  font-size: 0.94rem;
+  color: var(--tema-suave, #6b5b47);
+  margin-bottom: 0.9rem;
+}
+
+.ficha-recurso__enlace {
+  font-weight: 600;
+  color: var(--tema-acento, #8a6d3b);
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  transition: border-color 220ms ease;
+}
+
+.ficha-recurso__enlace:hover,
+.ficha-recurso__enlace:focus-visible {
+  color: var(--tema-acento, #8a6d3b);
+  border-bottom-color: currentColor;
+}
+
+/* Cabecera de la biblioteca: el lomo de los libros en una estantería */
+.estante {
+  display: flex;
+  gap: 4px;
+  align-items: flex-end;
+  height: 54px;
+  margin: 0 auto 1.5rem;
+  max-width: 260px;
+}
+
+.estante span {
+  flex: 1;
+  border-radius: 3px 3px 0 0;
+  background: var(--tema-acento, #8a6d3b);
+  opacity: 0.75;
+  transform-origin: bottom center;
+  animation: estante-respirar 3.4s ease-in-out infinite;
+}
+
+.estante span:nth-child(1) { height: 70%; animation-delay: 0ms; }
+.estante span:nth-child(2) { height: 100%; animation-delay: 260ms; }
+.estante span:nth-child(3) { height: 55%; animation-delay: 520ms; }
+.estante span:nth-child(4) { height: 88%; animation-delay: 180ms; }
+.estante span:nth-child(5) { height: 64%; animation-delay: 700ms; }
+.estante span:nth-child(6) { height: 94%; animation-delay: 400ms; }
+
+@keyframes estante-respirar {
+  0%, 100% { transform: scaleY(1); }
+  50%      { transform: scaleY(1.07); }
+}
+
+/* ============================================================
+   PAPEL DE DIARIO  (tema periódico)
+   ============================================================
+   Columnas verticales finísimas, como la retícula de composición de
+   un periódico, más el grano del papel barato. Muy tenue: tiene que
+   notarse al mirar de cerca, no al leer.
+   ------------------------------------------------------------ */
+
+.fondo-periodico {
+  position: relative;
+  isolation: isolate;
+}
+
+.fondo-periodico::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+
+  background-image:
+    /* las columnas de composición */
+    repeating-linear-gradient(
+      to right,
+      transparent 0,
+      transparent 118px,
+      rgba(26, 26, 26, 0.07) 118px,
+      rgba(26, 26, 26, 0.07) 119px
+    ),
+    /* el grano del papel */
+    radial-gradient(circle at 25% 15%, rgba(120, 110, 90, 0.06), transparent 40%),
+    radial-gradient(circle at 75% 85%, rgba(120, 110, 90, 0.06), transparent 40%);
+}
+
+/* La cabecera, con su filete doble — el detalle que hace que algo
+   "parezca periódico" antes incluso de leerlo. */
+.masthead {
+  border-bottom: 3px solid var(--tema-tinta, #1a1a1a);
+  box-shadow: 0 4px 0 -1px var(--tema-tinta, #1a1a1a);
+  padding-bottom: 0.9rem;
+  margin-bottom: 2.5rem;
+}
+
+.masthead__titulo {
+  font-family: var(--tema-titular, Georgia, serif);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--tema-tinta, #1a1a1a);
+}
+
+/* La línea de arriba: fecha a un lado, sección al otro, como el
+   encabezado de una portada de diario. */
+.masthead__linea {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--tema-suave, #5a564e);
+  border-bottom: 1px solid rgba(26, 26, 26, 0.25);
+  padding-bottom: 0.4rem;
+  margin-bottom: 0.9rem;
+}
+
+/* ---------- El recorte de prensa ---------- */
+
+.recorte {
+  position: relative;
+  height: 100%;
+  background: #fffdf8;
+  padding: 1.4rem 1.5rem 1.5rem;
+  border: 1px solid rgba(26, 26, 26, 0.14);
+
+  /* Sombra baja y dura: un papel apoyado sobre otro, no una tarjeta
+     flotando. Las sombras muy difusas se leen como interfaz digital y
+     aquí queremos que se lea como objeto físico. */
+  box-shadow: 2px 3px 0 rgba(26, 26, 26, 0.1);
+
+  transition:
+    transform 320ms cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 320ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Al pasar el ratón se endereza del todo y sube un poco: el gesto de
+   levantar el recorte de la pila para leerlo. */
+.recorte:hover,
+.recorte:focus-within {
+  transform: translateY(-3px) rotate(0deg);
+  box-shadow: 4px 7px 0 rgba(26, 26, 26, 0.14);
+}
+
+.recorte__meta {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--tema-suave, #5a564e);
+  margin-bottom: 0.7rem;
+}
+
+.recorte__categoria {
+  color: var(--tema-acento, #8b1e1e);
+  font-weight: 700;
+}
+
+/* El punto que separa fecha y categoría */
+.recorte__separador {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
+}
+
+.recorte__titulo {
+  font-family: var(--tema-titular, Georgia, serif);
+  font-size: 1.24rem;
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--tema-tinta, #1a1a1a);
+  margin-bottom: 0.6rem;
+}
+
+.recorte__resumen {
+  font-size: 0.94rem;
+  line-height: 1.6;
+  color: var(--tema-suave, #5a564e);
+  margin-bottom: 0.9rem;
+}
+
+/* La primera letra en capitular, como en una columna de opinión.
+   Solo en la noticia destacada, para que sea un detalle y no un tic. */
+.recorte--destacado .recorte__resumen::first-letter {
+  float: left;
+  font-family: var(--tema-titular, Georgia, serif);
+  font-size: 2.9rem;
+  line-height: 0.82;
+  font-weight: 700;
+  color: var(--tema-acento, #8b1e1e);
+  padding: 0.1rem 0.45rem 0 0;
+}
+
+.recorte--destacado .recorte__titulo {
+  font-size: 1.7rem;
+}
+
+.recorte__enlace {
+  font-family: var(--tema-titular, Georgia, serif);
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--tema-acento, #8b1e1e);
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  transition: border-color 220ms ease;
+}
+
+.recorte__enlace:hover,
+.recorte__enlace:focus-visible {
+  color: var(--tema-acento, #8b1e1e);
+  border-bottom-color: currentColor;
+}
+
+/* ============================================================
+   ACCESIBILIDAD
+   Mismo criterio que en el resto del proyecto: si la persona pidió
+   menos movimiento, se para todo. Los colores y las formas se
+   quedan; solo desaparece el movimiento.
+   ------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  .fondo-burbujas::after,
+  .estante span {
+    animation: none !important;
+  }
+
+  .recorte {
+    transition: none !important;
+  }
+
+  /* Sin movimiento, los recortes se quedan rectos. Ojo: rotate(0) y
+     no "transform: none", porque el enderezado del hover es lo único
+     que aquí se conserva — quieto, pero recto. */
+  .recorte:hover,
+  .recorte:focus-within {
+    transform: rotate(0deg) !important;
+  }
+
+  .ficha-recurso {
+    transition: none !important;
+  }
+
+  .ficha-recurso:hover,
+  .ficha-recurso:focus-within {
+    transform: none !important;
+  }
+}

@@ -16,7 +16,101 @@ import {
 } from '@/src/lib/fontawesome';
 
 import useAuth from '@/src/hooks/useAuth';
-import BootstrapJS from './BootstrapJS';
+import CapaAcido from '@/src/components/CapaAcido';
+
+
+const MARCA_NUEVA = {
+  src: '/assets/img/acs-marca-150.png',
+  ancho: 175,
+  alto: 44,
+};
+
+const MARCA_ANTIGUA = {
+  src: '/assets/img/DIGITAL-ACSSC-UNMSM-rgb-logo.png',
+  ancho: 350,
+  alto: 100,
+};
+
+function LogoCapitulo({ href }) {
+  const marca = USAR_MARCA_NUEVA ? MARCA_NUEVA : MARCA_ANTIGUA;
+
+  return (
+    <Link href={href} className="navbar-brand marca-capitulo">
+      <Image
+        src={marca.src}
+        alt="American Chemical Society"
+        width={marca.ancho}
+        height={marca.alto}
+        priority
+      
+        unoptimized
+        className="marca-capitulo__simbolo"
+      />
+
+      {USAR_MARCA_NUEVA && (
+        <span className="marca-capitulo__texto">
+          <span className="marca-capitulo__linea1">Student Chapter</span>
+          {}
+          <span className="marca-capitulo__linea2">
+            Universidad Nacional Mayor de San Marcos
+          </span>
+          <span className="marca-capitulo__linea2-corta" aria-hidden="true">
+            UNMSM
+          </span>
+        </span>
+      )}
+    </Link>
+  );
+}
+
+
+const SECCIONES = [
+  { clave: 'home', ruta: '', efecto: 'efervescente' },
+  { clave: 'about', ruta: '/about', efecto: 'indicador' },
+  { clave: 'officers', ruta: '/chapters', efecto: 'orbital' },
+  { clave: 'events', ruta: '/events', efecto: 'acido' },
+  { clave: 'news', ruta: '/news', efecto: 'periodico' },
+  { clave: 'resources', ruta: '/resources', efecto: 'tinta' },
+  { clave: 'contact', ruta: '/contact', efecto: 'titulacion' },
+];
+
+/**
+ * ¿Estamos en esta sección?
+ *
+ * `pathname` viene de next-intl SIN el idioma delante: en /es/events
+ * vale '/events'. Por eso se compara contra la ruta a secas.
+ *
+ * La portada ('') se compara de forma exacta; si no, estaría "activa"
+ * en todas las páginas, porque cualquier ruta empieza por ''.
+ */
+function esSeccionActiva(pathname, ruta) {
+  if (ruta === '') return pathname === '/';
+  return pathname === ruta || pathname.startsWith(`${ruta}/`);
+}
+
+
+function BloqueNav({ href, efecto, activo, children }) {
+  return (
+    <li className="nav-item">
+      <Link
+        href={href}
+        className="bloque-nav"
+        data-efecto={efecto}
+        aria-current={activo ? 'page' : undefined}
+      >
+        {/* El ácido necesita su capa de líquido dentro del bloque.
+            Los demás efectos se dibujan con pseudo-elementos y no
+            requieren nada en el HTML. */}
+        {efecto === 'acido' && <CapaAcido corta />}
+        <span className="bloque-nav__texto">{children}</span>
+        {/* La barrita de "estás aquí" es un elemento propio y no un
+            ::after, porque cuatro de los seis efectos ya usan ese
+            pseudo-elemento para su capa. Ver menu.css. */}
+        {activo && <span className="bloque-nav__activo" aria-hidden="true" />}
+      </Link>
+    </li>
+  );
+}
 
 export default function Navbar() {
   const router = useRouter(); // Hook para manejar navegación
@@ -46,18 +140,9 @@ export default function Navbar() {
 
   return (
     <>
-      <BootstrapJS />
       <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-custom fixed-top">
         <div className="container">
-          <Link href={`/${locale}`} className="navbar-brand py-2">
-            <Image
-              src="/assets/img/DIGITAL-ACSSC-UNMSM-rgb-logo.png"
-              alt="Logo"
-              width={250}
-              height={71}
-              priority
-            />
-          </Link>
+          <LogoCapitulo href={`/${locale}`} />
 
           <button
             className="navbar-toggler"
@@ -76,37 +161,25 @@ export default function Navbar() {
             className={`collapse navbar-collapse justify-content-between ${!isCollapsed ? 'show' : ''}`}
             id="navbarNav"
           >
-            <ul className="navbar-nav me-auto ms-lg-4" style={{ gap: '0.5rem', position: 'relative', zIndex: 10 }}>
-              <li className="nav-item">
-                <Link href={`/${locale}`} className={`nav-link nav-link-custom ${pathname === `/${locale}` || pathname === '/' ? 'active-link' : ''}`}>{t('home')}</Link>
-              </li>
-              <li className="nav-item">
-                <Link href={`/${locale}/about`} className={`nav-link nav-link-custom ${pathname.includes('/about') ? 'active-link' : ''}`}>{t('about')}</Link>
-              </li>
-              <li className="nav-item">
-                <Link href={`/${locale}/chapters`} className={`nav-link nav-link-custom ${pathname.includes('/chapters') ? 'active-link' : ''}`}>{t('officers')}</Link>
-              </li>
-              <li className="nav-item">
-                <Link href={`/${locale}/events`} className={`nav-link nav-link-custom ${pathname.includes('/events') ? 'active-link' : ''}`}>{t('events')}</Link>
-              </li>
-              <li className="nav-item">
-                <Link href={`/${locale}/news`} className={`nav-link nav-link-custom ${pathname.includes('/news') ? 'active-link' : ''}`}>{t('news')}</Link>
-              </li>
-              <li className="nav-item">
-                <Link href={`/${locale}/resources`} className={`nav-link nav-link-custom ${pathname.includes('/resources') ? 'active-link' : ''}`}>{t('resources')}</Link>
-              </li>
-              <li className="nav-item">
-                <Link href={`/${locale}/contact`} className={`nav-link nav-link-custom ${pathname.includes('/contact') ? 'active-link' : ''}`}>{t('contact')}</Link>
-              </li>
+            <ul className="navbar-nav mx-auto">
+              {SECCIONES.map((s) => (
+                <BloqueNav
+                  key={s.ruta}
+                  href={`/${locale}${s.ruta}`}
+                  efecto={s.efecto}
+                  activo={esSeccionActiva(pathname, s.ruta)}
+                >
+                  {t(s.clave)}
+                </BloqueNav>
+              ))}
             </ul>
 
-            <div className="d-flex align-items-center gap-3" style={{ position: 'relative', zIndex: 1, pointerEvents: 'none' }}>
+            <div className="d-flex align-items-center gap-3">
               <a
                 href="/webmail"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="nav-icon-link"
-                style={{ pointerEvents: 'auto' }}
               >
                 <FontAwesomeIcon icon={faEnvelope} className="nav-icon" />
               </a>
@@ -125,8 +198,7 @@ export default function Navbar() {
                     display: 'flex',
                     alignItems: 'center',
                     gap: '5px',
-                    whiteSpace: 'nowrap',
-                    pointerEvents: 'auto'
+                    whiteSpace: 'nowrap'
                   }}
                 >
                   <FontAwesomeIcon icon={faTachometerAlt} />
@@ -134,7 +206,7 @@ export default function Navbar() {
                 </Link>
               )}
 
-              <div className="dropdown position-relative" style={{ pointerEvents: 'auto' }}>
+              <div className="dropdown position-relative">
                 <button
                   className="btn btn-link dropdown-toggle d-flex align-items-center p-0"
                   type="button"
@@ -156,14 +228,14 @@ export default function Navbar() {
                     zIndex: 1000,
                   }}
                 >
-                  <button
-                    className="dropdown-item d-flex align-items-center py-2"
+                  <button 
+                    className="dropdown-item d-flex align-items-center py-2" 
                     onClick={() => changeLanguage('en')}
                   >
                     <span className="me-2">🇺🇸</span> {t('english')}
                   </button>
-                  <button
-                    className="dropdown-item d-flex align-items-center py-2"
+                  <button 
+                    className="dropdown-item d-flex align-items-center py-2" 
                     onClick={() => changeLanguage('es')}
                   >
                     <span className="me-2">🇪🇸</span> {t('spanish')}
@@ -183,7 +255,7 @@ export default function Navbar() {
           transition: all 0.2s ease;
         }
         .nav-icon-link:hover .nav-icon {
-          color: #412BFD;
+          color: #0054a6;
           transform: scale(1.1);
         }
         .dropdown-toggle {
@@ -195,7 +267,7 @@ export default function Navbar() {
           display: none;
         }
         .dropdown-toggle:hover {
-          color: #412BFD;
+          color: #0054a6;
         }
         .dropdown-menu {
           border: none;
@@ -210,7 +282,7 @@ export default function Navbar() {
         }
         .dropdown-item:hover {
           background-color: #f0f5ff;
-          color: #412BFD;
+          color: #0054a6;
         }
         .btn-primary:hover {
           background-color: #0056b3 !important;
@@ -220,8 +292,9 @@ export default function Navbar() {
           background-color: #218838 !important;
           border-color: #1e7e34 !important;
         }
-        
       `}</style>
     </>
   );
 }
+
+
