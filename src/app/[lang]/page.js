@@ -3,6 +3,7 @@ import HeroCarousel from '@/src/components/HeroCarousel';
 import Footer from '@/src/components/Footer';
 import SponsorsCarousel from '@/src/components/SponsorsCarousel';
 import FeaturedEventPopup from '@/src/components/FeaturedEventPopup';
+import MascotaBot from '@/src/components/MascotaBot';
 import { getTranslations } from 'next-intl/server';
 
 export default async function HomePage({ params }) {
@@ -55,6 +56,10 @@ export default async function HomePage({ params }) {
       <SponsorsCarousel />
       <Footer />
       <FeaturedEventPopup />
+
+      {/* Asistente de bienvenida (mascota Carbonito). Abajo a la izquierda
+          para no chocar con el botón de WhatsApp de la derecha. */}
+      <MascotaBot />
     </main>
   );
 }
