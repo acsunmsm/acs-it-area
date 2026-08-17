@@ -38,7 +38,7 @@ export const metadata = {
 
 
 export default function RootLayout({ children }) {
-    return(
+  return (
     /*
       suppressHydrationWarning en <html> y <body>: qué es y por qué está aquí.
 
@@ -73,7 +73,7 @@ export default function RootLayout({ children }) {
           crossOrigin="anonymous"
           referrerPolicy="no-referrer"
         />
-        <link rel="icon" href="assets/img/icon.png" />
+        <link rel="icon" href="assets/img/icon3.png" />
         {/*
           Marca el <html> con la clase "js-reveal" ANTES de que el navegador
           pinte la página. Sin esto el contenido aparecería un instante y
@@ -91,7 +91,7 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body className={inter.className} suppressHydrationWarning>
-          {/*
+        {/*
             FILTRO "GOO" — el que hace que el botón parezca derretirse.
 
             Un filtro SVG hay que declararlo una sola vez en el documento;
@@ -114,26 +114,26 @@ export default function RootLayout({ children }) {
             sitio. aria-hidden para que los lectores de pantalla lo
             ignoren, porque no comunica nada.
           */}
-          <svg
-            aria-hidden="true"
-            focusable="false"
-            style={{ position: 'absolute', width: 0, height: 0, overflow: 'hidden' }}
-          >
-            <defs>
-              <filter id="acido-goo">
-                <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="desenfoque" />
-                <feColorMatrix
-                  in="desenfoque"
-                  mode="matrix"
-                  values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9"
-                  result="goo"
-                />
-                <feBlend in="SourceGraphic" in2="goo" />
-              </filter>
-            </defs>
-          </svg>
+        <svg
+          aria-hidden="true"
+          focusable="false"
+          style={{ position: 'absolute', width: 0, height: 0, overflow: 'hidden' }}
+        >
+          <defs>
+            <filter id="acido-goo">
+              <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="desenfoque" />
+              <feColorMatrix
+                in="desenfoque"
+                mode="matrix"
+                values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9"
+                result="goo"
+              />
+              <feBlend in="SourceGraphic" in2="goo" />
+            </filter>
+          </defs>
+        </svg>
 
-          {children}
+        {children}
       </body>
     </html>
   );
