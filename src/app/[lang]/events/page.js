@@ -10,6 +10,7 @@ import EventoForm from '../../../components/EventoForm';
 import useAuth from '@/src/hooks/useAuth';
 import { useTranslations, useLocale } from 'next-intl';
 import { useRouter } from 'next/navigation';
+import { RevealWords } from '@/src/components/Reveal';
 
 export default function EventsPage() {
   const router = useRouter();
@@ -200,243 +201,191 @@ export default function EventsPage() {
   // Vista mientras carga
   if (loadingEvents || authLoading) {
     return (
-      <>
+      <div className="events-page-container">
         <Navbar />
-        <section className="hero-section py-5 text-white" style={{ backgroundColor: '#0054A6' }}>
-          <div className="container text-center">
-            <h1 className="display-4 fw-bold mb-4" style={{ color: '#ffd400' }}>{t('title')}</h1>
+        <section className="hero-section py-5 text-white fondo-molecular fondo-molecular--claro" style={{ backgroundColor: '#0054a6' }}>
+          <div className="container text-center position-relative">
+            <RevealWords
+              as="h1"
+              text={t('title')}
+              className="display-4 fw-bold mb-4"
+              style={{ color: '#ffd400' }}
+            />
           </div>
         </section>
-        <section className="py-5 bg-white chapters-section" style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-          <div className="container" style={{ flexGrow: 1, marginTop: '100px', textAlign: 'center' }}>
-            <p className="text-center">{t('loadingMessage')}</p>
+        <div className="container" style={{ flexGrow: 1, marginTop: '100px', textAlign: 'center' }}>
+          <div className="spinner-border text-primary" role="status" style={{ width: '3rem', height: '3rem' }}>
+            <span className="visually-hidden">Cargando...</span>
           </div>
-          <Footer />
-        </section>
-      </>
+          <p className="mt-3 fw-bold text-muted">{t('loadingMessage')}</p>
+        </div>
+        <Footer />
+      </div>
     );
   }
 
   if (error) {
     return (
-      <>
+      <div className="events-page-container">
         <Navbar />
-        <section className="py-5 bg-white chapters-section" style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-          <div className="container" style={{ flexGrow: 1, marginTop: '100px', textAlign: 'center' }}>
-            <h1 className="text-center">{t('title')}</h1>
-            <p className="text-center" style={{ color: 'red' }}>Error: {error}</p>
+        <section className="hero-section py-5 text-white fondo-molecular fondo-molecular--claro" style={{ backgroundColor: '#0054a6' }}>
+          <div className="container text-center position-relative">
+            <RevealWords
+              as="h1"
+              text={t('title')}
+              className="display-4 fw-bold mb-4"
+              style={{ color: '#ffd400' }}
+            />
           </div>
-          <Footer />
         </section>
-      </>
+        <div className="container" style={{ flexGrow: 1, marginTop: '100px', textAlign: 'center' }}>
+          <div className="alert alert-danger d-inline-block" role="alert" style={{ borderRadius: '15px' }}>
+            <i className="fas fa-exclamation-triangle me-2"></i> Error: {error}
+          </div>
+        </div>
+        <Footer />
+      </div>
     );
   }
 
   return (
-    <>
+    <div className="events-page-container">
       <Navbar />
-      <section className="hero-section py-5 text-white" style={{ backgroundColor: '#0054A6' }}>
-        <div className="container text-center">
-          <h1 className="display-4 fw-bold mb-4" style={{ color: '#ffd400' }}>{t('title')}</h1>
+
+      <section className="hero-section py-5 text-white fondo-molecular fondo-molecular--claro" style={{ backgroundColor: '#0054a6' }}>
+        <div className="container text-center position-relative">
+          <RevealWords
+            as="h1"
+            text={t('title')}
+            className="display-4 fw-bold mb-4"
+            style={{ color: '#ffd400' }}
+          />
         </div>
       </section>
-      <section className="py-5 bg-white chapters-section" style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-        <div className="container" style={{ flexGrow: 1 }}>
-          <form onSubmit={handleSearchSubmit} style={{ display: 'flex', gap: '10px', marginBottom: '30px' }}>
+
+      <div className="container" style={{ flexGrow: 1 }}>
+        <div className="events-search-container">
+          <form onSubmit={handleSearchSubmit} className="events-search-form">
             <input
               type="text"
+              className="events-search-input"
               placeholder="Buscar eventos por título o descripción..."
               value={currentSearchInput}
               onChange={(e) => setCurrentSearchInput(e.target.value)}
-              style={{
-                flexGrow: 1,
-                padding: '10px',
-                borderRadius: '5px',
-                border: '1px solid #ddd',
-                boxSizing: 'border-box'
-              }}
             />
-            <button
-              type="submit"
-              style={{
-                padding: '10px 20px',
-                backgroundColor: '#007bff',
-                color: 'white',
-                border: 'none',
-                borderRadius: '5px',
-                cursor: 'pointer',
-                fontSize: '1em',
-                transition: 'background-color 0.3s ease'
-              }}
-            >
-              Buscar
+            <button type="submit" className="events-search-btn">
+              <i className="fas fa-search me-2"></i> Buscar
             </button>
           </form>
+        </div>
 
-          {isAuthenticated && (
-            <div style={{ textAlign: 'right', marginBottom: '20px' }}>
-              <button
-                onClick={handleLogout}
-                style={{
-                  padding: '10px 20px',
-                  backgroundColor: '#dc3545',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '5px',
-                  cursor: 'pointer',
-                  fontSize: '0.9em',
-                  transition: 'background-color 0.3s ease',
-                }}
-              >
-                Cerrar Sesión
-              </button>
-            </div>
-          )}
+        {isAuthenticated && (
+          <div className="d-flex justify-content-end mb-4 px-2">
+            <button onClick={handleLogout} className="btn btn-outline-danger fw-bold" style={{ borderRadius: '20px', padding: '8px 20px' }}>
+              <i className="fas fa-sign-out-alt me-2"></i> Cerrar Sesión
+            </button>
+          </div>
+        )}
 
-          {events.length === 0 && actualSearchTerm ? (
-            <p className="text-center">No se encontraron eventos para: &quot;{actualSearchTerm}&quot;.</p>
-          ) : events.length === 0 && !actualSearchTerm ? (
-            <p className="text-center">No hay eventos disponibles en este momento.</p>
-          ) : (
-            events.map((event) => (
-              <div key={event.id} className="mt-4" style={{ marginBottom: '40px', padding: '20px', border: '1px solid #eee', borderRadius: '10px', boxShadow: '0 2px 8px rgba(0,0,0,0.05)' }}>
-                <h2 style={{ fontSize: '1.8em', color: '#333', marginBottom: '15px' }}>{event.nombre}</h2>
-                <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start', gap: '30px' }}>
-                  <div style={{ flex: '1 1 300px', maxWidth: '450px' }}>
+        {events.length === 0 ? (
+          <div className="no-events-container">
+            <i className="fas fa-calendar-times no-events-icon"></i>
+            <h3 className="no-events-text">
+              {actualSearchTerm
+                ? `No se encontraron eventos para: "${actualSearchTerm}"`
+                : 'No hay eventos disponibles en este momento.'}
+            </h3>
+          </div>
+        ) : (
+          <div className="events-grid">
+            {events.map((event) => {
+              const isExpired = isEventExpired(event.fecha_programada);
+              const showTime = shouldShowTime(event);
+
+              return (
+                <div key={event.id} className="event-card">
+                  <div className="event-image-wrapper">
                     {event.imagen_url ? (
-                      <img
-                        src={event.imagen_url}
-                        alt={event.nombre || 'Imagen del evento'}
-                        style={{
-                          width: '100%',
-                          height: '250px',
-                          borderRadius: '8px',
-                          objectFit: 'contain',
-                        }}
-                      />
+                      <img src={event.imagen_url} alt={event.nombre || 'Evento'} className="event-image" />
                     ) : (
-                      <div
-                        style={{
-                          width: '100%',
-                          height: '250px',
-                          backgroundColor: '#e0e0e0',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          borderRadius: '8px',
-                          color: '#888'
-                        }}
-                      >
-                        No hay imagen disponible
+                      <div className="event-no-image">
+                        <i className="fas fa-image"></i>
+                        <span>Sin imagen</span>
                       </div>
                     )}
+                    <div className={`event-status-badge ${isExpired ? 'status-expired' : 'status-active'}`}>
+                      {isExpired ? 'Finalizado' : 'Próximo'}
+                    </div>
                   </div>
 
-                  <div style={{ flex: '1 1 400px' }}>
-                    <h3 style={{ fontSize: '1.4em', color: '#555', marginBottom: '10px' }}>{event.titulo}</h3>
-                    <p style={{ fontSize: '1em', color: '#666', marginTop: shouldShowTime(event) ? '10px' : '25px' }}>
-                      📅 Fecha: {
-                        (() => {
-                          const displayDate = new Date(event.fecha_programada);
-                          return displayDate.toLocaleDateString('es-ES', {
-                            year: 'numeric',
-                            month: 'long',
-                            day: 'numeric'
-                          });
-                        })()
-                      }
-                    </p>
-                    {shouldShowTime(event) && (
-                      <p style={{ fontSize: '1em', color: '#666', marginTop: '10px' }}>
-                        <span style={{ marginRight: '5px' }}>🕓</span>Hora: {formatTime12Hour(event.hora)}
-                      </p>
-                    )}
-                    <p style={{ fontSize: '1em', color: '#666', marginTop: shouldShowTime(event) ? '10px' : '10px' }}>🚀Evento {event.modalidad?.toLowerCase() === 'en persona' ? 'presencial' : event.modalidad?.toLowerCase()}</p>
+                  <div className="event-content">
+                    <div className="event-type">
+                      <i className="fas fa-tag"></i> {event.nombre}
+                    </div>
 
-                    <div style={{ display: 'flex', gap: '10px', marginTop: shouldShowTime(event) ? '10px' : '30px' }}>
-                      {/* ✅ Botón "Saber más" siempre visible, abre en nueva pestaña */}
-                      <button
-                        onClick={() => handleDetailsClick(event)}
-                        style={{
-                          padding: '10px 15px',
-                          backgroundColor: '#007bff',
-                          color: 'white',
-                          border: 'none',
-                          borderRadius: '5px',
-                          cursor: 'pointer',
-                          fontSize: '0.9em',
-                          transition: 'background-color 0.3s ease',
-                          display: 'inline-block'
-                        }}
-                      >
-                        Saber más
+                    <h3 className="event-title">{event.titulo}</h3>
+
+                    <ul className="event-info-list">
+                      <li className="event-info-item">
+                        <i className="far fa-calendar-alt"></i>
+                        <span>
+                          {(() => {
+                            const displayDate = new Date(event.fecha_programada);
+                            return displayDate.toLocaleDateString('es-ES', {
+                              year: 'numeric',
+                              month: 'long',
+                              day: 'numeric'
+                            });
+                          })()}
+                        </span>
+                      </li>
+                      {showTime && (
+                        <li className="event-info-item">
+                          <i className="far fa-clock"></i>
+                          <span>{formatTime12Hour(event.hora)}</span>
+                        </li>
+                      )}
+                      <li className="event-info-item">
+                        <i className="fas fa-map-marker-alt"></i>
+                        <span>
+                          {event.modalidad?.toLowerCase() === 'en persona' ? 'Presencial' : (event.modalidad || 'Virtual')}
+                        </span>
+                      </li>
+                    </ul>
+
+                    <div className="event-actions">
+                      <button onClick={() => handleDetailsClick(event)} className="btn-event btn-event-outline">
+                        <i className="fas fa-info-circle"></i> Saber más
                       </button>
 
-                      {/* ✅ Botón "Inscríbete" condicional, abre en nueva pestaña */}
                       {event.inscription && (
                         <button
                           onClick={() => handleRegisterClick(event)}
-                          style={{
-                            padding: '10px 15px',
-                            backgroundColor: isEventExpired(event.fecha_programada) ? '#6c757d' : '#28a745',
-                            color: 'white',
-                            border: 'none',
-                            borderRadius: '5px',
-                            cursor: isEventExpired(event.fecha_programada) ? 'not-allowed' : 'pointer',
-                            fontSize: '0.9em',
-                            transition: 'background-color 0.3s ease',
-                            display: 'inline-block'
-                          }}
-                          disabled={isEventExpired(event.fecha_programada)}
+                          className={`btn-event ${isExpired ? 'btn-event-disabled' : 'btn-event-primary'}`}
+                          disabled={isExpired}
                         >
-                          {isEventExpired(event.fecha_programada) ? 'Evento vencido' : 'Inscríbete'}
+                          <i className="fas fa-ticket-alt"></i> {isExpired ? 'Vencido' : 'Inscríbete'}
                         </button>
                       )}
-
-                      {isAuthenticated && (
-                        <>
-                          <button
-                            onClick={() => handleEditClick(event)}
-                            style={{
-                              padding: '10px 15px',
-                              backgroundColor: '#ffc107',
-                              borderColor: '#ffc107',
-                              color: 'white',
-                              border: 'none',
-                              borderRadius: '5px',
-                              cursor: 'pointer',
-                              fontSize: '0.9em',
-                              transition: 'background-color 0.3s ease',
-                            }}
-                          >
-                            Editar
-                          </button>
-                          <button
-                            onClick={() => handleDeleteClick(event.id)}
-                            style={{
-                              padding: '10px 15px',
-                              backgroundColor: '#dc3545',
-                              borderColor: '#dc3545',
-                              color: 'white',
-                              border: 'none',
-                              borderRadius: '5px',
-                              cursor: 'pointer',
-                              fontSize: '0.9em',
-                              transition: 'background-color 0.3s ease',
-                            }}
-                          >
-                            Eliminar
-                          </button>
-                        </>
-                      )}
                     </div>
+
+                    {isAuthenticated && (
+                      <div className="admin-actions">
+                        <button onClick={() => handleEditClick(event)} className="btn-event btn-event-edit">
+                          <i className="fas fa-edit"></i> Editar
+                        </button>
+                        <button onClick={() => handleDeleteClick(event.id)} className="btn-event btn-event-delete">
+                          <i className="fas fa-trash-alt"></i> Eliminar
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </div>
-              </div>
-            ))
-          )}
-        </div>
-      </section>
+              );
+            })}
+          </div>
+        )}
+      </div>
 
       <Footer />
       {showEditModal && (
@@ -465,6 +414,6 @@ export default function EventsPage() {
           />
         </EventModal>
       )}
-    </>
+    </div>
   );
 }
