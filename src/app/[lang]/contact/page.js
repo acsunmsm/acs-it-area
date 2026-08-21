@@ -55,7 +55,7 @@ export default function ContactPage() {
     <>
       <Header />
 
-      <section className="contact-section section py-5 fondo-molecular">
+      <section className="contact-section section pb-5 fondo-molecular" style={{ marginTop: '-76px', paddingTop: 'calc(76px + 3rem)' }}>
         <div className="container">
           <RevealWords as="h1" text={t('title')} className="text-center" />
           <Reveal delay={1} className="contact-form mt-4">

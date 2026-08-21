@@ -207,7 +207,8 @@ export default function EventsPage() {
           className="hero-section text-white d-flex align-items-center"
           style={{
             minHeight: '35vh',
-            paddingTop: '70px',
+            marginTop: '-76px',
+            paddingTop: '146px', // 70 + 76
             paddingBottom: '60px',
             background: 'linear-gradient(135deg, #3624D1 0%, #1E127E 100%)',
             position: 'relative',
@@ -286,7 +287,8 @@ export default function EventsPage() {
           className="hero-section text-white d-flex align-items-center"
           style={{
             minHeight: '35vh',
-            paddingTop: '70px',
+            marginTop: '-76px',
+            paddingTop: '146px',
             paddingBottom: '60px',
             background: 'linear-gradient(135deg, #3624D1 0%, #1E127E 100%)',
             position: 'relative',
@@ -364,7 +366,8 @@ export default function EventsPage() {
         className="hero-section text-white d-flex align-items-center"
         style={{
           minHeight: '35vh',
-          paddingTop: '70px',
+          marginTop: '-76px',
+          paddingTop: '146px',
           paddingBottom: '60px',
           background: 'linear-gradient(135deg, #3624D1 0%, #1E127E 100%)',
           position: 'relative',

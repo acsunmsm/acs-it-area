@@ -50,8 +50,8 @@ export default async function ResourcesPage({ params }) {
       <Navbar />
 
       {/* ---------- Cabecera ---------- */}
-      <section className="py-5 fondo-papel">
-        <div className="container text-center" style={{ paddingTop: '1rem' }}>
+      <section className="fondo-papel pb-5" style={{ marginTop: '-76px', paddingTop: 'calc(76px + 3rem)' }}>
+        <div className="container text-center">
           {/* Seis lomos de libro que "respiran" muy despacio.
               Es el equivalente en biblioteca al átomo girando de Eventos:
               el mismo papel, distinto concepto. */}

@@ -254,6 +254,7 @@ export default function EventoForm({ event, onSave, onCancel }) {
                 'bold italic underline strikethrough forecolor backcolor | alignleft aligncenter ' +
                 'alignright alignjustify | bullist numlist outdent indent | ' +
                 'image media link table charmap | removeformat fullscreen code | help',
+              font_family_formats: 'Stolzl=Stolzl, sans-serif; Andale Mono=andale mono,times; Arial=arial,helvetica,sans-serif; Arial Black=arial black,avant garde; Book Antiqua=book antiqua,palatino; Comic Sans MS=comic sans ms,sans-serif; Courier New=courier new,courier; Georgia=georgia,palatino; Helvetica=helvetica; Impact=impact,chicago; Symbol=symbol; Tahoma=tahoma,arial,helvetica,sans-serif; Terminal=terminal,monaco; Times New Roman=times new roman,times; Trebuchet MS=trebuchet ms,geneva; Verdana=verdana,geneva; Webdings=webdings; Wingdings=wingdings,zapf dingbats',
               toolbar_mode: 'sliding',
               image_advtab: true,
               image_dimensions: false,
@@ -265,7 +266,13 @@ export default function EventoForm({ event, onSave, onCancel }) {
                 { title: 'En línea (varias imágenes en fila)', value: 'img-inline' },
               ],
               content_style: `
-                body { font-family:Helvetica,Arial,sans-serif; font-size:14px; }
+                @font-face { font-family: 'Stolzl'; src: url('/fonts/stolzl_thin.otf') format('opentype'); font-weight: 100; font-style: normal; font-display: swap; }
+                @font-face { font-family: 'Stolzl'; src: url('/fonts/stolzl_light.otf') format('opentype'); font-weight: 300; font-style: normal; font-display: swap; }
+                @font-face { font-family: 'Stolzl'; src: url('/fonts/stolzl_book.otf') format('opentype'); font-weight: 400; font-style: normal; font-display: swap; }
+                @font-face { font-family: 'Stolzl'; src: url('/fonts/stolzl_regular.otf') format('opentype'); font-weight: normal; font-style: normal; font-display: swap; }
+                @font-face { font-family: 'Stolzl'; src: url('/fonts/stolzl_medium.otf') format('opentype'); font-weight: 500; font-style: normal; font-display: swap; }
+                @font-face { font-family: 'Stolzl'; src: url('/fonts/stolzl_bold.otf') format('opentype'); font-weight: bold; font-style: normal; font-display: swap; }
+                body { font-family: 'Stolzl', Helvetica, Arial, sans-serif; font-size:14px; }
                 img { max-width: 100%; height: auto; }
                 .img-responsive { display: block; max-width: 100%; height: auto; margin: 10px 0; }
                 .img-float-left { float: left; margin: 0 15px 10px 0; max-width: 50%; height: auto; }
