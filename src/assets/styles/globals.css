@@ -7,6 +7,57 @@
 /* Importa FontAwesome */
 @import url('https://use.fontawesome.com/releases/v5.12.1/css/all.css');
 
+@font-face {
+  font-family: 'Stolzl';
+  src: url('/fonts/stolzl_thin.otf') format('opentype');
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Stolzl';
+  src: url('/fonts/stolzl_light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Stolzl';
+  src: url('/fonts/stolzl_book.otf') format('opentype');
+  font-weight: 400;
+  /* o 350 si deseas distinguirlo */
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Stolzl';
+  src: url('/fonts/stolzl_regular.otf') format('opentype');
+  font-weight: normal;
+  /* 400 */
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Stolzl';
+  src: url('/fonts/stolzl_medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Stolzl';
+  src: url('/fonts/stolzl_bold.otf') format('opentype');
+  font-weight: bold;
+  /* 700 */
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --color-primary: #412BFD;
   --color-secondary: #6FEDEE;
@@ -886,7 +937,7 @@ h2 {
   font-weight: bold;
   font-size: 15px;
   transition: color 0.3s ease;
-  font-family: sans-serif, 'Segoe UI', Tahoma, Geneva, Verdana;
+  font-family: 'Stolzl', sans-serif, 'Segoe UI', Tahoma, Geneva, Verdana;
   display: block !important;
   /* Shift hitbox upward by 15px without visually moving the text */
   padding-top: 23px !important;
@@ -943,7 +994,7 @@ h2 {
 .newspaper-wrapper {
   background-color: #fdfbf7;
   color: #1a1a1a;
-  font-family: 'Georgia', 'Times New Roman', serif;
+  font-family: 'Stolzl', 'Georgia', 'Times New Roman', serif;
   min-height: 100vh;
   padding-bottom: 50px;
 }
@@ -957,7 +1008,7 @@ h2 {
 }
 
 .newspaper-site-title {
-  font-family: 'Playfair Display', 'Georgia', serif;
+  font-family: 'Stolzl', 'Playfair Display', 'Georgia', serif;
   font-size: 3rem;
   font-weight: 900;
   text-transform: uppercase;
@@ -967,7 +1018,7 @@ h2 {
 }
 
 .newspaper-date-line {
-  font-family: sans-serif;
+  font-family: 'Stolzl', sans-serif;
   font-size: 0.9rem;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -1023,7 +1074,7 @@ h2 {
 }
 
 .newspaper-image-caption {
-  font-family: sans-serif;
+  font-family: 'Stolzl', sans-serif;
   font-size: 0.85rem;
   color: #555;
   text-align: center;
@@ -1081,7 +1132,7 @@ h2 {
   padding: 6px 16px;
   background-color: rgba(65, 43, 253, 0.08);
   color: #412BFD;
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: 'Stolzl', 'Inter', system-ui, sans-serif;
   font-size: 0.85rem;
   font-weight: 700;
   letter-spacing: 1px;
@@ -1092,7 +1143,7 @@ h2 {
 }
 
 .maintenance-title {
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: 'Stolzl', 'Inter', system-ui, sans-serif;
   font-size: 3.8rem;
   font-weight: 800;
   color: #0F172A;
@@ -1114,7 +1165,7 @@ h2 {
 }
 
 .maintenance-text {
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: 'Stolzl', 'Inter', system-ui, sans-serif;
   font-size: 1.25rem;
   color: #64748B;
   line-height: 1.6;
@@ -1136,7 +1187,7 @@ h2 {
   color: #FFFFFF !important;
   padding: 14px 32px;
   border-radius: 8px;
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: 'Stolzl', 'Inter', system-ui, sans-serif;
   font-size: 1.05rem;
   font-weight: 600;
   text-decoration: none;
@@ -1169,7 +1220,7 @@ h2 {
 .newspaper-wrapper {
   background-color: #f8f9fa;
   /* Sleeker background */
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family: 'Stolzl', 'Inter', system-ui, -apple-system, sans-serif;
   min-height: 100vh;
   padding-bottom: 60px;
 }
@@ -1242,7 +1293,7 @@ h2 {
 }
 
 .news-title {
-  font-family: 'Playfair Display', 'Georgia', serif;
+  font-family: 'Stolzl', 'Playfair Display', 'Georgia', serif;
   font-size: 1.35rem;
   font-weight: 800;
   color: #1a1a1a;
@@ -1288,6 +1339,139 @@ h2 {
   gap: 10px;
   color: #0054A6;
 }
+
+/* ========== Estilos para el Footer ACS (Nuevo Diseño) ========== */
+.footer-acs {
+  background-color: rgb(39, 30, 32);
+  color: #E2DFDF;
+  padding: 100px 0 20px;
+  font-family: 'Stolzl', system-ui, -apple-system, sans-serif;
+  font-weight: 300;
+}
+
+.footer-acs-container {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.footer-acs-grid {
+  display: grid;
+  grid-template-columns: 2.5fr 1fr 1fr;
+  gap: 160px;
+  /* Reducido un poco para dar más espacio a la imagen */
+  margin-bottom: 60px;
+}
+
+@media (max-width: 992px) {
+  .footer-acs-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .footer-acs-col-main {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 768px) {
+  .footer-acs-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.footer-acs-col-main {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.footer-acs-logo {
+  max-width: 480px;
+  width: 100%;
+  height: auto;
+  margin: 0;
+  display: block;
+}
+
+.footer-acs-contact p {
+  margin: 5px 0 5px 0;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #FFFFFF;
+}
+
+.footer-acs-socials {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.footer-acs-social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid #6FEDEE;
+  color: #E2DFDF;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.footer-acs-social-link:hover {
+  background-color: #6FEDEE;
+  color: #221F1F;
+  border-color: #6FEDEE;
+}
+
+.footer-acs-col-links h3 {
+  color: rgb(157, 157, 157);
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  font-weight: 300;
+  margin-bottom: 25px;
+  letter-spacing: 0.5px;
+}
+
+.footer-acs-links-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.footer-acs-links-list li a {
+  color: #FFFFFF;
+  text-decoration: none;
+  font-size: 1.1rem;
+  transition: color 0.2s ease;
+}
+
+.footer-acs-links-list li a:hover {
+  color: #FFFFFF;
+  text-decoration: underline;
+}
+
+.footer-acs-bottom {
+  border-top: 1px solid #444;
+  padding-top: 30px;
+  display: flex;
+  justify-content: flex-end;
+  font-size: 1rem;
+  color: #999;
+}
+
+@media (max-width: 768px) {
+  .footer-acs-bottom {
+    justify-content: center;
+    text-align: center;
+  }
+}
+
 
 /* ========== Estilos para la secciÃ³n de Eventos ========== */
 .events-page-container {

@@ -19,10 +19,10 @@ export default function ContactPage() {
     const formData = new FormData(form); // recoge los datos del formulario
 
     if (typeof grecaptcha === 'undefined') {
-    setStatus('Error: reCAPTCHA no está listo.');
-    return;
+      setStatus('Error: reCAPTCHA no está listo.');
+      return;
     }
-    
+
     const captcha = grecaptcha.getResponse();
 
     if (!captcha) {
