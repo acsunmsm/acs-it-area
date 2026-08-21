@@ -4,8 +4,11 @@ import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabaseClient'; // Adjust path if necessary
 import EventModal from './EventModal'; // Adjust path if necessary
 import Link from 'next/link'; // For the "Register Now!" button
+import { useTranslations, useLocale } from 'next-intl';
 
 export default function FeaturedEventPopup() {
+  const t = useTranslations('featuredEvent');
+  const locale = useLocale();
   const [showModal, setShowModal] = useState(false);
   const [featuredEvent, setFeaturedEvent] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -106,15 +109,15 @@ export default function FeaturedEventPopup() {
 
   // ✅ Validar si el evento tiene un formulario de inscripción
   const hasInscription = featuredEvent.inscription && featuredEvent.inscription.length > 0;
-  const buttonText = hasInscription ? '¡Inscríbete Ahora!' : 'Saber más';
+  const buttonText = hasInscription ? t('register') : t('details');
   const buttonHref = hasInscription
-    ? `/es/events/${featuredEvent.id}/register`
-    : `/es/events/${featuredEvent.id}/details`;
+    ? `/${locale}/events/${featuredEvent.id}/register`
+    : `/${locale}/events/${featuredEvent.id}/details`;
 
   return (
     <EventModal
       onClose={handleCloseModal}
-      title="¡No te pierdas nuestro próximo evento!"
+      title={t('title')}
       show={showModal}
     >
       <div style={{ padding: '20px', textAlign: 'center' }}>
@@ -145,25 +148,26 @@ export default function FeaturedEventPopup() {
               marginBottom: '15px'
             }}
           >
-            No hay imagen disponible
+            {t('noImage')}
           </div>
         )}
 
         <h3 style={{ fontSize: '1.8em', color: '#333', marginBottom: '10px' }}>{featuredEvent.titulo}</h3>
         <p style={{ fontSize: '1em', color: '#666', marginBottom: '5px' }}>
-          📅 Fecha: {
+          📅 {t('date')} {
             (() => {
               const dateParts = featuredEvent.fecha.split('-');
               const year = parseInt(dateParts[0]);
               const month = parseInt(dateParts[1]) - 1;
               const day = parseInt(dateParts[2]);
               const displayDate = new Date(year, month, day);
-              return displayDate.toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
+              const dateLocale = locale === 'en' ? 'en-US' : 'es-ES';
+              return displayDate.toLocaleDateString(dateLocale, { year: 'numeric', month: 'long', day: 'numeric' });
             })()
           }
         </p>
         <p style={{ fontSize: '1em', color: '#666', marginBottom: '20px' }}>
-          <span style={{ marginRight: '5px' }}>🕓</span>Hora: {formatTime12Hour(featuredEvent.hora)}
+          <span style={{ marginRight: '5px' }}>🕓</span>{t('time')}{formatTime12Hour(featuredEvent.hora)}
         </p>
 
         {/* ✅ Lógica de botón dinámico */}

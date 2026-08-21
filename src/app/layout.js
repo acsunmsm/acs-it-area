@@ -25,11 +25,8 @@ import '@/src/assets/styles/temas.css';
 import '@/src/assets/styles/menu.css';
 /* La portada, con el lenguaje visual del ACS de los 150 años. */
 import { config } from '@fortawesome/fontawesome-svg-core';
-import { Inter } from 'next/font/google';
-
 
 config.autoAddCss = false; // Evita doble carga de FontAwesome
-const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
   title: 'ACS UNMSM',
@@ -90,7 +87,7 @@ export default function RootLayout({ children }) {
           }}
         />
       </head>
-      <body className={inter.className} suppressHydrationWarning>
+      <body suppressHydrationWarning>
         {/*
             FILTRO "GOO" — el que hace que el botón parezca derretirse.
 

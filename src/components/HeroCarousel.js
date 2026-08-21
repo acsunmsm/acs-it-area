@@ -1,6 +1,10 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
+
 export default function HeroCarousel() {
+  const t = useTranslations('homePage');
+  
   const handleScroll = (e) => {
     e.preventDefault();
     const section = document.querySelector('.hero-section');
@@ -26,13 +30,13 @@ export default function HeroCarousel() {
       {/* Contenido Central */}
       <div className="content-wrapper">
         <h1 className="title">
-          Química que transforma <span className="highlight">el Perú</span>
+          {t('portadaTitulo')} <span className="highlight">{t('portadaDestacado')}</span>
         </h1>
         <p className="subtitle">
-          Somos el capítulo estudiantil de la American Chemical Society en la Universidad Nacional Mayor de San Marcos, Decana de América. Divulgamos, investigamos y formamos comunidad.
+          {t('portadaTexto')}
         </p>
         <button onClick={handleScroll} className="cta-button">
-          Conócenos
+          {t('portadaCta')}
         </button>
       </div>
 
@@ -64,8 +68,8 @@ export default function HeroCarousel() {
         }
         
         .title {
-          font-size: 4rem;
-          font-weight: 700;
+          font-size: 3.7rem;
+          font-weight: 400;
           line-height: 1.2;
           margin: 0;
           color: #ffffff;
@@ -88,7 +92,7 @@ export default function HeroCarousel() {
         .cta-button {
           background-color: #6FEDEE;
           color: #0b0736;
-          font-weight: 600;
+          font-weight: 500;
           font-size: 1.1rem;
           padding: 0.8rem 2.5rem;
           border: none;

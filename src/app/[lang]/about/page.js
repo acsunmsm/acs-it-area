@@ -15,56 +15,62 @@ export default async function About({ params }) {
 
       {/* Hero con imagen de fondo */}
       <section
-        className="hero-section py-5 text-white"
+        className="hero-section py-3 text-white"
         style={{
           backgroundImage: "url('/assets/img/about.jpg')", // pon aquí tu imagen
           backgroundSize: "cover",
           backgroundPosition: "center",
           position: "relative",
+          minHeight: '75vh', // Ocupa todo el alto de la pantalla restante
+          display: 'flex',
+          alignItems: 'center'
         }}
       >
-        {/* Overlay azul para mejorar contraste. Lleva además la retícula
-            molecular en blanco: la variante --claro se pone justo aquí,
-            en la capa de color, porque no tiene contenido dentro. */}
+        {/* Overlay con el nuevo gradiente corporativo */}
         <div
           className="fondo-molecular fondo-molecular--claro"
           style={{
-            backgroundColor: "rgba(0, 84, 166, 0.8)",
+            background: "linear-gradient(135deg, rgba(54, 36, 209, 0.85) 0%, rgba(30, 18, 126, 0.95) 100%)",
             position: "absolute",
             inset: 0,
           }}
         ></div>
 
-        <div className="container position-relative">
+        <div className="container position-relative z-1 mt-3">
           <div className="row align-items-center justify-content-center text-center">
-            <div className="col-md-8">
+            <div className="col-lg-10">
+              <div className="mb-3 mx-auto">
+                <span style={{ display: 'inline-block', width: '60px', height: '5px', backgroundColor: '#6FEDEE', borderRadius: '3px', marginBottom: '1rem' }}></span>
+              </div>
               <RevealWords
                 as="h1"
                 text={t('title')}
-                className="fw-bold mb-3"
-                style={{ color: "#ffd400" }}
+                className="display-4 fw-bold mb-3"
+                style={{ color: "#ffffff", letterSpacing: '-1px' }}
               />
-              <Reveal as="p" delay={1} className="lead mb-5">{t('intro')}</Reveal>
+              <Reveal as="p" delay={1} className="lead mb-3 mx-auto" style={{ maxWidth: '800px', color: 'rgba(226, 223, 223, 0.9)' }}>
+                {t('intro')}
+              </Reveal>
 
-              {/* Bloques misión y visión con íconos */}
-              <div className="row g-4">
+              {/* Bloques misión y visión */}
+              <div className="row g-4 mt-2">
                 <Reveal variant="scale" delay={2} className="col-md-6">
-                  <div className="p-4 bg-white rounded shadow text-dark h-100 tarjeta-quimica">
-                    <FaBullseye size={40} color="#0054a6" className="mb-3" />
-                    <h5 className="fw-bold" style={{ color: "#0054a6" }}>
+                  <div className="p-4 bg-white rounded-4 shadow-lg text-dark h-100 tarjeta-quimica" style={{ borderTop: '5px solid #1E127E', transition: 'transform 0.3s ease', paddingBottom: '3.5rem !important' }}>
+                    <FaBullseye size={45} color="#1E127E" className="mb-3" />
+                    <h4 className="fw-bold mb-3" style={{ color: "#1E127E" }}>
                       {t('missionTitle')}
-                    </h5>
-                    <p>{t('missionText')}</p>
+                    </h4>
+                    <p className="mb-3" style={{ fontSize: '1.05rem', color: '#444' }}>{t('missionText')}</p>
                   </div>
                 </Reveal>
 
                 <Reveal variant="scale" delay={3} className="col-md-6">
-                  <div className="p-4 bg-white rounded shadow text-dark h-100 tarjeta-quimica">
-                    <FaEye size={40} color="#0054a6" className="mb-3" />
-                    <h5 className="fw-bold" style={{ color: "#0054a6" }}>
+                  <div className="p-4 bg-white rounded-4 shadow-lg text-dark h-100 tarjeta-quimica" style={{ borderTop: '5px solid #1E127E', transition: 'transform 0.3s ease', paddingBottom: '3.5rem !important' }}>
+                    <FaEye size={45} color="#1E127E" className="mb-3" />
+                    <h4 className="fw-bold mb-3" style={{ color: "#1E127E" }}>
                       {t('visionTitle')}
-                    </h5>
-                    <p>{t('visionText')}</p>
+                    </h4>
+                    <p className="mb-3" style={{ fontSize: '1.05rem', color: '#444' }}>{t('visionText')}</p>
                   </div>
                 </Reveal>
               </div>
@@ -72,9 +78,6 @@ export default async function About({ params }) {
           </div>
         </div>
       </section>
-
-      {/* Separador */}
-      <section style={{ backgroundColor: "#ffffff", height: "50px" }}></section>
 
       <Footer />
     </>

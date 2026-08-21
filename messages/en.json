@@ -7,6 +7,14 @@
     "visionTitle": "Vision",
     "visionText": "To become the leading student reference for scientific dissemination and professional development in the field of chemistry in Peru."
   },
+  "featuredEvent": {
+    "title": "Don't miss our next event!",
+    "noImage": "No image available",
+    "date": "Date: ",
+    "time": "Time: ",
+    "register": "Register Now!",
+    "details": "Learn more"
+  },
   "navbar": {
     "home": "Home",
     "about": "About",
@@ -26,8 +34,17 @@
     "title": "Welcome to ACS UNMSM",
     "description1": "We are the official student section of the American Chemical Society at UNMSM.",
     "description2": "We promote chemistry with purpose, from San Marcos to the world.",
-    "follow": "Follow us on our social networks",
-    "copyright": "© {year} ACS UNMSM Student Chapter. All rights reserved."
+    "follow": "Follow us",
+    "getToKnowUs": "GET TO KNOW US",
+    "getInvolved": "GET INVOLVED",
+    "home": "Home",
+    "about": "About ACS",
+    "officers": "Officers",
+    "events": "Events",
+    "news": "News",
+    "contact": "Contact",
+    "join": "Join Us",
+    "copyright": "Copyright © {year} ACS UNMSM Student Chapter"
   },
   "debug": {
     "title": "This is a debug page",
@@ -46,6 +63,7 @@
   },
   "officers": {
     "title": "Chapter officers",
+    "intro": "Meet the team of student leaders driving science, development, and our community at the National University of San Marcos.",
     "roles": {
       "facultyAdvisor": "Faculty Advisor",
       "president": "President",
@@ -78,8 +96,29 @@
   },
   "events": {
     "title": "Events",
+    "intro": "Discover and participate in activities, conferences, and workshops organized for our community.",
     "loadingMessage": "Loading events and verifying auth...",
-    "errorFetch": "Events could not be loaded. Please try again."
+    "errorFetch": "Events could not be loaded. Please try again.",
+    "searchPlaceholder": "Search events by title or description...",
+    "searchButton": "Search",
+    "logout": "Logout",
+    "noEventsSearch": "No events found for: ",
+    "noEventsEmpty": "No events available at this moment.",
+    "statusExpired": "Expired",
+    "statusNext": "Upcoming",
+    "noImage": "No image",
+    "detailsButton": "Learn more",
+    "registerButton": "Register",
+    "expiredButton": "Expired",
+    "editButton": "Edit",
+    "deleteButton": "Delete",
+    "modeInPerson": "In-person",
+    "modeVirtual": "Virtual",
+    "alertExpired": "Sorry, this event is expired! We look forward to seeing you at the next one.",
+    "deleteConfirm": "Are you sure you want to delete this event? This action cannot be undone.",
+    "deleteSuccess": "Event successfully deleted.",
+    "logoutError": "Could not log out. Please try again.",
+    "logoutSuccess": "Logged out successfully."
   },
   "heroCarousel": {
     "slide1": "Join the most active chemistry community in San Marcos",
