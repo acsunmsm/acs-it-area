@@ -15,8 +15,11 @@ export default async function About({ params }) {
 
       {/* Hero con imagen de fondo */}
       <section
-        className="hero-section py-3 text-white"
+        className="hero-section text-white"
         style={{
+          marginTop: '-76px',
+          paddingTop: 'calc(76px + 1rem)',
+          paddingBottom: '1rem',
           backgroundImage: "url('/assets/img/about.jpg')", // pon aquí tu imagen
           backgroundSize: "cover",
           backgroundPosition: "center",

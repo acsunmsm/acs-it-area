@@ -39,7 +39,7 @@ export default async function Officers({ params }) {
   const officers = [
     [facultyAdvisor, 'PhD Jose Orlando Calvay Castillo', 'advisor@acs-unmsm.org', 'josecalvay.png'],
     [president, 'Breiner Smith Fuentes Bulnes', 'president@acs-unmsm.org', 'breiner_fuentes.jpg'],
-    [vicePresident, 'Geraldine Campos Arias', 'president@acs-unmsm.org', 'geraldine_campos.jpg'],
+    [vicePresident, 'Geraldine Campos Arias', 'vicepresident@acs-unmsm.org', 'geraldine_campos.jpg'],
     [treasurer, 'Yaquelin Cristina Juana Rivera Antonio', 'treasurer@acs-unmsm.org', 'yaquelin_rivera.jpeg'],
     [secretary, 'Jean Franco Toledo Rodriguez', 'secretary@acs-unmsm.org', 'jean_toledo.jpg'],
     [marketingCoordinator, 'Rosario Cinthya Yaya Paitan', 'chief.marketing@acs-unmsm.org', 'rosario_yaya.jpg'],
@@ -53,7 +53,7 @@ export default async function Officers({ params }) {
     [cio, 'Gonzalo Manuel Aguilar Espinoza', 'cio@acs-unmsm.org', 'gonzalo.jpg'],
     [dcio, 'Paolo Jesus Pichilingue La Torre', 'dcio@acs-unmsm.org', 'paolo.jpeg'],
     [k12Coordinator, 'Lucero Lidia Ventura Cruz', 'k12@acs-unmsm.org', 'lucero_ventura.jpg'],
-    [k12SubCoordinator, 'Ricardo Gomez', 'subk12@acs-unmsm.org', 'ricardo.jpg']
+    [k12SubCoordinator, 'Ricardo Gomez', 'subk12@acs-unmsm.org', 'ricardo.jpeg']
   ];
 
   return (
@@ -64,7 +64,8 @@ export default async function Officers({ params }) {
         className="hero-section text-white d-flex align-items-center"
         style={{
           minHeight: '35vh',
-          paddingTop: '70px',
+          marginTop: '-76px',
+          paddingTop: '146px', // 70 + 76
           paddingBottom: '60px',
           background: 'linear-gradient(135deg, #3624D1 0%, #1E127E 100%)',
           position: 'relative',

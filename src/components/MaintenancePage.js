@@ -9,7 +9,7 @@ export default function MaintenancePage({ title, description }) {
   const locale = useLocale();
 
   return (
-    <div className="maintenance-wrapper">
+    <div className="maintenance-wrapper" style={{ marginTop: '-76px', paddingTop: '76px' }}>
       <div className="maintenance-container">
 
         <div className="maintenance-badge">

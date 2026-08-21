@@ -46,13 +46,17 @@ export default function Navbar() {
   return (
     <>
       <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-custom fixed-top">
-        <div className="container">
-          <Link href={`/${locale}`} className="navbar-brand py-2">
+        <div className="container d-flex flex-wrap align-items-center justify-content-between">
+          {/* Spacer to center logo on mobile */}
+          <div className="d-lg-none" style={{ width: '56px' }}></div>
+          <Link href={`/${locale}`} className="navbar-brand py-2 mx-auto mx-lg-0 text-center">
             <Image
               src="/assets/img/LogoB.png"
               alt="Logo"
               width={250}
               height={71}
+              quality={100}
+              unoptimized
               priority
             />
           </Link>
@@ -171,55 +175,6 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* Tus estilos CSS existentes */}
-      <style jsx>{`
-        .nav-link-custom {
-          font-size: 0.9rem;
-        }
-        .nav-icon {
-          font-size: 20px;
-          color: rgb(79, 79, 79);
-          transition: all 0.2s ease;
-        }
-        .nav-icon-link:hover .nav-icon {
-          color: #0054a6;
-          transform: scale(1.1);
-        }
-        .dropdown-toggle {
-          color: #333;
-          text-decoration: none;
-          padding: 8px;
-        }
-        .dropdown-toggle:after {
-          display: none;
-        }
-        .dropdown-toggle:hover {
-          color: #0054a6;
-        }
-        .dropdown-menu {
-          border: none;
-          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-          border-radius: 8px;
-          overflow: hidden;
-        }
-        .dropdown-item {
-          font-size: 14px;
-          padding: 8px 16px;
-          cursor: pointer;
-        }
-        .dropdown-item:hover {
-          background-color: #f0f5ff;
-          color: #0054a6;
-        }
-        .btn-primary:hover {
-          background-color: #0056b3 !important;
-          border-color: #0056b3 !important;
-        }
-        .btn-primary[style*="background-color: rgb(40, 167, 69)"]:hover {
-          background-color: #218838 !important;
-          border-color: #1e7e34 !important;
-        }
-      `}</style>
     </>
   );
 }
