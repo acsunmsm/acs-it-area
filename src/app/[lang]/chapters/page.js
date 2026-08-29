@@ -95,13 +95,13 @@ export default async function Officers({ params }) {
         {/* Elementos gráficos de Química (Collage de fondo) */}
         <div style={{ position: 'absolute', right: '0', top: '0', width: '50%', height: '100%', pointerEvents: 'none', zIndex: 0 }}>
           {/* Matraz principal */}
-          <i className="fa fa-flask" style={{ position: 'absolute', right: '15%', top: '15%', transform: 'rotate(15deg)', fontSize: '180px', color: 'rgba(255, 255, 255, 0.15)' }}></i>
+          <i className="fa fa-flask" style={{ position: 'absolute', right: '15%', top: '35%', transform: 'rotate(15deg)', fontSize: '180px', color: 'rgba(255, 255, 255, 0.15)' }}></i>
           {/* Enlaces moleculares */}
-          <i className="fa fa-share-alt" style={{ position: 'absolute', right: '5%', bottom: '10%', transform: 'rotate(-25deg)', fontSize: '150px', color: 'rgba(111, 237, 238, 0.15)' }}></i>
+          <i className="fa fa-share-alt" style={{ position: 'absolute', right: '5%', bottom: '0%', transform: 'rotate(-25deg)', fontSize: '150px', color: 'rgba(111, 237, 238, 0.15)' }}></i>
           {/* Estructura cristalina/cubos */}
           <i className="fa fa-cubes" style={{ position: 'absolute', right: '35%', top: '55%', transform: 'translateY(-50%) rotate(10deg)', fontSize: '110px', color: 'rgba(255, 212, 0, 0.12)' }}></i>
           {/* Ideas/Ciencia */}
-          <i className="fa fa-lightbulb-o" style={{ position: 'absolute', right: '28%', top: '5%', transform: 'rotate(-15deg)', fontSize: '70px', color: 'rgba(255, 255, 255, 0.1)' }}></i>
+          <i className="fa fa-lightbulb-o" style={{ position: 'absolute', right: '28%', top: '25%', transform: 'rotate(-15deg)', fontSize: '70px', color: 'rgba(255, 255, 255, 0.1)' }}></i>
           {/* Pequeños nodos decorativos */}
           <div style={{ position: 'absolute', right: '40%', bottom: '25%', width: '15px', height: '15px', backgroundColor: 'rgba(111, 237, 238, 0.3)', borderRadius: '50%' }}></div>
           <div style={{ position: 'absolute', right: '20%', bottom: '45%', width: '10px', height: '10px', backgroundColor: 'rgba(255, 212, 0, 0.3)', borderRadius: '50%' }}></div>

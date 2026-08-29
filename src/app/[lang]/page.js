@@ -20,7 +20,7 @@ export default async function HomePage({ params }) {
         <div className="container">
           <div className="row hero-content align-items-center">
             <div className="col-md-6 hero-image text-center">
-              <img src="/assets/img/main.png" alt="Hero Image" className="img-fluid" />
+              <img src="/assets/img/Inicio2.jpg" alt="Hero Image" className="img-fluid" />
             </div>
             <div className="col-md-6 hero-text mt-4 mt-md-0">
               <h1>{t('welcome')}</h1>
