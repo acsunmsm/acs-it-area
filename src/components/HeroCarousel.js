@@ -5,7 +5,7 @@ import '@/src/assets/styles/hero.css';
 
 export default function HeroCarousel() {
   const t = useTranslations('homePage');
-  
+
   const handleScroll = (e) => {
     e.preventDefault();
     const section = document.querySelector('.hero-section');

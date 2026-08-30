@@ -234,18 +234,18 @@ export default function EventsPage() {
             background: 'radial-gradient(circle, rgba(255,212,0,0.08) 0%, rgba(0,0,0,0) 70%)',
             borderRadius: '50%'
           }}></div>
-  
+
           {/* Elemento gráfico de Química (Marca de agua) */}
           <i className="fa fa-flask" style={{
             position: 'absolute',
             right: '5%',
-            top: '50%',
+            top: '57%',
             transform: 'translateY(-50%) rotate(15deg)',
             fontSize: '250px',
             color: 'rgba(255, 255, 255, 0.15)',
             zIndex: 0
           }}></i>
-  
+
           <div className="container position-relative z-1 text-md-start text-center">
             <div className="mb-2">
               <span style={{
@@ -314,18 +314,18 @@ export default function EventsPage() {
             background: 'radial-gradient(circle, rgba(255,212,0,0.08) 0%, rgba(0,0,0,0) 70%)',
             borderRadius: '50%'
           }}></div>
-  
+
           {/* Elemento gráfico de Química (Marca de agua) */}
           <i className="fa fa-flask" style={{
             position: 'absolute',
             right: '5%',
-            top: '50%',
+            top: '57%',
             transform: 'translateY(-50%) rotate(15deg)',
             fontSize: '250px',
             color: 'rgba(255, 255, 255, 0.15)',
             zIndex: 0
           }}></i>
-  
+
           <div className="container position-relative z-1 text-md-start text-center">
             <div className="mb-2">
               <span style={{
@@ -393,18 +393,18 @@ export default function EventsPage() {
           background: 'radial-gradient(circle, rgba(255,212,0,0.08) 0%, rgba(0,0,0,0) 70%)',
           borderRadius: '50%'
         }}></div>
-  
+
         {/* Elemento gráfico de Química (Marca de agua) */}
         <i className="fa fa-flask" style={{
           position: 'absolute',
           right: '5%',
-          top: '50%',
+          top: '57%',
           transform: 'translateY(-50%) rotate(15deg)',
           fontSize: '250px',
           color: 'rgba(255, 255, 255, 0.15)',
           zIndex: 0
         }}></i>
-  
+
         <div className="container position-relative z-1 text-md-start text-center">
           <div className="mb-2">
             <span style={{
