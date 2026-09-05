@@ -1,43 +1,106 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
 import Navbar from '@/src/components/Navbar';
 import Footer from '@/src/components/Footer';
 import Reveal, { RevealWords } from '@/src/components/Reveal';
 import { useTranslations, useLocale } from 'next-intl';
+import useAuth from '@/src/hooks/useAuth';
+import { supabase } from '@/src/lib/supabaseClient';
+import NewsModal from '@/src/components/NewsModal';
+import NoticiaForm from '@/src/components/NoticiaForm';
 
-const NEWS_ARTICLES = [
-  {
-    id: 'prueba-1',
-    category: 'logro',
-    image: '/assets/img/Fondo3.jpeg',
-    date: {
-      es: '2 de Setiembre de 2026',
-      en: 'September 2, 2026'
-    },
-    title: {
-      es: 'Noticia de prueba noticia de prueba',
-      en: 'Noticia de prueba noticia de prueba'
-    },
-    excerpt: {
-      es: 'Noticia de prueba noticia de prueba Noticia de prueba noticia de prueba',
-      en: 'Noticia de prueba noticia de prueba Noticia de prueba noticia de prueba'
-    }
-  }
-];
+const DEFAULT_LOCAL_ARTICLES = [];
 
 export default function NewsPage() {
+  const router = useRouter();
   const t = useTranslations('news');
   const locale = useLocale();
 
+  const { session } = useAuth();
+  const isAuthenticated = !!session;
+
+  const [articles, setArticles] = useState(DEFAULT_LOCAL_ARTICLES);
   const [selectedCategory, setSelectedCategory] = useState('todos');
   const [searchTerm, setSearchTerm] = useState('');
+  const [showModal, setShowModal] = useState(false);
+  const [selectedArticle, setSelectedArticle] = useState(null);
+  const [loadingArticles, setLoadingArticles] = useState(true);
 
   const categories = ['todos', 'logro', 'convocatoria', 'comunidad'];
 
+  // Carga de noticias desde Supabase con fallback automático y seguro
+  const fetchArticles = useCallback(async () => {
+    setLoadingArticles(true);
+    try {
+      const { data, error } = await supabase
+        .from('noticias')
+        .select('*')
+        .order('fecha', { ascending: false });
+
+      if (error) {
+        console.warn('Supabase noticias no disponible o error al consultar:', error.message);
+        setArticles([]);
+      } else {
+        const formatted = (data || []).map((item) => {
+          let dateEs = item.fecha || '';
+          let dateEn = item.fecha || '';
+          if (item.fecha) {
+            try {
+              const parsedDate = new Date(`${item.fecha}T12:00:00`);
+              dateEs = parsedDate.toLocaleDateString('es-ES', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric',
+              });
+              dateEn = parsedDate.toLocaleDateString('en-US', {
+                month: 'long',
+                day: 'numeric',
+                year: 'numeric',
+              });
+            } catch (err) {
+              console.warn('Error formateando fecha:', err);
+            }
+          }
+
+          return {
+            id: item.id,
+            category: item.categoria || 'logro',
+            image: item.imagen_url || '/assets/img/Fondo3.jpeg',
+            date: {
+              es: dateEs,
+              en: dateEn,
+            },
+            title: {
+              es: item.titulo,
+              en: item.titulo,
+            },
+            excerpt: {
+              es: item.extracto,
+              en: item.extracto,
+            },
+            contenido: item.contenido,
+            rawArticle: item,
+          };
+        });
+        setArticles(formatted);
+      }
+    } catch (err) {
+      console.warn('Excepción al consultar noticias:', err);
+      setArticles([]);
+    } finally {
+      setLoadingArticles(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchArticles();
+  }, [fetchArticles]);
+
   // Filtrado de noticias según categoría y búsqueda
   const filteredArticles = useMemo(() => {
-    return NEWS_ARTICLES.filter((article) => {
+    return articles.filter((article) => {
       const matchCategory =
         selectedCategory === 'todos' || article.category === selectedCategory;
 
@@ -52,10 +115,56 @@ export default function NewsPage() {
 
       return matchCategory && matchSearch;
     });
-  }, [selectedCategory, searchTerm, locale]);
+  }, [articles, selectedCategory, searchTerm, locale]);
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
+  };
+
+  const handleArticleClick = (articleId) => {
+    router.push(`/${locale}/news/${articleId}`);
+  };
+
+  const handleCreateClick = () => {
+    setSelectedArticle(null);
+    setShowModal(true);
+  };
+
+  const handleEditClick = (e, article) => {
+    e.stopPropagation();
+    setSelectedArticle(article.rawArticle || article);
+    setShowModal(true);
+  };
+
+  const handleDeleteClick = async (e, article) => {
+    e.stopPropagation();
+    if (window.confirm(t('deleteConfirm') || '¿Estás seguro de eliminar esta noticia?')) {
+      try {
+        if (article.id) {
+          const raw = article.rawArticle;
+          if (raw?.imagen_url && raw.imagen_url.includes('/public/')) {
+            const parts = raw.imagen_url.split('/public/');
+            if (parts.length > 1) {
+              const afterPublic = parts[1].split('/');
+              const bucket = afterPublic[0];
+              const pathInBucket = afterPublic.slice(1).join('/');
+              if (bucket && pathInBucket) {
+                await supabase.storage.from(bucket).remove([pathInBucket]);
+              }
+            }
+          }
+
+          const { error } = await supabase.from('noticias').delete().eq('id', article.id);
+          if (error) throw error;
+        }
+
+        alert(t('deleteSuccess') || 'Noticia eliminada exitosamente.');
+        fetchArticles();
+      } catch (err) {
+        console.error('Error al eliminar noticia:', err);
+        alert(err.message || 'Error al eliminar la noticia.');
+      }
+    }
   };
 
   return (
@@ -103,7 +212,7 @@ export default function NewsPage() {
           }}
         ></div>
 
-        {/* Marcas de agua institucionales: Periódico y Matraz */}
+        {/* Marcas de agua institucionales: Periódico */}
         <i
           className="fa fa-newspaper-o news-hero-watermark"
           style={{
@@ -179,6 +288,15 @@ export default function NewsPage() {
       </div>
 
       <main className="container" style={{ flexGrow: 1 }}>
+        {/* Barra de administración para usuarios autenticados */}
+        {isAuthenticated && (
+          <div className="news-admin-toolbar">
+            <button onClick={handleCreateClick} className="news-create-btn">
+              <i className="fas fa-plus-circle"></i> {t('createButton') || 'Crear Nueva Noticia'}
+            </button>
+          </div>
+        )}
+
         {/* Pills de Filtrado por Categoría */}
         <div className="news-category-pills">
           {categories.map((cat) => (
@@ -194,12 +312,13 @@ export default function NewsPage() {
               ) : (
                 <>
                   <i
-                    className={`fas ${cat === 'logro'
-                      ? 'fa-trophy'
-                      : cat === 'convocatoria'
+                    className={`fas ${
+                      cat === 'logro'
+                        ? 'fa-trophy'
+                        : cat === 'convocatoria'
                         ? 'fa-bullhorn'
                         : 'fa-users'
-                      }`}
+                    }`}
                   ></i>
                   {t(`categorias.${cat}`)}
                 </>
@@ -218,7 +337,17 @@ export default function NewsPage() {
 
               return (
                 <Reveal key={article.id} delay={index % 3}>
-                  <article className="news-row-card">
+                  <article
+                    className="news-row-card"
+                    onClick={() => handleArticleClick(article.id)}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        handleArticleClick(article.id);
+                      }
+                    }}
+                  >
                     <div className="news-row-image-box">
                       <img src={article.image} alt={title} className="news-row-image" />
                     </div>
@@ -233,7 +362,29 @@ export default function NewsPage() {
                         <h2 className="news-row-title">{title}</h2>
                         <p className="news-row-excerpt">{excerpt}</p>
                       </div>
+
                       <div className="news-row-footer">
+                        {isAuthenticated && (
+                          <div className="news-admin-actions" onClick={(e) => e.stopPropagation()}>
+                            <button
+                              type="button"
+                              onClick={(e) => handleEditClick(e, article)}
+                              className="btn-news-action btn-news-edit"
+                              title={t('editButton') || 'Editar'}
+                            >
+                              <i className="fas fa-edit"></i> {t('editButton') || 'Editar'}
+                            </button>
+                            <button
+                              type="button"
+                              onClick={(e) => handleDeleteClick(e, article)}
+                              className="btn-news-action btn-news-delete"
+                              title={t('deleteButton') || 'Eliminar'}
+                            >
+                              <i className="fas fa-trash-alt"></i> {t('deleteButton') || 'Eliminar'}
+                            </button>
+                          </div>
+                        )}
+
                         <span className="news-row-vermas">
                           {t('leerMas')} <i className="fas fa-chevron-right ms-1"></i>
                         </span>
@@ -247,7 +398,7 @@ export default function NewsPage() {
         )}
 
         {/* Estado Vacío si no hay resultados */}
-        {filteredArticles.length === 0 && (
+        {filteredArticles.length === 0 && !loadingArticles && (
           <div className="news-empty-container">
             <i className="fas fa-newspaper news-empty-icon"></i>
             <h3 className="fw-bold mb-2 text-dark">{t('noNewsTitle')}</h3>
@@ -266,6 +417,31 @@ export default function NewsPage() {
       </main>
 
       <Footer />
+
+      {/* Modal para Crear / Editar Noticia */}
+      {showModal && (
+        <NewsModal
+          show={showModal}
+          onClose={() => {
+            setShowModal(false);
+            setSelectedArticle(null);
+          }}
+          title={selectedArticle ? 'Editar Noticia' : 'Publicar Nueva Noticia'}
+        >
+          <NoticiaForm
+            article={selectedArticle}
+            onSave={() => {
+              fetchArticles();
+              setShowModal(false);
+              setSelectedArticle(null);
+            }}
+            onCancel={() => {
+              setShowModal(false);
+              setSelectedArticle(null);
+            }}
+          />
+        </NewsModal>
+      )}
     </div>
   );
 }
