@@ -11,6 +11,8 @@ import Link from 'next/link';
 import EventModal from '../../../components/EventModal';
 import Navbar from '../../../components/Navbar'
 import UserRegistrationsModal from '../../../components/UserRegistrationsModal';
+import NewsModal from '../../../components/NewsModal';
+import NoticiaForm from '../../../components/NoticiaForm';
 
 export default function DashboardPage() {
 
@@ -20,6 +22,7 @@ export default function DashboardPage() {
 
   // Estados para mostrar/ocultar formularios o modales
   const [showEventForm, setShowEventForm] = useState(false);
+  const [showNewsForm, setShowNewsForm] = useState(false);
   const [showUserRegistrationsModal, setShowUserRegistrationsModal] = useState(false);
 
   useEffect(() => {
@@ -82,6 +85,15 @@ export default function DashboardPage() {
               Crear Nuevo Evento
             </button>
 
+            {/* 🆕 Botón Publicar Noticia */}
+            <button
+              onClick={() => setShowNewsForm(true)}
+              className="dashboard-button btn-purple"
+            >
+              <i className="fas fa-newspaper button-icon-fa"></i>
+              Publicar Noticia
+            </button>
+
             {/* 🆕 BOTÓN Ver Usuarios Registrados AHORA ES UN LINK */}
             <Link href={`/${router.query?.lang || 'es'}/dashboard/event-registrations`} passHref legacyBehavior>
               <a className="dashboard-button btn-green">
@@ -109,6 +121,20 @@ export default function DashboardPage() {
       >
         <EventoForm />
       </EventModal>
+
+      <NewsModal
+        show={showNewsForm}
+        onClose={() => setShowNewsForm(false)}
+        title="Publicar Nueva Noticia"
+      >
+        <NoticiaForm
+          onSave={() => {
+            setShowNewsForm(false);
+            router.push('/es/news');
+          }}
+          onCancel={() => setShowNewsForm(false)}
+        />
+      </NewsModal>
 
       <UserRegistrationsModal
         show={showUserRegistrationsModal}
@@ -268,6 +294,20 @@ export default function DashboardPage() {
         .btn-blue:hover {
           background-color: #0056b3;
           box-shadow: 0 12px 25px rgba(0, 123, 255, 0.35);
+        }
+
+        .btn-purple {
+          background-color: #412BFD;
+          box-shadow: 0 8px 20px rgba(65, 43, 253, 0.25);
+        }
+        .btn-purple:hover {
+          background-color: #1E127E;
+          box-shadow: 0 12px 25px rgba(30, 18, 126, 0.35);
+        }
+
+        .button-icon-fa {
+          font-size: 26px;
+          margin-right: 2px;
         }
 
         /* Estilo para los iconos dentro de los botones */

@@ -188,6 +188,12 @@
     "noNewsTitle": "No news articles found",
     "noNewsText": "Try searching with different terms or selecting another category.",
     "clearFilters": "View all news",
+    "createButton": "Create New Article",
+    "editButton": "Edit",
+    "deleteButton": "Delete",
+    "deleteConfirm": "Are you sure you want to delete this article? This action cannot be undone.",
+    "deleteSuccess": "News article deleted successfully.",
+    "backButton": "Back to News",
     "categorias": {
       "logro": "Achievement",
       "convocatoria": "Open call",
