@@ -179,13 +179,16 @@
     }
   },
   "news": {
-    "title": "News",
-    "intro": "What is happening in the chapter: events, achievements by our members and open calls.",
-    "cabecera": "Chapter bulletin",
-    "edicion": "Student edition",
-    "leerMas": "Read the full story",
+    "title": "News & Updates",
+    "intro": "Discover the latest announcements, achievements and open calls from our student chemical community at UNMSM.",
+    "leerMas": "Read more",
+    "searchPlaceholder": "Search news by title or topic...",
+    "searchButton": "Search",
+    "allCategories": "All",
+    "noNewsTitle": "No news articles found",
+    "noNewsText": "Try searching with different terms or selecting another category.",
+    "clearFilters": "View all news",
     "categorias": {
-      "evento": "Event",
       "logro": "Achievement",
       "convocatoria": "Open call",
       "comunidad": "Community"

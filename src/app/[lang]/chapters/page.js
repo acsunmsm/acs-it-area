@@ -130,6 +130,7 @@ export default async function Officers({ params }) {
         </div>
       </section>
       <OfficersList officers={officers} title={t('title')} />
+
       <Footer />
     </>
   );

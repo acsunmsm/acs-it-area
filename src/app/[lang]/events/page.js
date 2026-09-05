@@ -23,7 +23,6 @@ export default function EventsPage() {
   const [showEditModal, setShowEditModal] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
 
-  // Estados para la búsqueda
   const [currentSearchInput, setCurrentSearchInput] = useState('');
   const [actualSearchTerm, setActualSearchTerm] = useState('');
 

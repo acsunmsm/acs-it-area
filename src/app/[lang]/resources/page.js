@@ -1,33 +1,11 @@
+'use client';
+
+import { useState } from 'react';
 import Navbar from '@/src/components/Navbar';
 import Footer from '@/src/components/Footer';
 import Reveal, { RevealLetters } from '@/src/components/Reveal';
-import { getTranslations } from 'next-intl/server';
+import { useTranslations } from 'next-intl';
 
-/**
- * RECURSOS — /es/resources
- *
- * La sección "biblioteca" del capítulo. Es la primera página que
- * estrena un tema propio (ver src/assets/styles/temas.css):
- *
- *   · Beige de papel en lugar del blanco del resto de la web
- *   · Tinta marrón, no azul
- *   · Renglones muy tenues de fondo, como los de un cuaderno
- *   · Las fichas se desplazan a la DERECHA al pasar el ratón, como
- *     al sacar una ficha de un fichero de catálogo — no rebotan
- *     hacia arriba como las tarjetas de Eventos
- *
- * El movimiento aquí es más corto y más lento que en Eventos, a
- * propósito: una biblioteca es un sitio donde se consulta con calma.
- * El contraste entre secciones es lo que hace que cada una tenga
- * carácter propio; si todas se movieran igual, no habría concepto.
- *
- * Es una página de SERVIDOR: no necesita interactividad, así que
- * llega al navegador ya hecha. Google la lee entera y carga rápido.
- */
-
-// Los recursos se declaran aquí, en un solo sitio. Para añadir uno,
-// se añade una entrada a esta lista y sus textos a los dos JSON de
-// messages/. El `id` es la clave que se busca en las traducciones.
 const RECURSOS = [
   { id: 'pubchem', categoria: 'bases', url: 'https://pubchem.ncbi.nlm.nih.gov/' },
   { id: 'nist', categoria: 'bases', url: 'https://webbook.nist.gov/chemistry/' },
@@ -41,20 +19,17 @@ const RECURSOS = [
 
 const ORDEN_CATEGORIAS = ['bases', 'herramientas', 'revistas', 'formacion'];
 
-export default async function ResourcesPage({ params }) {
-  const { lang } = await params;
-  const t = await getTranslations({ locale: lang, namespace: 'resources' });
+export default function ResourcesPage() {
+  const t = useTranslations('resources');
+  const [filtro, setFiltro] = useState('todas');
 
   return (
     <main className="tema-biblioteca">
       <Navbar />
 
       {/* ---------- Cabecera ---------- */}
-      <section className="fondo-papel pb-5" style={{ marginTop: '-76px', paddingTop: 'calc(76px + 3rem)' }}>
+      <section className="fondo-papel pb-4" style={{ marginTop: '-76px', paddingTop: 'calc(76px + 3rem)' }}>
         <div className="container text-center">
-          {/* Seis lomos de libro que "respiran" muy despacio.
-              Es el equivalente en biblioteca al átomo girando de Eventos:
-              el mismo papel, distinto concepto. */}
           <Reveal className="estante" aria-hidden="true">
             <span /><span /><span /><span /><span /><span />
           </Reveal>
@@ -66,12 +41,29 @@ export default async function ResourcesPage({ params }) {
             style={{ color: 'var(--tema-tinta)' }}
           />
 
-          <Reveal as="p" delay={1} className="lead mx-auto" style={{ maxWidth: '640px', color: 'var(--tema-suave)' }}>
+          <Reveal as="p" delay={1} className="lead mx-auto mb-4" style={{ maxWidth: '640px', color: 'var(--tema-suave)' }}>
             {t('intro')}
           </Reveal>
 
-          <Reveal delay={2} className="separador-enlace" aria-hidden="true">
-            <span />
+          {/* Filtros */}
+          <Reveal delay={1.5} className="d-flex justify-content-center flex-wrap gap-2 mb-4">
+            <button 
+              onClick={() => setFiltro('todas')}
+              className={`btn rounded-pill px-4 ${filtro === 'todas' ? 'btn-dark' : 'btn-outline-dark'}`}
+              style={{ fontWeight: 600 }}
+            >
+              Todos
+            </button>
+            {ORDEN_CATEGORIAS.map(cat => (
+              <button 
+                key={cat}
+                onClick={() => setFiltro(cat)}
+                className={`btn rounded-pill px-4 ${filtro === cat ? 'btn-dark' : 'btn-outline-dark'}`}
+                style={{ fontWeight: 600 }}
+              >
+                {t(`categorias.${cat}`)}
+              </button>
+            ))}
           </Reveal>
 
           <Reveal
@@ -91,10 +83,12 @@ export default async function ResourcesPage({ params }) {
         </div>
       </section>
 
-      {/* ---------- Fichas, agrupadas por categoría ---------- */}
+      {/* ---------- Fichas ---------- */}
       <section className="pb-5 fondo-papel">
         <div className="container">
           {ORDEN_CATEGORIAS.map((categoria) => {
+            if (filtro !== 'todas' && filtro !== categoria) return null;
+            
             const delCategoria = RECURSOS.filter((r) => r.categoria === categoria);
             if (delCategoria.length === 0) return null;
 
@@ -116,9 +110,6 @@ export default async function ResourcesPage({ params }) {
                   {delCategoria.map((recurso, idx) => (
                     <Reveal
                       key={recurso.id}
-                      /* El retraso se reinicia cada 3 elementos. En una
-                         lista larga, la última ficha tardaría más de un
-                         segundo y la página se sentiría lenta. */
                       delay={idx % 3}
                       className="col-md-6 col-lg-4"
                     >
@@ -136,11 +127,6 @@ export default async function ResourcesPage({ params }) {
                         </p>
 
                         {recurso.url && (
-                          /* rel="noopener noreferrer" en todo enlace externo
-                             que abra pestaña nueva: sin "noopener", la página
-                             de destino puede manipular la nuestra desde
-                             JavaScript (window.opener). Es una línea y cierra
-                             un agujero conocido. */
                           <a
                             className="ficha-recurso__enlace"
                             href={recurso.url}
