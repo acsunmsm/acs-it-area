@@ -70,7 +70,7 @@ export default function RootLayout({ children }) {
           crossOrigin="anonymous"
           referrerPolicy="no-referrer"
         />
-        <link rel="icon" href="assets/img/icon3.png" />
+        <link rel="icon" href="assets/img/Icon3a.png" />
         {/*
           Marca el <html> con la clase "js-reveal" ANTES de que el navegador
           pinte la página. Sin esto el contenido aparecería un instante y

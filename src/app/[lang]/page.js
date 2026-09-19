@@ -37,17 +37,6 @@ export default async function HomePage({ params }) {
                   strong: (chunks, i) => <strong key={`welcome3-${i}`}>{chunks}</strong>
                 })}
               </p>
-              <button
-                className="btn btn-primary mt-3"
-                style={{
-                  backgroundColor: '#ffd400',
-                  color: '#000',
-                  border: 'none',
-                  fontWeight: 'bold'
-                }}
-              >
-                {t('JoinUs')}
-              </button>
             </div>
           </div>
         </div>
