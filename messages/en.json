@@ -43,7 +43,6 @@
     "events": "Events",
     "news": "News",
     "contact": "Contact",
-    "join": "Join Us",
     "copyright": "Copyright © {year} ACS UNMSM Student Chapter"
   },
   "debug": {
@@ -67,6 +66,7 @@
     "roles": {
       "facultyAdvisor": "Faculty Advisor",
       "president": "President",
+      "president2": "President",
       "vicePresident": "Vice President",
       "treasurer": "Treasurer",
       "secretary": "Secretary",
