@@ -24,6 +24,7 @@
     "contact": "Contact",
     "news": "News",
     "resources": "Resources",
+    "chemtools": "ChemTools",
     "dashboard": "Dashboard",
     "login": "Login",
     "language": "Language",
@@ -155,6 +156,10 @@
       "rsc": {
         "titulo": "Royal Society of Chemistry",
         "texto": "Journals, teaching material and outreach resources from the British chemical society."
+      },
+      "chemtools": {
+        "titulo": "ChemTools",
+        "texto": "Interactive tools and utilities for analysis, calculations, and visualization in chemistry."
       },
       "chemdraw": {
         "titulo": "Structure drawing",

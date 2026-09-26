@@ -1,15 +1,17 @@
 'use client';
 
+import Link from 'next/link';
 import { useState } from 'react';
 import Navbar from '@/src/components/Navbar';
 import Footer from '@/src/components/Footer';
 import Reveal, { RevealLetters } from '@/src/components/Reveal';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 
 const RECURSOS = [
   { id: 'pubchem', categoria: 'bases', url: 'https://pubchem.ncbi.nlm.nih.gov/' },
   { id: 'nist', categoria: 'bases', url: 'https://webbook.nist.gov/chemistry/' },
   { id: 'sds', categoria: 'bases', url: 'https://pubchem.ncbi.nlm.nih.gov/#query=safety%20data%20sheet' },
+  { id: 'chemtools', categoria: 'herramientas', url: '/chemtools', isInternal: true },
   { id: 'chemdraw', categoria: 'herramientas', url: 'https://molview.org/' },
   { id: 'acsPubs', categoria: 'revistas', url: 'https://pubs.acs.org/' },
   { id: 'rsc', categoria: 'revistas', url: 'https://www.rsc.org/' },
@@ -21,6 +23,7 @@ const ORDEN_CATEGORIAS = ['bases', 'herramientas', 'revistas', 'formacion'];
 
 export default function ResourcesPage() {
   const t = useTranslations('resources');
+  const lang = useLocale(); // <-- Solucionado: Ahora Next.js sabe qué idioma estás usando
   const [filtro, setFiltro] = useState('todas');
 
   return (
@@ -126,15 +129,25 @@ export default function ResourcesPage() {
                           {t(`fichas.${recurso.id}.texto`)}
                         </p>
 
+                        {/* Estructura condicional reparada */}
                         {recurso.url && (
-                          <a
-                            className="ficha-recurso__enlace"
-                            href={recurso.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            {t('visitar')} →
-                          </a>
+                          (recurso.isInternal || recurso.url.startsWith('/')) ? (
+                            <Link
+                              className="ficha-recurso__enlace"
+                              href={`/${lang}${recurso.url}`}
+                            >
+                              {t('visitar')} →
+                            </Link>
+                          ) : (
+                            <a
+                              className="ficha-recurso__enlace"
+                              href={recurso.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              {t('visitar')} →
+                            </a>
+                          )
                         )}
                       </article>
                     </Reveal>

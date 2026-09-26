@@ -24,6 +24,7 @@
     "contact": "Contacto",
     "news": "Noticias",
     "resources": "Recursos",
+    "chemtools": "ChemTools",
     "dashboard": "Dashboard",
     "login": "Iniciar Sesión",
     "language": "Idioma",
@@ -155,6 +156,10 @@
       "rsc": {
         "titulo": "Royal Society of Chemistry",
         "texto": "Revistas, material didáctico y recursos de divulgación de la sociedad química británica."
+      },
+      "chemtools": {
+        "titulo": "ChemTools",
+        "texto": "Herramientas y utilidades interactivas para análisis, cálculos y visualización en química."
       },
       "chemdraw": {
         "titulo": "Dibujo de estructuras",

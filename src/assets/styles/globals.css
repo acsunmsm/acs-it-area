@@ -1,8 +1,10 @@
 @import url('./font-awesome.min.css');
 @import url('./whatsapp-chat-support.css');
+@import url('./chemtools.css');
 
-/* Importa Bootstrap desde CDN */
+/* Importa Bootstrap y KaTeX */
 @import 'bootstrap/dist/css/bootstrap.min.css';
+@import 'katex/dist/katex.min.css';
 
 /* Importa FontAwesome */
 @import url('https://use.fontawesome.com/releases/v5.12.1/css/all.css');
