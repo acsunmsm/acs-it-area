@@ -135,36 +135,22 @@ export default function ResourcesPage() {
                               href={`/${lang}${recurso.url}`}
                             >
                               {t('visitar')} →
-                            </Link>
-                          ) : (
-                            /* rel="noopener noreferrer" en todo enlace externo
-                               que abra pestaña nueva: sin "noopener", la página
-                               de destino puede manipular la nuestra desde
-                               JavaScript (window.opener). Es una línea y cierra
-                               un agujero conocido. */
-                            <a
-                              className="ficha-recurso__enlace"
-                              href={recurso.url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              {t('visitar')} →
-                            </a>
-                          )
-                          <a
-                            className="ficha-recurso__enlace"
-                            href={recurso.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            {t('visitar')} →
-                          </a>
-                        )}
-                      </article>
-                    </Reveal>
-                  ))}
-                </div>
-              </div>
+</Link>
+                ) : (
+                  <a
+                    className="ficha-recurso__enlace"
+                    href={recurso.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {t('visitar')} →
+                  </a>
+                )}
+              </article>
+            </Reveal>
+          ))}
+        </div>
+      </div>
             );
           })}
         </div>
