@@ -207,7 +207,7 @@ export default function AntoineSolver() {
       {/* Temperature Input & Unit */}
       <div className="row g-3">
         <div className="col-md-7">
-          <label className="form-label fw-bold text-secondary small">Temperatura ($T$):</label>
+          <label className="form-label fw-bold text-secondary small">Temperatura (T):</label>
           <div className="input-group">
             <input
               type="number"
@@ -230,7 +230,7 @@ export default function AntoineSolver() {
         </div>
 
         <div className="col-md-5">
-          <label className="form-label fw-bold text-secondary small">Unidad de Salida ($P_{'{sat}'}$):</label>
+          <label className="form-label fw-bold text-secondary small">Unidad de Salida (Psat):</label>
           <select
             className="solver-select"
             value={outPressureUnit}
@@ -251,7 +251,7 @@ export default function AntoineSolver() {
       ) : (
         <div className="result-card mt-4">
           <div className="d-flex align-items-center justify-content-between mb-2">
-            <span className="text-white-50 small fw-bold">Presión de Saturación ($P_{'{sat}'}$):</span>
+            <span className="text-white-50 small fw-bold">Presión de Saturación (Psat):</span>
             <span className="badge bg-primary text-wrap">{SUBSTANCES[substanceKey].name}</span>
           </div>
 

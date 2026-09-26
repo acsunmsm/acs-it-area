@@ -98,9 +98,6 @@ export default function Navbar() {
                 <Link href={`/${locale}/resources`} className={`nav-link nav-link-custom ${pathname.includes('/resources') ? 'active-link' : ''}`}>{t('resources')}</Link>
               </li>
               <li className="nav-item">
-                <Link href={`/${locale}/chemtools`} className={`nav-link nav-link-custom ${pathname.includes('/chemtools') ? 'active-link' : ''}`}>ChemTools</Link>
-              </li>
-              <li className="nav-item">
                 <Link href={`/${locale}/contact`} className={`nav-link nav-link-custom ${pathname.includes('/contact') ? 'active-link' : ''}`}>{t('contact')}</Link>
               </li>
             </ul>

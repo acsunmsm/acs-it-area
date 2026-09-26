@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import Navbar from '@/src/components/Navbar';
 import Footer from '@/src/components/Footer';
 import Reveal, { RevealLetters } from '@/src/components/Reveal';
@@ -32,6 +33,7 @@ const RECURSOS = [
   { id: 'pubchem', categoria: 'bases', url: 'https://pubchem.ncbi.nlm.nih.gov/' },
   { id: 'nist', categoria: 'bases', url: 'https://webbook.nist.gov/chemistry/' },
   { id: 'sds', categoria: 'bases', url: 'https://pubchem.ncbi.nlm.nih.gov/#query=safety%20data%20sheet' },
+  { id: 'chemtools', categoria: 'herramientas', url: '/chemtools', isInternal: true },
   { id: 'chemdraw', categoria: 'herramientas', url: 'https://molview.org/' },
   { id: 'acsPubs', categoria: 'revistas', url: 'https://pubs.acs.org/' },
   { id: 'rsc', categoria: 'revistas', url: 'https://www.rsc.org/' },
@@ -136,19 +138,28 @@ export default async function ResourcesPage({ params }) {
                         </p>
 
                         {recurso.url && (
-                          /* rel="noopener noreferrer" en todo enlace externo
-                             que abra pestaña nueva: sin "noopener", la página
-                             de destino puede manipular la nuestra desde
-                             JavaScript (window.opener). Es una línea y cierra
-                             un agujero conocido. */
-                          <a
-                            className="ficha-recurso__enlace"
-                            href={recurso.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            {t('visitar')} →
-                          </a>
+                          (recurso.isInternal || recurso.url.startsWith('/')) ? (
+                            <Link
+                              className="ficha-recurso__enlace"
+                              href={`/${lang}${recurso.url}`}
+                            >
+                              {t('visitar')} →
+                            </Link>
+                          ) : (
+                            /* rel="noopener noreferrer" en todo enlace externo
+                               que abra pestaña nueva: sin "noopener", la página
+                               de destino puede manipular la nuestra desde
+                               JavaScript (window.opener). Es una línea y cierra
+                               un agujero conocido. */
+                            <a
+                              className="ficha-recurso__enlace"
+                              href={recurso.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              {t('visitar')} →
+                            </a>
+                          )
                         )}
                       </article>
                     </Reveal>

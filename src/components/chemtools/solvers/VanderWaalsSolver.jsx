@@ -193,7 +193,7 @@ export default function VanderWaalsSolver() {
       {/* Inputs according to Mode */}
       <div className="row g-3">
         <div className="col-md-6">
-          <label className="form-label fw-bold text-secondary small">Temperatura ($T$):</label>
+          <label className="form-label fw-bold text-secondary small">Temperatura (T):</label>
           <div className="input-group">
             <input
               type="number"
@@ -216,7 +216,7 @@ export default function VanderWaalsSolver() {
 
         {calcMode === 'P' ? (
           <div className="col-md-6">
-            <label className="form-label fw-bold text-secondary small">Volumen Molar ($v$, L/mol):</label>
+            <label className="form-label fw-bold text-secondary small">Volumen Molar (v, L/mol):</label>
             <input
               type="number"
               className="solver-input"
@@ -228,7 +228,7 @@ export default function VanderWaalsSolver() {
           </div>
         ) : (
           <div className="col-md-6">
-            <label className="form-label fw-bold text-secondary small">Presión ($P$, bar):</label>
+            <label className="form-label fw-bold text-secondary small">Presión (P, bar):</label>
             <input
               type="number"
               className="solver-input"

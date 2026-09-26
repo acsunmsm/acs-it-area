@@ -94,7 +94,7 @@ export default function ColebrookSolver() {
       <div className="row g-3">
         <div className="col-md-6">
           <label className="form-label fw-bold text-secondary small">
-            Rugosidad Relativa ($\epsilon / D$):
+            Rugosidad Relativa (ε / D):
           </label>
           <input
             type="number"
@@ -110,7 +110,7 @@ export default function ColebrookSolver() {
 
         <div className="col-md-6">
           <label className="form-label fw-bold text-secondary small">
-            Número de Reynolds ($Re$):
+            Número de Reynolds (Re):
           </label>
           <input
             type="number"
@@ -139,7 +139,7 @@ export default function ColebrookSolver() {
 
           <div className="d-flex justify-content-between align-items-center pt-2 border-top border-secondary">
             <span className="small text-white-50">
-              Fanning Friction Factor ($f_{'{fanning}'}$): <strong className="text-white">{solution.fFanning}</strong>
+              Factor de Fricción de Fanning (f_fanning): <strong className="text-white">{solution.fFanning}</strong>
             </span>
             <span className="small text-white-50">
               Iteraciones Newton-Raphson: <strong className="text-white">{solution.iterations}</strong>

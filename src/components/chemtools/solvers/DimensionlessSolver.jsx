@@ -119,7 +119,7 @@ export default function DimensionlessSolver() {
       <div className="chemtools-card-header">
         <h3 className="chemtools-card-title">
           <FontAwesomeIcon icon={faCalculator} />
-          4. Números Adimensionales ($Re$, $Pr$, $Nu$)
+          4. Números Adimensionales (Re, Pr, Nu)
         </h3>
         <span className="chemtools-badge">Fenómenos de Transporte</span>
       </div>
@@ -131,21 +131,21 @@ export default function DimensionlessSolver() {
           className={`btn ${selectedNumber === 'Re' ? 'btn-primary' : 'btn-outline-primary'}`}
           onClick={() => setSelectedNumber('Re')}
         >
-          Reynolds ($Re$)
+          Reynolds (Re)
         </button>
         <button
           type="button"
           className={`btn ${selectedNumber === 'Pr' ? 'btn-primary' : 'btn-outline-primary'}`}
           onClick={() => setSelectedNumber('Pr')}
         >
-          Prandtl ($Pr$)
+          Prandtl (Pr)
         </button>
         <button
           type="button"
           className={`btn ${selectedNumber === 'Nu' ? 'btn-primary' : 'btn-outline-primary'}`}
           onClick={() => setSelectedNumber('Nu')}
         >
-          Nusselt ($Nu$)
+          Nusselt (Nu)
         </button>
       </div>
 
@@ -158,7 +158,7 @@ export default function DimensionlessSolver() {
 
           <div className="row g-3">
             <div className="col-6 col-md-3">
-              <label className="form-label small fw-bold">Densidad ($\rho$, kg/m³):</label>
+              <label className="form-label small fw-bold">Densidad (ρ, kg/m³):</label>
               <input
                 type="number"
                 className="solver-input"
@@ -167,7 +167,7 @@ export default function DimensionlessSolver() {
               />
             </div>
             <div className="col-6 col-md-3">
-              <label className="form-label small fw-bold">Velocidad ($v$, m/s):</label>
+              <label className="form-label small fw-bold">Velocidad (v, m/s):</label>
               <input
                 type="number"
                 className="solver-input"
@@ -176,7 +176,7 @@ export default function DimensionlessSolver() {
               />
             </div>
             <div className="col-6 col-md-3">
-              <label className="form-label small fw-bold">Diámetro ($D$, m):</label>
+              <label className="form-label small fw-bold">Diámetro (D, m):</label>
               <input
                 type="number"
                 className="solver-input"
@@ -185,7 +185,7 @@ export default function DimensionlessSolver() {
               />
             </div>
             <div className="col-6 col-md-3">
-              <label className="form-label small fw-bold">Viscosidad ($\mu$, Pa·s):</label>
+              <label className="form-label small fw-bold">Viscosidad (μ, Pa·s):</label>
               <input
                 type="number"
                 className="solver-input"
@@ -220,7 +220,7 @@ export default function DimensionlessSolver() {
 
           <div className="row g-3">
             <div className="col-md-4">
-              <label className="form-label small fw-bold">Calor Específico ($C_p$, J/(kg·K)):</label>
+              <label className="form-label small fw-bold">Calor Específico (Cp, J/(kg·K)):</label>
               <input
                 type="number"
                 className="solver-input"
@@ -229,7 +229,7 @@ export default function DimensionlessSolver() {
               />
             </div>
             <div className="col-md-4">
-              <label className="form-label small fw-bold">Viscosidad Dinámica ($\mu$, Pa·s):</label>
+              <label className="form-label small fw-bold">Viscosidad Dinámica (μ, Pa·s):</label>
               <input
                 type="number"
                 className="solver-input"
@@ -239,7 +239,7 @@ export default function DimensionlessSolver() {
               />
             </div>
             <div className="col-md-4">
-              <label className="form-label small fw-bold">Conductividad ($k$, W/(m·K)):</label>
+              <label className="form-label small fw-bold">Conductividad (k, W/(m·K)):</label>
               <input
                 type="number"
                 className="solver-input"
@@ -294,7 +294,7 @@ export default function DimensionlessSolver() {
           {nuMode === 'definition' ? (
             <div className="row g-3">
               <div className="col-md-4">
-                <label className="form-label small fw-bold">Coef. Convectivo ($h$, W/(m²·K)):</label>
+                <label className="form-label small fw-bold">Coef. Convectivo (h, W/(m²·K)):</label>
                 <input
                   type="number"
                   className="solver-input"
@@ -303,7 +303,7 @@ export default function DimensionlessSolver() {
                 />
               </div>
               <div className="col-md-4">
-                <label className="form-label small fw-bold">Diámetro / Longitud ($D$, m):</label>
+                <label className="form-label small fw-bold">Diámetro / Longitud (D, m):</label>
                 <input
                   type="number"
                   className="solver-input"
@@ -312,7 +312,7 @@ export default function DimensionlessSolver() {
                 />
               </div>
               <div className="col-md-4">
-                <label className="form-label small fw-bold">Conductividad ($k$, W/(m·K)):</label>
+                <label className="form-label small fw-bold">Conductividad (k, W/(m·K)):</label>
                 <input
                   type="number"
                   className="solver-input"
@@ -324,7 +324,7 @@ export default function DimensionlessSolver() {
           ) : (
             <div className="row g-3">
               <div className="col-md-4">
-                <label className="form-label small fw-bold">Reynolds ($Re \ge 10^4$):</label>
+                <label className="form-label small fw-bold">Reynolds (Re ≥ 10⁴):</label>
                 <input
                   type="number"
                   className="solver-input"
@@ -333,7 +333,7 @@ export default function DimensionlessSolver() {
                 />
               </div>
               <div className="col-md-4">
-                <label className="form-label small fw-bold">Prandtl ($Pr$):</label>
+                <label className="form-label small fw-bold">Prandtl (Pr):</label>
                 <input
                   type="number"
                   className="solver-input"

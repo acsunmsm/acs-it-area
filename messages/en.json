@@ -157,6 +157,10 @@
         "titulo": "Royal Society of Chemistry",
         "texto": "Journals, teaching material and outreach resources from the British chemical society."
       },
+      "chemtools": {
+        "titulo": "ChemTools",
+        "texto": "Interactive tools and utilities for analysis, calculations, and visualization in chemistry."
+      },
       "chemdraw": {
         "titulo": "Structure drawing",
         "texto": "Editors for drawing molecules and reactions for reports and presentations. Free alternatives include MolView and Ketcher."
