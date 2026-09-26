@@ -29,8 +29,14 @@ import { config } from '@fortawesome/fontawesome-svg-core';
 config.autoAddCss = false; // Evita doble carga de FontAwesome
 
 export const metadata = {
+  metadataBase: new URL('https://www.acs-unmsm.org'),
   title: 'ACS UNMSM',
   description: 'Capítulo estudiantil de la American Chemical Society en la UNMSM',
+  icons: {
+    icon: '/assets/img/Icon3a.png',
+    shortcut: '/assets/img/Icon3a.png',
+    apple: '/assets/img/Icon3a.png',
+  },
 };
 
 
@@ -70,7 +76,6 @@ export default function RootLayout({ children }) {
           crossOrigin="anonymous"
           referrerPolicy="no-referrer"
         />
-        <link rel="icon" href="assets/img/icon3.png" />
         {/*
           Marca el <html> con la clase "js-reveal" ANTES de que el navegador
           pinte la página. Sin esto el contenido aparecería un instante y

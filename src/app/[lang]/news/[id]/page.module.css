@@ -1,0 +1,198 @@
+.container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  overflow-x: hidden;
+}
+
+.loadingContainer,
+.errorContainer,
+.notFoundContainer {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.article {
+  font-family: Arial, sans-serif;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+.title {
+  font-size: clamp(1.4rem, 4vw, 2.5rem);
+  font-weight: 700;
+  color: #003366;
+  margin: 0 0 1rem;
+  text-align: center;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+.meta {
+  color: #555;
+  font-size: 1rem;
+  font-style: italic;
+  margin: 0 0 1.5rem;
+  text-align: left;
+}
+
+.content {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.image {
+  width: 100%;
+  max-width: 320px;
+  height: auto;
+  border-radius: 12px;
+  object-fit: contain;
+}
+
+.description {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #2c2c2c;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  overflow: hidden;
+}
+
+.description p {
+  margin: 0 0 1rem;
+}
+
+/* Asegurar que TODAS las imágenes dentro de la descripción se ajusten al ancho */
+.description img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Imagen responsive por defecto: se ajusta al 100% del contenedor */
+.description :global(.img-responsive) {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 10px 0;
+}
+
+/* Flotar imágenes */
+.description :global(.img-float-left) {
+  float: left;
+  margin: 0 15px 10px 0;
+  max-width: 50%;
+  height: auto;
+}
+
+.description :global(.img-float-right) {
+  float: right;
+  margin: 0 0 10px 15px;
+  max-width: 50%;
+  height: auto;
+}
+
+/* Centrar imagen */
+.description :global(.img-center) {
+  display: block;
+  margin: 10px auto;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Imágenes inline: se distribuyen automáticamente en fila */
+.description :global(.img-inline) {
+  display: inline-block;
+  margin: 4px 2px;
+  height: auto;
+  vertical-align: top;
+}
+
+/* Distribución automática: cuando un p contiene imágenes inline, usa flexbox */
+.description p:has(> :global(.img-inline)) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.description p:has(> :global(.img-inline)) :global(.img-inline) {
+  flex: 1 1 0;
+  min-width: 120px;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+/* Limpiar floats después de la descripción para evitar desbordamientos, aunque overflow: hidden ya lo hace */
+.description::after {
+  content: '';
+  display: table;
+  clear: both;
+}
+
+.actions {
+  margin-top: 3rem;
+  display: flex;
+  justify-content: center;
+}
+
+.backButton {
+  padding: 12px 24px;
+  background-color: #412BFD;
+  color: #ffffff !important;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 700;
+  transition: background-color 0.3s ease;
+  text-decoration: none;
+}
+
+.backButton:hover {
+  background-color: #0a63bd;
+}
+
+@media (max-width: 900px) {
+  .content {
+    grid-template-columns: 1fr;
+  }
+
+  .image {
+    max-width: 100%;
+    justify-self: center;
+  }
+}
+
+@media (max-width: 600px) {
+  .container {
+    padding: 1rem;
+  }
+
+  .title {
+    font-size: clamp(1.2rem, 5vw, 1.6rem);
+  }
+
+  /* En móvil, las imágenes del editor nunca flotan, se muestran en bloque completo */
+  .description img {
+    max-width: 100% !important;
+    height: auto !important;
+    float: none !important;
+    display: block;
+    margin: 10px auto;
+  }
+
+  /* En móvil, las imágenes inline se apilan verticalmente */
+  .description p:has(> :global(.img-inline)) {
+    flex-direction: column;
+  }
+
+  .description p:has(> :global(.img-inline)) :global(.img-inline) {
+    flex: none;
+    width: 100%;
+  }
+}

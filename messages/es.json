@@ -44,7 +44,6 @@
     "events": "Eventos",
     "news": "Noticias",
     "contact": "Contacto",
-    "join": "Hazte Miembro",
     "copyright": "Copyright © {year} ACS UNMSM Student Chapter"
   },
   "debug": {
@@ -68,6 +67,7 @@
     "roles": {
       "facultyAdvisor": "Asesor de Facultad",
       "president": "Presidente",
+      "president2": "Presidenta",
       "vicePresident": "Vicepresidenta",
       "treasurer": "Tesorera",
       "secretary": "Secretario",
@@ -81,7 +81,7 @@
       "externalLiaison": "Coordinador de Vinculación",
       "cio": "Coordinador de Tecnologías de la Información",
       "dcio": "Subcoordinador de Tecnologías de la Información",
-      "k12Coordinator": "Coordinadora de K-12",
+      "k12Coordinator": "Coordinador de K-12",
       "k12SubCoordinator": "Subcoordinador de K-12"
     }
   },
@@ -184,13 +184,22 @@
     }
   },
   "news": {
-    "title": "Noticias",
-    "intro": "Qué está pasando en el capítulo: eventos, logros de nuestros miembros y convocatorias abiertas.",
-    "cabecera": "Boletín del capítulo",
-    "edicion": "Edición estudiantil",
-    "leerMas": "Leer la historia completa",
+    "title": "Noticias y Novedades",
+    "intro": "Descubre los últimos avances, logros y convocatorias de nuestra comunidad química y estudiantil en la UNMSM.",
+    "leerMas": "Ver más",
+    "searchPlaceholder": "Buscar noticias por título o tema...",
+    "searchButton": "Buscar",
+    "allCategories": "Todos",
+    "noNewsTitle": "No se encontraron noticias",
+    "noNewsText": "Prueba con otro término de búsqueda o selecciona otra categoría.",
+    "clearFilters": "Ver todas las noticias",
+    "createButton": "Crear Nueva Noticia",
+    "editButton": "Editar",
+    "deleteButton": "Eliminar",
+    "deleteConfirm": "¿Estás seguro de que quieres eliminar esta noticia? Esta acción no se puede deshacer.",
+    "deleteSuccess": "Noticia eliminada exitosamente.",
+    "backButton": "Volver a Noticias",
     "categorias": {
-      "evento": "Evento",
       "logro": "Logro",
       "convocatoria": "Convocatoria",
       "comunidad": "Comunidad"

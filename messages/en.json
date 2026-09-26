@@ -44,7 +44,6 @@
     "events": "Events",
     "news": "News",
     "contact": "Contact",
-    "join": "Join Us",
     "copyright": "Copyright © {year} ACS UNMSM Student Chapter"
   },
   "debug": {
@@ -68,6 +67,7 @@
     "roles": {
       "facultyAdvisor": "Faculty Advisor",
       "president": "President",
+      "president2": "President",
       "vicePresident": "Vice President",
       "treasurer": "Treasurer",
       "secretary": "Secretary",
@@ -184,13 +184,22 @@
     }
   },
   "news": {
-    "title": "News",
-    "intro": "What is happening in the chapter: events, achievements by our members and open calls.",
-    "cabecera": "Chapter bulletin",
-    "edicion": "Student edition",
-    "leerMas": "Read the full story",
+    "title": "News & Updates",
+    "intro": "Discover the latest announcements, achievements and open calls from our student chemical community at UNMSM.",
+    "leerMas": "Read more",
+    "searchPlaceholder": "Search news by title or topic...",
+    "searchButton": "Search",
+    "allCategories": "All",
+    "noNewsTitle": "No news articles found",
+    "noNewsText": "Try searching with different terms or selecting another category.",
+    "clearFilters": "View all news",
+    "createButton": "Create New Article",
+    "editButton": "Edit",
+    "deleteButton": "Delete",
+    "deleteConfirm": "Are you sure you want to delete this article? This action cannot be undone.",
+    "deleteSuccess": "News article deleted successfully.",
+    "backButton": "Back to News",
     "categorias": {
-      "evento": "Event",
       "logro": "Achievement",
       "convocatoria": "Open call",
       "comunidad": "Community"

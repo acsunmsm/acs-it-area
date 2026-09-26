@@ -16,7 +16,7 @@ export default function ContactPage() {
     e.preventDefault(); // evita recargar la página
 
     const form = e.target;
-    const formData = new FormData(form); // recoge los datos del formulario
+    const formData = new FormData(form);
 
     if (typeof grecaptcha === 'undefined') {
       setStatus('Error: reCAPTCHA no está listo.');
@@ -26,12 +26,11 @@ export default function ContactPage() {
     const captcha = grecaptcha.getResponse();
 
     if (!captcha) {
-      setStatus('Por favor, completa el CAPTCHA.'); // valida captcha
+      setStatus('Por favor, completa el CAPTCHA.');
       return;
     }
 
     try {
-      // envía los datos al backend
       const res = await fetch('/contact/api', {
         method: 'POST',
         body: formData,
@@ -40,14 +39,14 @@ export default function ContactPage() {
       const data = await res.json();
 
       if (res.ok) {
-        setStatus('¡Mensaje enviado exitosamente!'); // mensaje de éxito
-        form.reset(); // limpia formulario
-        grecaptcha.reset(); // reinicia el captcha
+        setStatus('¡Mensaje enviado exitosamente!');
+        form.reset();
+        grecaptcha.reset();
       } else {
-        setStatus(data.error || 'Error al enviar el mensaje.'); // error del servidor
+        setStatus(data.error || 'Error al enviar el mensaje.');
       }
     } catch (err) {
-      setStatus('Error de red al enviar el formulario.'); // error de conexión
+      setStatus('Error de red al enviar el formulario.');
     }
   };
 

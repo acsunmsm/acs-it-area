@@ -20,7 +20,7 @@ export default async function HomePage({ params }) {
         <div className="container">
           <div className="row hero-content align-items-center">
             <div className="col-md-6 hero-image text-center">
-              <img src="/assets/img/main.png" alt="Hero Image" className="img-fluid" />
+              <img src="/assets/img/Inicio2.jpg" alt="Hero Image" className="img-fluid" />
             </div>
             <div className="col-md-6 hero-text mt-4 mt-md-0">
               <h1>{t('welcome')}</h1>
@@ -37,17 +37,6 @@ export default async function HomePage({ params }) {
                   strong: (chunks, i) => <strong key={`welcome3-${i}`}>{chunks}</strong>
                 })}
               </p>
-              <button
-                className="btn btn-primary mt-3"
-                style={{
-                  backgroundColor: '#ffd400',
-                  color: '#000',
-                  border: 'none',
-                  fontWeight: 'bold'
-                }}
-              >
-                {t('JoinUs')}
-              </button>
             </div>
           </div>
         </div>

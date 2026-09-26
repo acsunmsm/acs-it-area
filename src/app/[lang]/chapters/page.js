@@ -20,6 +20,7 @@ export default async function Officers({ params }) {
   // Traducciones de roles de la junta directiva
   const facultyAdvisor = t('roles.facultyAdvisor');
   const president = t('roles.president');
+  const president2 = t('roles.president2');
   const vicePresident = t('roles.vicePresident');
   const treasurer = t('roles.treasurer');
   const secretary = t('roles.secretary');
@@ -39,11 +40,12 @@ export default async function Officers({ params }) {
   const officers = [
     [facultyAdvisor, 'PhD Jose Orlando Calvay Castillo', 'advisor@acs-unmsm.org', 'josecalvay.png'],
     [president, 'Breiner Smith Fuentes Bulnes', 'president@acs-unmsm.org', 'breiner_fuentes.jpg'],
-    [vicePresident, 'Geraldine Campos Arias', 'vicepresident@acs-unmsm.org', 'geraldine_campos.jpg'],
+    [president2, 'Geraldine Campos Arias', 'president@acs-unmsm.org', 'geraldine_campos.jpg'],
+    [vicePresident, 'Rosario Cinthya Yaya Paitan', 'vicepresident@acs-unmsm.org', 'rosario_yaya.jpg'],
     [treasurer, 'Yaquelin Cristina Juana Rivera Antonio', 'treasurer@acs-unmsm.org', 'yaquelin_rivera.jpeg'],
     [secretary, 'Jean Franco Toledo Rodriguez', 'secretary@acs-unmsm.org', 'jean_toledo.jpg'],
-    [marketingCoordinator, 'Rosario Cinthya Yaya Paitan', 'chief.marketing@acs-unmsm.org', 'rosario_yaya.jpg'],
-    [marketingSubCoordinator, 'Angelica Esther Naucapoma Chillcce', 'marketing@acs-unmsm.org', 'angelica_naucapoma.jpg'],
+    [marketingCoordinator, 'Angelica Esther Naucapoma Chillcce', 'chief.marketing@acs-unmsm.org', 'angelica_naucapoma.jpg'],
+    [marketingSubCoordinator, 'Cielo Brighitt Rodriguez Montes', 'marketing@acs-unmsm.org', 'cielo_rodriguez.jpeg'],
     [eventsCoordinator, 'Antonio Alburqueque Ampuero', 'chief.project.manager@acs-unmsm.org', 'antonio_alburqueque.jpg'],
     [eventsSubCoordinator, 'Andres Sebastián Bailon Vento', 'project.manager@acs-unmsm.org', 'andres_bailon.jpg'],
     [humanResources, 'Yoselin Estefany Alvarez Cueva', 'chief.human.resources@acs-unmsm.org', 'yoselin_alvarez.jpg'],
@@ -52,8 +54,8 @@ export default async function Officers({ params }) {
     [internalLiaison, 'Kessia Brigitte Cordova Tantalean', 'internal.liaison@acs-unmsm.org', 'kesia_cordova.jpg'],
     [cio, 'Gonzalo Manuel Aguilar Espinoza', 'cio@acs-unmsm.org', 'gonzalo.jpg'],
     [dcio, 'Paolo Jesus Pichilingue La Torre', 'dcio@acs-unmsm.org', 'paolo.jpeg'],
-    [k12Coordinator, 'Lucero Lidia Ventura Cruz', 'k12@acs-unmsm.org', 'lucero_ventura.jpg'],
-    [k12SubCoordinator, 'Ricardo Gomez', 'subk12@acs-unmsm.org', 'ricardo.jpeg']
+    [k12Coordinator, 'Jeremy Antonio Silva More', 'k12@acs-unmsm.org', 'jeremy_silva.jpg'],
+    [k12SubCoordinator, 'Ricardo Javier Gomez Sangay', 'subk12@acs-unmsm.org', 'ricardo.jpeg']
   ];
 
   return (
@@ -95,13 +97,13 @@ export default async function Officers({ params }) {
         {/* Elementos gráficos de Química (Collage de fondo) */}
         <div style={{ position: 'absolute', right: '0', top: '0', width: '50%', height: '100%', pointerEvents: 'none', zIndex: 0 }}>
           {/* Matraz principal */}
-          <i className="fa fa-flask" style={{ position: 'absolute', right: '15%', top: '15%', transform: 'rotate(15deg)', fontSize: '180px', color: 'rgba(255, 255, 255, 0.15)' }}></i>
+          <i className="fa fa-flask" style={{ position: 'absolute', right: '15%', top: '35%', transform: 'rotate(15deg)', fontSize: '180px', color: 'rgba(255, 255, 255, 0.15)' }}></i>
           {/* Enlaces moleculares */}
-          <i className="fa fa-share-alt" style={{ position: 'absolute', right: '5%', bottom: '10%', transform: 'rotate(-25deg)', fontSize: '150px', color: 'rgba(111, 237, 238, 0.15)' }}></i>
+          <i className="fa fa-share-alt" style={{ position: 'absolute', right: '5%', bottom: '0%', transform: 'rotate(-25deg)', fontSize: '150px', color: 'rgba(111, 237, 238, 0.15)' }}></i>
           {/* Estructura cristalina/cubos */}
           <i className="fa fa-cubes" style={{ position: 'absolute', right: '35%', top: '55%', transform: 'translateY(-50%) rotate(10deg)', fontSize: '110px', color: 'rgba(255, 212, 0, 0.12)' }}></i>
           {/* Ideas/Ciencia */}
-          <i className="fa fa-lightbulb-o" style={{ position: 'absolute', right: '28%', top: '5%', transform: 'rotate(-15deg)', fontSize: '70px', color: 'rgba(255, 255, 255, 0.1)' }}></i>
+          <i className="fa fa-lightbulb-o" style={{ position: 'absolute', right: '28%', top: '25%', transform: 'rotate(-15deg)', fontSize: '70px', color: 'rgba(255, 255, 255, 0.1)' }}></i>
           {/* Pequeños nodos decorativos */}
           <div style={{ position: 'absolute', right: '40%', bottom: '25%', width: '15px', height: '15px', backgroundColor: 'rgba(111, 237, 238, 0.3)', borderRadius: '50%' }}></div>
           <div style={{ position: 'absolute', right: '20%', bottom: '45%', width: '10px', height: '10px', backgroundColor: 'rgba(255, 212, 0, 0.3)', borderRadius: '50%' }}></div>
@@ -130,6 +132,7 @@ export default async function Officers({ params }) {
         </div>
       </section>
       <OfficersList officers={officers} title={t('title')} />
+
       <Footer />
     </>
   );
