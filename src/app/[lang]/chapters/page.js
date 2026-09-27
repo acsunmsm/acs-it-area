@@ -20,6 +20,7 @@ export default async function Officers({ params }) {
   // Traducciones de roles de la junta directiva
   const facultyAdvisor = t('roles.facultyAdvisor');
   const president = t('roles.president');
+  const president2 = t('roles.president2');
   const vicePresident = t('roles.vicePresident');
   const treasurer = t('roles.treasurer');
   const secretary = t('roles.secretary');
@@ -39,11 +40,12 @@ export default async function Officers({ params }) {
   const officers = [
     [facultyAdvisor, 'PhD Jose Orlando Calvay Castillo', 'advisor@acs-unmsm.org', 'josecalvay.png'],
     [president, 'Breiner Smith Fuentes Bulnes', 'president@acs-unmsm.org', 'breiner_fuentes.jpg'],
-    [vicePresident, 'Geraldine Campos Arias', 'vicepresident@acs-unmsm.org', 'geraldine_campos.jpg'],
+    [president2, 'Geraldine Campos Arias', 'president@acs-unmsm.org', 'geraldine_campos.jpg'],
+    [vicePresident, 'Rosario Cinthya Yaya Paitan', 'vicepresident@acs-unmsm.org', 'rosario_yaya.jpg'],
     [treasurer, 'Yaquelin Cristina Juana Rivera Antonio', 'treasurer@acs-unmsm.org', 'yaquelin_rivera.jpeg'],
     [secretary, 'Jean Franco Toledo Rodriguez', 'secretary@acs-unmsm.org', 'jean_toledo.jpg'],
-    [marketingCoordinator, 'Rosario Cinthya Yaya Paitan', 'chief.marketing@acs-unmsm.org', 'rosario_yaya.jpg'],
-    [marketingSubCoordinator, 'Angelica Esther Naucapoma Chillcce', 'marketing@acs-unmsm.org', 'angelica_naucapoma.jpg'],
+    [marketingCoordinator, 'Angelica Esther Naucapoma Chillcce', 'chief.marketing@acs-unmsm.org', 'angelica_naucapoma.jpg'],
+    [marketingSubCoordinator, 'Cielo Brighitt Rodriguez Montes', 'marketing@acs-unmsm.org', 'cielo_rodriguez.jpeg'],
     [eventsCoordinator, 'Antonio Alburqueque Ampuero', 'chief.project.manager@acs-unmsm.org', 'antonio_alburqueque.jpg'],
     [eventsSubCoordinator, 'Andres Sebastián Bailon Vento', 'project.manager@acs-unmsm.org', 'andres_bailon.jpg'],
     [humanResources, 'Yoselin Estefany Alvarez Cueva', 'chief.human.resources@acs-unmsm.org', 'yoselin_alvarez.jpg'],
@@ -53,7 +55,7 @@ export default async function Officers({ params }) {
     [cio, 'Gonzalo Manuel Aguilar Espinoza', 'cio@acs-unmsm.org', 'gonzalo.jpg'],
     [dcio, 'Paolo Jesus Pichilingue La Torre', 'dcio@acs-unmsm.org', 'paolo.jpeg'],
     [k12Coordinator, 'Jeremy Antonio Silva More', 'k12@acs-unmsm.org', 'jeremy_silva.jpg'],
-    [k12SubCoordinator, 'Ricardo Gomez', 'subk12@acs-unmsm.org', 'ricardo.jpeg']
+    [k12SubCoordinator, 'Ricardo Javier Gomez Sangay', 'subk12@acs-unmsm.org', 'ricardo.jpeg']
   ];
 
   return (
