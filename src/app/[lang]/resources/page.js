@@ -1,16 +1,18 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import Navbar from '@/src/components/Navbar';
 import Footer from '@/src/components/Footer';
 import Reveal, { RevealLetters } from '@/src/components/Reveal';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 
 const RECURSOS = [
   { id: 'pubchem', categoria: 'bases', url: 'https://pubchem.ncbi.nlm.nih.gov/' },
   { id: 'nist', categoria: 'bases', url: 'https://webbook.nist.gov/chemistry/' },
   { id: 'sds', categoria: 'bases', url: 'https://pubchem.ncbi.nlm.nih.gov/#query=safety%20data%20sheet' },
   { id: 'chemdraw', categoria: 'herramientas', url: 'https://molview.org/' },
+  { id: 'horario', categoria: 'herramientas', url: '/horario' },
   { id: 'acsPubs', categoria: 'revistas', url: 'https://pubs.acs.org/' },
   { id: 'rsc', categoria: 'revistas', url: 'https://www.rsc.org/' },
   { id: 'becas', categoria: 'formacion', url: 'https://www.acs.org/education/students/college.html' },
@@ -21,6 +23,7 @@ const ORDEN_CATEGORIAS = ['bases', 'herramientas', 'revistas', 'formacion'];
 
 export default function ResourcesPage() {
   const t = useTranslations('resources');
+  const locale = useLocale();
   const [filtro, setFiltro] = useState('todas');
 
   return (
@@ -127,14 +130,23 @@ export default function ResourcesPage() {
                         </p>
 
                         {recurso.url && (
-                          <a
-                            className="ficha-recurso__enlace"
-                            href={recurso.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            {t('visitar')} →
-                          </a>
+                          recurso.url.startsWith('http') ? (
+                            <a
+                              className="ficha-recurso__enlace"
+                              href={recurso.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              {t('visitar')} →
+                            </a>
+                          ) : (
+                            <Link
+                              className="ficha-recurso__enlace"
+                              href={`/${locale}${recurso.url}`}
+                            >
+                              {t('visitar')} →
+                            </Link>
+                          )
                         )}
                       </article>
                     </Reveal>
