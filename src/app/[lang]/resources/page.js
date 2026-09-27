@@ -13,6 +13,7 @@ const RECURSOS = [
   { id: 'sds', categoria: 'bases', url: 'https://pubchem.ncbi.nlm.nih.gov/#query=safety%20data%20sheet' },
   { id: 'chemtools', categoria: 'herramientas', url: '/chemtools', isInternal: true },
   { id: 'chemdraw', categoria: 'herramientas', url: 'https://molview.org/' },
+  { id: 'horario', categoria: 'herramientas', url: '/horario' },
   { id: 'acsPubs', categoria: 'revistas', url: 'https://pubs.acs.org/' },
   { id: 'rsc', categoria: 'revistas', url: 'https://www.rsc.org/' },
   { id: 'becas', categoria: 'formacion', url: 'https://www.acs.org/education/students/college.html' },
@@ -50,7 +51,7 @@ export default function ResourcesPage() {
 
           {/* Filtros */}
           <Reveal delay={1.5} className="d-flex justify-content-center flex-wrap gap-2 mb-4">
-            <button 
+            <button
               onClick={() => setFiltro('todas')}
               className={`btn rounded-pill px-4 ${filtro === 'todas' ? 'btn-dark' : 'btn-outline-dark'}`}
               style={{ fontWeight: 600 }}
@@ -58,7 +59,7 @@ export default function ResourcesPage() {
               Todos
             </button>
             {ORDEN_CATEGORIAS.map(cat => (
-              <button 
+              <button
                 key={cat}
                 onClick={() => setFiltro(cat)}
                 className={`btn rounded-pill px-4 ${filtro === cat ? 'btn-dark' : 'btn-outline-dark'}`}
@@ -91,7 +92,7 @@ export default function ResourcesPage() {
         <div className="container">
           {ORDEN_CATEGORIAS.map((categoria) => {
             if (filtro !== 'todas' && filtro !== categoria) return null;
-            
+
             const delCategoria = RECURSOS.filter((r) => r.categoria === categoria);
             if (delCategoria.length === 0) return null;
 

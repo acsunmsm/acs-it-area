@@ -1,34 +1,27 @@
 'use client';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import Script from 'next/script';
-import { useTranslations, useLocale } from 'next-intl';
+import { useTranslations } from 'next-intl';
 
 export default function WhatsAppButton() {
   const t = useTranslations('whatsAppButton');
+  const isInitialized = useRef(false);
+
+  const initWhatsAppPlugin = () => {
+    if (isInitialized.current) return;
+    if (typeof window !== 'undefined' && window.$ && window.$.fn?.whatsappChatSupport) {
+      window.$('#button-w').whatsappChatSupport({
+        defaultMsg: '',
+      });
+      isInitialized.current = true;
+    }
+  };
 
   useEffect(() => {
-    // Función para inicializar el plugin cuando todos los scripts estén cargados
-    const initWhatsAppPlugin = () => {
-      if (window.$ && window.$.fn.whatsappChatSupport) {
-        $('#button-w').whatsappChatSupport({
-          defaultMsg: '',
-        });
-      } else {
-        console.error('WhatsApp Chat Support plugin no está disponible');
-      }
-    };
-
-    // Verificar si jQuery ya está cargado
-    if (window.$) {
+    // Inicializar si el plugin ya estaba cargado por una navegación previa
+    if (typeof window !== 'undefined' && window.$ && window.$.fn?.whatsappChatSupport) {
       initWhatsAppPlugin();
-    } else {
-      // Escuchar evento personalizado cuando jQuery esté listo
-      document.addEventListener('jquery-loaded', initWhatsAppPlugin);
     }
-
-    return () => {
-      document.removeEventListener('jquery-loaded', initWhatsAppPlugin);
-    };
   }, []);
 
   return (
@@ -37,7 +30,6 @@ export default function WhatsAppButton() {
       <Script
         src="/plugin/components/jQuery/jquery-1.11.3.min.js"
         strategy="afterInteractive"
-        onLoad={() => document.dispatchEvent(new Event('jquery-loaded'))}
       />
       <Script
         src="/plugin/components/moment/moment.min.js"
@@ -51,11 +43,7 @@ export default function WhatsAppButton() {
         src="/plugin/whatsapp-chat-support.js"
         strategy="lazyOnload"
         onLoad={() => {
-          if (window.$) {
-            $('#button-w').whatsappChatSupport({
-              defaultMsg: '',
-            });
-          }
+          initWhatsAppPlugin();
         }}
       />
 

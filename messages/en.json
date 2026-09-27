@@ -165,6 +165,10 @@
         "titulo": "Structure drawing",
         "texto": "Editors for drawing molecules and reactions for reports and presentations. Free alternatives include MolView and Ketcher."
       },
+      "horario": {
+        "titulo": "Schedule Generator",
+        "texto": "Academic schedule planner based on UNMSM SUM report. Generates conflict-free combinations, filters professors, tracks credits, and compares backup plans."
+      },
       "nist": {
         "titulo": "NIST WebBook",
         "texto": "Peer-checked thermodynamic data and reference spectra. For when you need a reliable, citable value."

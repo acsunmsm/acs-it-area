@@ -26,6 +26,7 @@
     "resources": "Recursos",
     "chemtools": "ChemTools",
     "dashboard": "Dashboard",
+    "schedule": "Horario",
     "login": "Iniciar Sesión",
     "language": "Idioma",
     "english": "Inglés",
@@ -164,6 +165,10 @@
       "chemdraw": {
         "titulo": "Dibujo de estructuras",
         "texto": "Editores para dibujar moléculas y reacciones para informes y presentaciones. Alternativas gratuitas incluyen MolView y Ketcher."
+      },
+      "horario": {
+        "titulo": "Generador de horarios",
+        "texto": "Planificador de horarios a partir del reporte del SUM (UNMSM). Genera combinaciones sin cruces, filtra docentes, controla créditos y permite comparar planes de respaldo."
       },
       "nist": {
         "titulo": "NIST WebBook",
