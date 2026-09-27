@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useState } from 'react';
 import Link from 'next/link';
 import Navbar from '@/src/components/Navbar';
@@ -11,6 +12,7 @@ const RECURSOS = [
   { id: 'pubchem', categoria: 'bases', url: 'https://pubchem.ncbi.nlm.nih.gov/' },
   { id: 'nist', categoria: 'bases', url: 'https://webbook.nist.gov/chemistry/' },
   { id: 'sds', categoria: 'bases', url: 'https://pubchem.ncbi.nlm.nih.gov/#query=safety%20data%20sheet' },
+  { id: 'chemtools', categoria: 'herramientas', url: '/chemtools', isInternal: true },
   { id: 'chemdraw', categoria: 'herramientas', url: 'https://molview.org/' },
   { id: 'horario', categoria: 'herramientas', url: '/horario' },
   { id: 'acsPubs', categoria: 'revistas', url: 'https://pubs.acs.org/' },
@@ -23,7 +25,7 @@ const ORDEN_CATEGORIAS = ['bases', 'herramientas', 'revistas', 'formacion'];
 
 export default function ResourcesPage() {
   const t = useTranslations('resources');
-  const locale = useLocale();
+  const lang = useLocale(); // <-- Solucionado: Ahora Next.js sabe qué idioma estás usando
   const [filtro, setFiltro] = useState('todas');
 
   return (
@@ -129,8 +131,16 @@ export default function ResourcesPage() {
                           {t(`fichas.${recurso.id}.texto`)}
                         </p>
 
+                        {/* Estructura condicional reparada */}
                         {recurso.url && (
-                          recurso.url.startsWith('http') ? (
+                          (recurso.isInternal || recurso.url.startsWith('/')) ? (
+                            <Link
+                              className="ficha-recurso__enlace"
+                              href={`/${lang}${recurso.url}`}
+                            >
+                              {t('visitar')} →
+                            </Link>
+                          ) : (
                             <a
                               className="ficha-recurso__enlace"
                               href={recurso.url}
@@ -139,13 +149,6 @@ export default function ResourcesPage() {
                             >
                               {t('visitar')} →
                             </a>
-                          ) : (
-                            <Link
-                              className="ficha-recurso__enlace"
-                              href={`/${locale}${recurso.url}`}
-                            >
-                              {t('visitar')} →
-                            </Link>
                           )
                         )}
                       </article>

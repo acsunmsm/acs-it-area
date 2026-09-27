@@ -24,6 +24,7 @@
     "contact": "Contacto",
     "news": "Noticias",
     "resources": "Recursos",
+    "chemtools": "ChemTools",
     "dashboard": "Dashboard",
     "schedule": "Horario",
     "login": "Iniciar Sesión",
@@ -44,7 +45,6 @@
     "events": "Eventos",
     "news": "Noticias",
     "contact": "Contacto",
-    "join": "Hazte Miembro",
     "copyright": "Copyright © {year} ACS UNMSM Student Chapter"
   },
   "debug": {
@@ -68,6 +68,7 @@
     "roles": {
       "facultyAdvisor": "Asesor de Facultad",
       "president": "Presidente",
+      "president2": "Presidenta",
       "vicePresident": "Vicepresidenta",
       "treasurer": "Tesorera",
       "secretary": "Secretario",
@@ -156,6 +157,10 @@
       "rsc": {
         "titulo": "Royal Society of Chemistry",
         "texto": "Revistas, material didáctico y recursos de divulgación de la sociedad química británica."
+      },
+      "chemtools": {
+        "titulo": "ChemTools",
+        "texto": "Herramientas y utilidades interactivas para análisis, cálculos y visualización en química."
       },
       "chemdraw": {
         "titulo": "Dibujo de estructuras",
