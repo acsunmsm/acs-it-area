@@ -33,7 +33,10 @@ export const metadata = {
   title: 'ACS UNMSM',
   description: 'Capítulo estudiantil de la American Chemical Society en la UNMSM',
   icons: {
-    icon: '/assets/img/Icon3a.png',
+    icon: [
+      { url: '/favicon.ico' },
+      { url: '/assets/img/Icon3a.png', type: 'image/png' },
+    ],
     shortcut: '/assets/img/Icon3a.png',
     apple: '/assets/img/Icon3a.png',
   },

@@ -1,282 +1,313 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ACS Student Chapter UNMSM · Armador de Horarios</title>
-<meta name="description" content="Armador inteligente de horarios universitarios del Capítulo Estudiantil ACS UNMSM: genera combinaciones de cursos sin cruces a partir del reporte PDF del SUM.">
-<meta property="og:title" content="ACS Student Chapter UNMSM · Armador de Horarios">
-<meta property="og:description" content="Armador inteligente de horarios universitarios sin cruces a partir del PDF del SUM. FQIQ UNMSM.">
-<meta property="og:type" content="website">
-<link rel="icon" href="/assets/img/icon3.png" onerror="this.href='../assets/img/icon3.png'">
 
-<!-- pdf.js: librería de Mozilla para lectura de PDFs en cliente -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-<script>
-  window.RUTA_WORKER_PDFJS = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
-  if (window.self !== window.top) {
-    document.documentElement.classList.add('inside-iframe');
-  }
-</script>
-<link rel="stylesheet" href="estilos.css">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ACS Student Chapter UNMSM · Armador de Horarios</title>
+  <meta name="description"
+    content="Armador inteligente de horarios universitarios del Capítulo Estudiantil ACS UNMSM: genera combinaciones de cursos sin cruces a partir del reporte PDF del SUM.">
+  <meta property="og:title" content="ACS Student Chapter UNMSM · Armador de Horarios">
+  <meta property="og:description"
+    content="Armador inteligente de horarios universitarios sin cruces a partir del PDF del SUM. FQIQ UNMSM.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="/assets/img/icon3.png" onerror="this.href='../assets/img/icon3.png'">
+
+  <!-- pdf.js: librería de Mozilla para lectura de PDFs en cliente -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script>
+    window.RUTA_WORKER_PDFJS = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+    if (window.self !== window.top) {
+      document.documentElement.classList.add('inside-iframe');
+    }
+  </script>
+  <link rel="stylesheet" href="estilos.css">
 </head>
+
 <body>
 
-<!-- ENCABEZADO OFICIAL ACS UNMSM -->
-<header class="acs-header">
-  <div class="header-wrap">
-    <div class="brand-box">
-      <div class="brand-logo-img">
-        <img src="/assets/img/LogoB.png" onerror="this.src='../assets/img/LogoB.png'" alt="ACS Student Chapter UNMSM" class="logo-principal">
-      </div>
-      <div class="brand-divider"></div>
-      <div class="brand-title">
-        <h1>ACS Student Chapter <span class="tag-acs">UNMSM · FQIQ</span></h1>
-        <p>Capítulo Estudiantil de la American Chemical Society · Armador Inteligente de Horarios</p>
-      </div>
-    </div>
-    <div class="header-actions noprint">
-      <button class="btn-header" id="btnImprimirGlobal" title="Imprimir vista actual del horario">
-        Imprimir Horario
-      </button>
-    </div>
-  </div>
-</header>
-
-<div class="app-container">
-
-  <!-- =========================================================
-       ARMADOR DE HORARIOS INTELIGENTE (SUM / PDF)
-       ========================================================= -->
-  <section id="tab-armador" style="display:block;">
-    <div class="card-header-flex">
-      <div>
-        <h2 class="section-title"><span class="icon-tag">ACS</span> Armador Inteligente de Horarios Académicos</h2>
-        <p class="card-desc">Carga el reporte PDF del Sistema Único de Matrícula (SUM) y genera automáticamente todas las combinaciones posibles sin cruces de horarios.</p>
+  <!-- ENCABEZADO OFICIAL ACS UNMSM -->
+  <header class="acs-header">
+    <div class="header-wrap">
+      <div class="brand-box">
+        <div class="brand-logo-img">
+          <img src="/assets/img/LogoB.png" onerror="this.src='../assets/img/LogoB.png'" alt="ACS Student Chapter UNMSM"
+            class="logo-principal">
+        </div>
+        <div class="brand-divider"></div>
+        <div class="brand-title">
+          <h1>ACS Student Chapter <span class="tag-acs">UNMSM · FQIQ</span></h1>
+          <p>Capítulo Estudiantil de la American Chemical Society · Armador Inteligente de Horarios</p>
+        </div>
       </div>
       <div class="header-actions noprint">
-        <button class="btn sec sm" id="btnImprimirInline" title="Imprimir vista actual del horario">
+        <button class="btn-header" id="btnImprimirGlobal" title="Imprimir vista actual del horario">
           Imprimir Horario
         </button>
       </div>
     </div>
+  </header>
 
-    <!-- Guía Desplegable -->
-    <details class="guia noprint">
-      <summary>¿Cómo funciona el armador de horarios? (Guía rápida)</summary>
-      <div class="cont">
-        <h4>1. Consigue el PDF del SUM</h4>
-        <p>Descarga el reporte oficial <b>Reporte de Programación de Asignaturas</b> de tu escuela en formato PDF.</p>
-        <h4>2. Súbelo y selecciona tus asignaturas</h4>
-        <p>Filtra por tu ciclo, selecciona las asignaturas y ajusta tus preferencias de días, turnos y docentes.</p>
-        <h4>3. Elige y personaliza tu horario favorito</h4>
-        <p>El sistema calculará las opciones sin cruces. Puedes cambiar secciones directamente en la tabla o pulsando sobre los bloques del calendario visual, y pulsar en <b>🌟 Guardar como mi Horario Activo</b>.</p>
-        <div class="priv">
-          <span>🔒</span>
-          <span><b>Tus datos son 100% privados:</b> El archivo se procesa de forma segura dentro de tu propio navegador y nunca se envía a ningún servidor.</span>
+  <div class="app-container">
+
+    <!-- =========================================================
+       ARMADOR DE HORARIOS INTELIGENTE (SUM / PDF)
+       ========================================================= -->
+    <section id="tab-armador" style="display:block;">
+      <div class="card-header-flex">
+        <div>
+          <h2 class="section-title"><span class="icon-tag">ACS</span> Armador Inteligente de Horarios Académicos</h2>
+          <p class="card-desc">Carga el reporte PDF del Sistema Único de Matrícula (SUM) y genera automáticamente todas
+            las combinaciones posibles sin cruces de horarios.</p>
+        </div>
+        <div class="header-actions noprint">
+          <button class="btn sec sm" id="btnImprimirInline" title="Imprimir vista actual del horario">
+            Imprimir Horario
+          </button>
         </div>
       </div>
-    </details>
 
-    <!-- Paso 1: Cargar PDF -->
-    <div class="card noprint">
-      <h2><span class="num">1</span> Cargar Reporte de Asignaturas (PDF)</h2>
-      <div id="zona">
-        <b>Arrastra el PDF aquí o haz clic para seleccionarlo</b>
-        <small>Formato: Reporte de Programación de Asignaturas del SUM (UNMSM / FQIQ)</small>
-      </div>
-      <input type="file" id="archivo" accept="application/pdf" class="hide">
-      <div id="estado"></div>
-    </div>
+      <!-- Guía Desplegable -->
+      <details class="guia noprint">
+        <summary>¿Cómo funciona el armador de horarios? (Guía rápida)</summary>
+        <div class="cont">
+          <h4>1. Consigue el PDF del SUM</h4>
+          <p>Descarga el reporte oficial <b>Reporte de Programación de Asignaturas</b> de tu escuela en formato PDF.</p>
+          <h4>2. Súbelo y selecciona tus asignaturas</h4>
+          <p>Filtra por tu ciclo, selecciona las asignaturas y ajusta tus preferencias de días, turnos y docentes.</p>
+          <h4>3. Elige y personaliza tu horario favorito</h4>
+          <p>El sistema calculará las opciones sin cruces. Puedes cambiar secciones directamente en la tabla o pulsando
+            sobre los bloques del calendario visual, y pulsar en <b>🌟 Guardar como mi Horario Activo</b>.</p>
+          <div class="priv">
+            <span>🔒</span>
+            <span><b>Tus datos son 100% privados:</b> El archivo se procesa de forma segura dentro de tu propio
+              navegador y nunca se envía a ningún servidor.</span>
+          </div>
+        </div>
+      </details>
 
-    <!-- Paso 2: Cursos -->
-    <div class="card noprint hide" id="paso2">
-      <h2><span class="num">2</span> ¿Qué cursos vas a llevar?</h2>
-      <div class="fila">
-        <label class="tit">Ciclo</label>
-        <div id="ciclos" class="fila" style="margin:0"></div>
+      <!-- Paso 1: Cargar PDF -->
+      <div class="card noprint" id="paso1">
+        <h2><span class="num">1</span> Cargar Reporte de Asignaturas (PDF)</h2>
+        <div id="zona">
+          <b>Arrastra el PDF del SUM aquí o haz clic para seleccionarlo</b>
+          <small>Formato oficial: Reporte de Programación de Asignaturas (UNMSM / FQIQ)</small>
+        </div>
+        <input type="file" id="archivo" accept="application/pdf" class="hide">
+        <div id="estado"></div>
       </div>
-      <div class="fila" style="margin-bottom:8px">
-        <label class="tit">Asignaturas</label>
-        <span class="chip ghost" data-cursos="todos">Todas</span>
-        <span class="chip ghost" data-cursos="ninguno">Ninguna</span>
-        <span id="resumenCred" style="color:var(--muted);font-size:13.5px"></span>
-      </div>
-      <p style="font-size:12.5px;color:var(--muted);margin:0 0 10px 0;line-height:1.4">
-        <b>Personalización:</b> Marca tus cursos y, si tienes preferencia por una sección específica, puedes fijarla directamente con el selector <b>Fijar</b>. Pasa el cursor sobre cualquier asignatura para previsualizar sus horarios.
-      </p>
 
-      <!-- Monitor de Carga y Límite de Créditos -->
-      <div class="panel-creditos-box" id="panelCreditosBox" style="margin-bottom:12px">
-        <div class="panel-creditos-header">
-          <div style="display:flex;align-items:center;gap:8px">
-            <div>
-              <span class="cred-titulo">Carga Académica:</span>
-              <b id="creditosTexto" class="cred-val">0 / 26 créditos</b>
-              <span id="creditosBadgeEstado" class="badge-cred normal">Sin cursos</span>
+      <!-- Paso 2: Cursos -->
+      <div class="card noprint hide" id="paso2">
+        <h2><span class="num">2</span> ¿Qué cursos vas a llevar?</h2>
+        <div class="fila">
+          <label class="tit">Ciclo</label>
+          <div id="ciclos" class="fila" style="margin:0"></div>
+        </div>
+        <div class="fila" style="margin-bottom:8px">
+          <label class="tit">Asignaturas</label>
+          <span class="chip on" data-cursos="todos" role="button" tabindex="0">Todas</span>
+          <span class="chip" data-cursos="ninguno" role="button" tabindex="0">Ninguna</span>
+          <span id="resumenCred" style="color:var(--muted);font-size:13.5px"></span>
+        </div>
+        <p style="font-size:12.5px;color:var(--muted);margin:0 0 10px 0;line-height:1.4">
+          <b>Personalización:</b> Marca tus cursos y, si tienes preferencia por una sección específica, puedes fijarla
+          directamente con el selector <b>Fijar</b>. Pasa el cursor sobre cualquier asignatura para previsualizar sus
+          horarios.
+        </p>
+
+        <!-- Monitor de Carga y Límite de Créditos -->
+        <div class="panel-creditos-box" id="panelCreditosBox" style="margin-bottom:12px">
+          <div class="panel-creditos-header">
+            <div style="display:flex;align-items:center;gap:8px">
+              <div>
+                <span class="cred-titulo">Carga Académica:</span>
+                <b id="creditosTexto" class="cred-val">0 / 26 créditos</b>
+                <span id="creditosBadgeEstado" class="badge-cred normal">Sin cursos</span>
+              </div>
+            </div>
+            <div class="cred-config-box">
+              <span style="font-size:12px;color:var(--muted);font-weight:600">Tope: 26 créditos · Mínimo: 12
+                créditos</span>
             </div>
           </div>
-          <div class="cred-config-box">
-            <span style="font-size:12px;color:var(--muted);font-weight:600">Tope: 26 créditos · Mínimo: 12 créditos</span>
+          <div class="barra-cred-track">
+            <div class="barra-cred-fill" id="barraCredFill" style="width: 0%"></div>
+          </div>
+          <div id="credAlertaBox" class="cred-alerta hide"></div>
+        </div>
+
+        <!-- Barra de búsqueda de asignaturas -->
+        <div class="fila fila-busqueda" style="margin-bottom:12px">
+          <div class="search-box-wrap">
+            <input type="text" id="buscarCurso" class="input-busqueda"
+              placeholder="Buscar asignatura, código o profesor de todos los ciclos..." autocomplete="off">
+            <button type="button" id="btnLimpiarBuscar" class="btn-clear-search hide" title="Borrar búsqueda">✕</button>
+          </div>
+          <span id="contadorBusqueda"
+            style="font-size:12.5px;color:var(--muted);font-weight:500;margin-left:6px"></span>
+        </div>
+
+        <div id="sinResultadosCursos" class="hide"
+          style="padding:14px 18px;text-align:center;background:var(--bg-subtle);border:1px dashed var(--line-strong);border-radius:var(--r-sm);margin-bottom:12px;font-size:13px;color:var(--ink-soft)">
+          <div class="aviso-no-match"></div>
+        </div>
+
+        <div class="scroll">
+          <div class="grid2" id="cursos"></div>
+        </div>
+      </div>
+
+      <!-- Paso 3: Preferencias -->
+      <div class="card noprint hide" id="paso3">
+        <h2><span class="num">3</span> Filtros & Preferencias</h2>
+
+        <div class="fila">
+          <label class="tit">Días permitidos</label>
+          <div id="dias" class="fila" style="margin:0"></div>
+        </div>
+
+        <div class="fila">
+          <label class="tit">Turno</label>
+          <span class="chip on" data-turno="mt">Mañana - Tarde</span>
+          <span class="chip" data-turno="tn">Tarde - Noche</span>
+          <span class="chip" data-turno="x">Sin restricción</span>
+        </div>
+
+        <div class="fila">
+          <label class="tit">Rango de horas</label>
+          <span>No empezar antes de</span>
+          <select id="hmin"></select>
+          <span>ni terminar después de</span>
+          <select id="hmax"></select>
+        </div>
+
+        <div class="fila">
+          <label class="tit">Horas muertas</label>
+          <span>Hueco máximo entre clases el mismo día:</span>
+          <select id="hueco">
+            <option value="999">Sin límite</option>
+            <option value="1">1 hora</option>
+            <option value="2" selected>2 horas</option>
+            <option value="3">3 horas</option>
+            <option value="4">4 horas</option>
+          </select>
+        </div>
+
+        <div class="fila" style="align-items:flex-start">
+          <label class="tit">Plana Docente</label>
+          <div style="flex:1;min-width:280px">
+            <p style="font-size:12.5px;color:var(--muted);margin:0 0 8px 0;line-height:1.4">
+              Haz clic en cada docente para cambiar su disponibilidad:
+              <span
+                style="background:#d1fae5;color:#065f46;padding:1px 7px;border-radius:6px;font-size:11.5px;font-weight:700">Disponible</span>
+              = prioridad alta ·
+              <span
+                style="background:#fee2e2;color:#991b1b;padding:1px 7px;border-radius:6px;font-size:11.5px;font-weight:700">No
+                Disponible</span> = baja prioridad
+            </p>
+            <div class="scroll" id="docentes" style="max-height:200px">
+              <div id="docentes-lista" style="display:flex;flex-direction:column;gap:6px"></div>
+            </div>
           </div>
         </div>
-        <div class="barra-cred-track">
-          <div class="barra-cred-fill" id="barraCredFill" style="width: 0%"></div>
+
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px">
+          <button class="btn" id="armar">Armar horarios posibles</button>
+          <button class="btn sec" id="imprimir">Imprimir resultados</button>
         </div>
-        <div id="credAlertaBox" class="cred-alerta hide"></div>
       </div>
 
-      <!-- Barra de búsqueda de asignaturas -->
-      <div class="fila fila-busqueda" style="margin-bottom:12px">
-        <div class="search-box-wrap">
-          <input type="text" id="buscarCurso" class="input-busqueda" placeholder="Buscar asignatura, código o profesor..." autocomplete="off">
-          <button type="button" id="btnLimpiarBuscar" class="btn-clear-search hide" title="Borrar búsqueda">✕</button>
-        </div>
-        <span id="contadorBusqueda" style="font-size:12.5px;color:var(--muted);font-weight:500;margin-left:6px"></span>
-      </div>
-
-      <div id="sinResultadosCursos" class="hide" style="padding:14px 18px;text-align:center;background:var(--bg-subtle);border:1px dashed var(--line-strong);border-radius:var(--r-sm);margin-bottom:12px;font-size:13px;color:var(--ink-soft)">
-        <div class="aviso-no-match"></div>
-      </div>
-
-      <div class="scroll"><div class="grid2" id="cursos"></div></div>
-    </div>
-
-    <!-- Paso 3: Preferencias -->
-    <div class="card noprint hide" id="paso3">
-      <h2><span class="num">3</span> Filtros & Preferencias</h2>
-
-      <div class="fila">
-        <label class="tit">Días permitidos</label>
-        <div id="dias" class="fila" style="margin:0"></div>
-      </div>
-
-      <div class="fila">
-        <label class="tit">Turno</label>
-        <span class="chip ghost" data-turno="mt">Mañana - Tarde</span>
-        <span class="chip ghost" data-turno="tn">Tarde - Noche</span>
-        <span class="chip ghost" data-turno="x">Sin restricción</span>
-      </div>
-
-      <div class="fila">
-        <label class="tit">Rango de horas</label>
-        <span>No empezar antes de</span>
-        <select id="hmin"></select>
-        <span>ni terminar después de</span>
-        <select id="hmax"></select>
-      </div>
-
-      <div class="fila">
-        <label class="tit">Horas muertas</label>
-        <span>Hueco máximo entre clases el mismo día:</span>
-        <select id="hueco">
-          <option value="999">Sin límite</option>
-          <option value="1">1 hora</option>
-          <option value="2" selected>2 horas</option>
-          <option value="3">3 horas</option>
-          <option value="4">4 horas</option>
-        </select>
-      </div>
-
-      <div class="fila" style="align-items:flex-start">
-        <label class="tit">Plana Docente</label>
-        <div style="flex:1;min-width:280px">
-          <p style="font-size:12.5px;color:var(--muted);margin:0 0 8px 0;line-height:1.4">
-            Haz clic en cada docente para cambiar su disponibilidad:
-            <span style="background:#d1fae5;color:#065f46;padding:1px 7px;border-radius:6px;font-size:11.5px;font-weight:700">Disponible</span> = prioridad alta ·
-            <span style="background:#fee2e2;color:#991b1b;padding:1px 7px;border-radius:6px;font-size:11.5px;font-weight:700">No Disponible</span> = baja prioridad
-          </p>
-          <div class="scroll" id="docentes" style="max-height:200px">
-            <div id="docentes-lista" style="display:flex;flex-direction:column;gap:6px"></div>
+      <!-- Panel de Planes de Respaldo (Plan A, B, C) -->
+      <div id="panelPlanesRespaldo" class="card card-planes-respaldo noprint hide">
+        <div class="planes-header">
+          <div class="planes-titulo-box">
+            <div>
+              <h3 style="margin:0;font-size:15px;font-weight:700;color:var(--acs-tinta)">Mis Planes de Respaldo (SUM)
+              </h3>
+              <p style="margin:2px 0 0 0;font-size:12px;color:var(--muted)">Guarda tus alternativas favoritas para
+                actuar de inmediato si una sección se agota en la matrícula.</p>
+            </div>
+          </div>
+          <div class="planes-actions">
+            <button id="btnCompararPlanes" class="btn sm outline" style="display:none">Comparar Planes</button>
+            <button id="btnCopiarTodosPlanes" class="btn sm ghost" style="display:none"
+              title="Copiar códigos de todos los planes">Copiar Todo</button>
           </div>
         </div>
+        <div id="planesGrid" class="planes-grid"></div>
       </div>
 
-      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px">
-        <button class="btn" id="armar">Armar horarios posibles</button>
-        <button class="btn sec" id="imprimir">Imprimir resultados</button>
-      </div>
-    </div>
+      <!-- Resultados del Armador -->
+      <div id="salida"></div>
+    </section>
 
-    <!-- Panel de Planes de Respaldo (Plan A, B, C) -->
-    <div id="panelPlanesRespaldo" class="card card-planes-respaldo noprint hide">
-      <div class="planes-header">
-        <div class="planes-titulo-box">
-          <div>
-            <h3 style="margin:0;font-size:15px;font-weight:700;color:var(--acs-tinta)">Mis Planes de Respaldo (SUM)</h3>
-            <p style="margin:2px 0 0 0;font-size:12px;color:var(--muted)">Guarda tus alternativas favoritas para actuar de inmediato si una sección se agota en la matrícula.</p>
-          </div>
+  </div>
+
+  <!-- MODAL DE CAMBIO DE SECCIÓN EN EL HORARIO -->
+  <div id="modalCambiarSeccion" class="modal-backdrop hide">
+    <div class="modal-box" style="max-width: 580px;">
+      <div class="modal-header">
+        <div>
+          <h3 id="modalSecTitulo" style="margin:0 0 3px;font-size:16px;font-weight:700;color:var(--acs-tinta)">Cambiar
+            Sección</h3>
+          <p id="modalSecSubtitulo" style="margin:0;font-size:12.5px;color:var(--muted)">Alternativas disponibles para
+            esta asignatura</p>
         </div>
-        <div class="planes-actions">
-          <button id="btnCompararPlanes" class="btn sm outline" style="display:none">Comparar Planes</button>
-          <button id="btnCopiarTodosPlanes" class="btn sm ghost" style="display:none" title="Copiar códigos de todos los planes">Copiar Todo</button>
+        <button class="modal-close" id="btnCerrarModalSec">&times;</button>
+      </div>
+      <div class="modal-body" id="modalSecCuerpo" style="padding:18px 22px;">
+        <!-- Lista de secciones inyectada dinámicamente -->
+      </div>
+      <div class="modal-footer" style="padding:14px 22px;justify-content:space-between;align-items:center;">
+        <span style="font-size:12px;color:var(--muted)">Las secciones que generen cruce aparecen identificadas</span>
+        <button class="btn sec sm" id="btnCerrarModalSecFooter">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL DE COMPARACIÓN DE PLANES DE RESPALDO -->
+  <div id="modalCompararPlanes" class="modal-backdrop hide">
+    <div class="modal-box" style="max-width: 860px;">
+      <div class="modal-header">
+        <div>
+          <h3 style="margin:0 0 3px;font-size:16px;font-weight:700;color:var(--acs-tinta)">Comparación de Planes de
+            Respaldo</h3>
+          <p style="margin:0;font-size:12.5px;color:var(--muted)">Revisa las diferencias de secciones, profesores y
+            cruces entre tus opciones</p>
         </div>
+        <button class="modal-close" id="btnCerrarModalComparar">&times;</button>
       </div>
-      <div id="planesGrid" class="planes-grid"></div>
-    </div>
-
-    <!-- Resultados del Armador -->
-    <div id="salida"></div>
-  </section>
-
-</div>
-
-<!-- MODAL DE CAMBIO DE SECCIÓN EN EL HORARIO -->
-<div id="modalCambiarSeccion" class="modal-backdrop hide">
-  <div class="modal-box" style="max-width: 580px;">
-    <div class="modal-header">
-      <div>
-        <h3 id="modalSecTitulo" style="margin:0 0 3px;font-size:16px;font-weight:700;color:var(--acs-tinta)">Cambiar Sección</h3>
-        <p id="modalSecSubtitulo" style="margin:0;font-size:12.5px;color:var(--muted)">Alternativas disponibles para esta asignatura</p>
+      <div id="modalCompararCuerpo" style="padding:18px 22px;max-height:70vh;overflow-y:auto"></div>
+      <div class="modal-footer"
+        style="padding:12px 22px;justify-content:flex-end;align-items:center;background:#f8fafc;border-top:1px solid var(--line)">
+        <button class="btn sec sm" id="btnCerrarModalCompararFooter">Cerrar</button>
       </div>
-      <button class="modal-close" id="btnCerrarModalSec">&times;</button>
-    </div>
-    <div class="modal-body" id="modalSecCuerpo" style="padding:18px 22px;">
-      <!-- Lista de secciones inyectada dinámicamente -->
-    </div>
-    <div class="modal-footer" style="padding:14px 22px;justify-content:space-between;align-items:center;">
-      <span style="font-size:12px;color:var(--muted)">Las secciones que generen cruce aparecen identificadas</span>
-      <button class="btn sec sm" id="btnCerrarModalSecFooter">Cerrar</button>
     </div>
   </div>
-</div>
 
-<!-- MODAL DE COMPARACIÓN DE PLANES DE RESPALDO -->
-<div id="modalCompararPlanes" class="modal-backdrop hide">
-  <div class="modal-box" style="max-width: 860px;">
-    <div class="modal-header">
-      <div>
-        <h3 style="margin:0 0 3px;font-size:16px;font-weight:700;color:var(--acs-tinta)">Comparación de Planes de Respaldo</h3>
-        <p style="margin:0;font-size:12.5px;color:var(--muted)">Revisa las diferencias de secciones, profesores y cruces entre tus opciones</p>
+  <!-- POPOVER PREVISUALIZACIÓN DE HORARIO Y SECCIONES -->
+  <div id="popoverHorarioPreview" class="popover-horario hide" aria-hidden="true">
+    <div id="popoverContenido" class="popover-contenido"></div>
+  </div>
+
+  <!-- FOOTER OFICIAL ACS UNMSM -->
+  <footer class="footer-acs-mini noprint">
+    <div class="footer-wrap">
+      <img src="/assets/img/Whitelogo.svg" onerror="this.src='../assets/img/Whitelogo.svg'" alt="ACS UNMSM"
+        class="footer-logo">
+      <div class="footer-text">
+        <b>ACS Student Chapter UNMSM</b> · Facultad de Química e Ingeniería Química<br>
+        Universidad Nacional Mayor de San Marcos · Lima, Perú<br>
+        <span class="footer-priv">🔒 Procesamiento 100% en tu navegador. Tus horarios nunca se envían a servidores
+          externos.</span>
       </div>
-      <button class="modal-close" id="btnCerrarModalComparar">&times;</button>
     </div>
-    <div id="modalCompararCuerpo" style="padding:18px 22px;max-height:70vh;overflow-y:auto"></div>
-    <div class="modal-footer" style="padding:12px 22px;justify-content:flex-end;align-items:center;background:#f8fafc;border-top:1px solid var(--line)">
-      <button class="btn sec sm" id="btnCerrarModalCompararFooter">Cerrar</button>
-    </div>
-  </div>
-</div>
+  </footer>
 
-<!-- POPOVER PREVISUALIZACIÓN DE HORARIO Y SECCIONES -->
-<div id="popoverHorarioPreview" class="popover-horario hide" aria-hidden="true">
-  <div id="popoverContenido" class="popover-contenido"></div>
-</div>
-
-<!-- FOOTER OFICIAL ACS UNMSM -->
-<footer class="footer-acs-mini noprint">
-  <div class="footer-wrap">
-    <img src="/assets/img/Whitelogo.svg" onerror="this.src='../assets/img/Whitelogo.svg'" alt="ACS UNMSM" class="footer-logo">
-    <div class="footer-text">
-      <b>ACS Student Chapter UNMSM</b> · Facultad de Química e Ingeniería Química<br>
-      Universidad Nacional Mayor de San Marcos · Lima, Perú<br>
-      <span class="footer-priv">🔒 Procesamiento 100% en tu navegador. Tus horarios nunca se envían a servidores externos.</span>
-    </div>
-  </div>
-</footer>
-
-<!-- SCRIPTS MODULARES -->
-<script src="nucleo.js"></script>
-<script src="interfaz.js"></script>
+  <!-- SCRIPTS MODULARES -->
+  <script src="nucleo.js"></script>
+  <script src="interfaz.js"></script>
 </body>
+
 </html>

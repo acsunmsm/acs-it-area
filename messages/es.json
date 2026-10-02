@@ -139,6 +139,8 @@
     "intro": "Una biblioteca abierta para el capítulo: bases de datos, herramientas de cálculo, revistas y convocatorias. Todo lo que usamos, en un solo lugar.",
     "aviso": "Sección en construcción. Estos enlaces son un punto de partida; si conoces alguno que falte, escríbenos.",
     "visitar": "Abrir recurso",
+    "volver": "Volver a Recursos",
+    "appInterna": "Herramienta interactiva",
     "categorias": {
       "bases": "Bases de datos",
       "herramientas": "Herramientas",
