@@ -132,6 +132,9 @@ function inicializarArmadorPDF() {
     });
   }
 
+  // Asignaturas selección rápida (Todas / Ninguna)
+  vincularEventosChipsCursos();
+
   // Días iniciales
   const diasContenedor = $("#dias");
   if (diasContenedor) {
@@ -251,6 +254,16 @@ function pintarCiclosArmador(ciclos) {
     ch.classList.add("on");
     E.ciclo = ch.dataset.ciclo;
     E.seccionesFijadas.clear();
+
+    const input = $("#buscarCurso");
+    if (input) input.value = "";
+
+    const codigosCiclo = (E.ciclo === "*" ? E.cursos : E.cursos.filter(c => c.ciclo === E.ciclo)).map(c => c.codigo);
+    E.sel = new Set(codigosCiclo);
+
+    $$('[data-cursos]').forEach(o => o.classList.remove("on"));
+    $('[data-cursos="todos"]')?.classList.add("on");
+
     pintarCursosArmador();
   });
   const pref = ciclos.includes("4") ? "4" : ciclos[0];
@@ -273,6 +286,7 @@ function filtrarCursosArmador() {
   const btnLimpiar = $("#btnLimpiarBuscar");
   const contador = $("#contadorBusqueda");
   const sinResultados = $("#sinResultadosCursos");
+  const E = AppState.armador;
 
   if (btnLimpiar) {
     btnLimpiar.classList.toggle("hide", !query);
@@ -282,15 +296,26 @@ function filtrarCursosArmador() {
   let visibles = 0;
 
   items.forEach(item => {
-    const texto = item.dataset.search || normalizarTexto(item.textContent || "");
-    const coincide = !query || texto.includes(query);
+    const texto = item.dataset.search || "";
+    const cicloItem = item.dataset.ciclo;
+    const cod = item.dataset.cod;
+
+    let coincide = false;
+    if (query) {
+      // Búsqueda global en TODOS los ciclos
+      coincide = texto.includes(query);
+    } else {
+      // Sin búsqueda: ciclo seleccionado y cursos de otros ciclos seleccionados
+      coincide = (E.ciclo === "*" || cicloItem === E.ciclo || E.sel.has(cod));
+    }
+
     item.style.display = coincide ? "" : "none";
     if (coincide) visibles++;
   });
 
   if (contador) {
     if (query) {
-      contador.textContent = `${visibles} de ${items.length} ${visibles === 1 ? 'asignatura' : 'asignaturas'}`;
+      contador.textContent = `${visibles} ${visibles === 1 ? 'asignatura encontrada' : 'asignaturas encontradas'} (en todos los ciclos)`;
     } else {
       contador.textContent = "";
     }
@@ -299,19 +324,10 @@ function filtrarCursosArmador() {
   if (sinResultados) {
     if (items.length > 0 && visibles === 0 && query) {
       sinResultados.classList.remove("hide");
-      const E = AppState.armador;
       const aviso = sinResultados.querySelector(".aviso-no-match");
       if (aviso) {
         const querySegura = (input?.value || "").replace(/[<>&"']/g, s => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;', "'": '&#39;' }[s]));
-        if (E.ciclo !== "*") {
-          aviso.innerHTML = `No se encontraron asignaturas para "<b>${querySegura}</b>" en el ciclo seleccionado. <a href="#" id="linkBuscarTodosCiclos" style="color:var(--color-primary);font-weight:600;text-decoration:underline;cursor:pointer">Buscar en todos los ciclos</a>`;
-          $("#linkBuscarTodosCiclos")?.addEventListener("click", (e) => {
-            e.preventDefault();
-            $(`#ciclos .chip[data-ciclo="*"]`)?.click();
-          });
-        } else {
-          aviso.innerHTML = `No se encontraron asignaturas que coincidan con "<b>${querySegura}</b>".`;
-        }
+        aviso.innerHTML = `No se encontró ninguna asignatura que coincida con "<b>${querySegura}</b>" en ningún ciclo.`;
       }
     } else {
       sinResultados.classList.add("hide");
@@ -324,7 +340,7 @@ function mostrarPopoverCurso(cod, e) {
   const contenido = $("#popoverContenido");
   if (!popover || !contenido) return;
 
-  const lista = delCicloArmador();
+  const lista = AppState.armador.cursos;
   const secciones = lista.filter(c => c.codigo === cod);
   if (!secciones.length) return;
 
@@ -411,11 +427,82 @@ function ocultarPopover() {
   }
 }
 
+function actualizarChipsSeleccionCursos() {
+  const E = AppState.armador;
+  const items = $$('#cursos .item').filter(item => item.style.display !== "none");
+  const chips = $$('[data-cursos]');
+  chips.forEach(o => o.classList.remove("on"));
+
+  if (!items.length) {
+    if (E.sel && E.sel.size === 0) {
+      $('[data-cursos="ninguno"]')?.classList.add("on");
+    } else {
+      $('[data-cursos="todos"]')?.classList.add("on");
+    }
+    return;
+  }
+
+  const checkboxes = items.map(item => item.querySelector('input[type="checkbox"]')).filter(Boolean);
+  const checkedCount = checkboxes.filter(cb => cb.checked).length;
+
+  if (checkedCount === checkboxes.length && checkboxes.length > 0) {
+    $('[data-cursos="todos"]')?.classList.add("on");
+  } else if (checkedCount === 0) {
+    $('[data-cursos="ninguno"]')?.classList.add("on");
+  }
+}
+
+function vincularEventosChipsCursos() {
+  $$('[data-cursos]').forEach(b => {
+    b.onclick = (e) => {
+      e?.preventDefault();
+      const E = AppState.armador;
+      const todo = b.dataset.cursos === "todos";
+      const itemsVisibles = $$('#cursos .item').filter(item => item.style.display !== "none");
+      const targets = itemsVisibles.length ? itemsVisibles : $$('#cursos .item');
+
+      targets.forEach(item => {
+        const i = item.querySelector('input[type="checkbox"]');
+        if (i) {
+          i.checked = todo;
+          const cod = i.dataset.cod || item.dataset.cod;
+          if (cod) {
+            todo ? E.sel.add(cod) : E.sel.delete(cod);
+          }
+        }
+      });
+
+      const input = $("#buscarCurso");
+      const query = (input?.value || "").trim();
+      if (!todo && !query) {
+        E.sel.clear();
+        $$('#cursos input[type="checkbox"]').forEach(i => i.checked = false);
+      }
+
+      filtrarCursosArmador();
+      actualizarChipsSeleccionCursos();
+      resumenArmador();
+      pintarDocentesArmador();
+    };
+
+    b.onkeydown = (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        b.click();
+      }
+    };
+  });
+}
+
 function pintarCursosArmador() {
   const E = AppState.armador;
-  const lista = delCicloArmador();
+  const lista = E.cursos;
   const codigos = [...new Set(lista.map(c => c.codigo))];
-  E.sel = new Set(codigos);
+
+  if (!E.sel) {
+    const codigosCiclo = (E.ciclo === "*" ? lista : lista.filter(c => c.ciclo === E.ciclo)).map(c => c.codigo);
+    E.sel = new Set(codigosCiclo);
+  }
 
   // Limpiar secciones fijadas de cursos que ya no están
   for (const cod of [...E.seccionesFijadas.keys()]) {
@@ -427,6 +514,8 @@ function pintarCursosArmador() {
 
   cursosCont.innerHTML = codigos.map(cod => {
     const s = lista.filter(c => c.codigo === cod);
+    const primer = s[0];
+    const cicloCurso = primer.ciclo || "-";
     const docsCurso = [...new Set(s.map(x => x.docente).filter(d => d && d !== "SIN DOCENTE ASIGNADO" && d !== "--"))];
     const subDoc = docsCurso.length ? ` · <span style="color:var(--muted)">Prof: ${docsCurso.join(", ")}</span>` : ` · <span style="color:#a0aec0">(Prof. por asignar)</span>`;
     const secFijada = E.seccionesFijadas.get(cod) || "";
@@ -434,23 +523,25 @@ function pintarCursosArmador() {
     const opcionesSecc = s.length > 1 ? `
       <div style="margin-top:7px;display:flex;align-items:center;justify-content:flex-end;gap:6px;width:100%" onclick="event.stopPropagation()">
         <span style="font-size:11.5px;color:var(--muted);white-space:nowrap">Fijar:</span>
-        <select class="sel-pin-seccion ${secFijada ? 'pinned' : ''}" data-cod="${cod}" title="Fijar sección específica para ${s[0].nombre}">
+        <select class="sel-pin-seccion ${secFijada ? 'pinned' : ''}" data-cod="${cod}" title="Fijar sección específica para ${primer.nombre}">
           <option value="">Cualquier sección</option>
           ${s.map(sec => {
-            const docInfo = sec.docente && sec.docente !== 'SIN DOCENTE ASIGNADO' ? ' (' + sec.docente.split(',')[0] + ')' : '';
-            return `<option value="${sec.seccion}" ${secFijada === sec.seccion ? 'selected' : ''}>Sec. ${sec.seccion}${docInfo}</option>`;
-          }).join('')}
+      const docInfo = sec.docente && sec.docente !== 'SIN DOCENTE ASIGNADO' ? ' (' + sec.docente.split(',')[0] + ')' : '';
+      return `<option value="${sec.seccion}" ${secFijada === sec.seccion ? 'selected' : ''}>Sec. ${sec.seccion}${docInfo}</option>`;
+    }).join('')}
         </select>
       </div>` : '';
 
     const estiloFijado = secFijada ? 'border-color:var(--acc);background:#f8fcff;' : '';
-    const textoBusqueda = normalizarTexto(`${cod} ${s[0].nombre} ${docsCurso.join(" ")}`);
-    return `<div class="item" data-cod="${cod}" data-search="${textoBusqueda}" style="flex-direction:column;align-items:stretch;justify-content:space-between;${estiloFijado}">
+    const textoBusqueda = normalizarTexto(`ciclo ${cicloCurso} c${cicloCurso} ${cod} ${primer.nombre} ${docsCurso.join(" ")}`);
+    const isChecked = E.sel.has(cod);
+
+    return `<div class="item" data-cod="${cod}" data-ciclo="${cicloCurso}" data-search="${textoBusqueda}" style="flex-direction:column;align-items:stretch;justify-content:space-between;${estiloFijado}">
       <label style="display:flex;gap:9px;align-items:flex-start;cursor:pointer">
-        <input type="checkbox" checked data-cod="${cod}">
+        <input type="checkbox" ${isChecked ? 'checked' : ''} data-cod="${cod}">
         <span>
-          <span class="n">${cod} · ${s[0].nombre}</span><br>
-          <span class="m">${s[0].creditos} créditos · ${s.length} ${s.length === 1 ? "sección" : "secciones"}${subDoc}</span>
+          <span class="n">${cod} · ${primer.nombre}</span><br>
+          <span class="m"><span style="display:inline-block;padding:1px 6px;border-radius:4px;font-size:11px;font-weight:700;background:var(--bg-subtle,#eef2ff);color:var(--color-primary,#412BFD);margin-right:6px">Ciclo ${cicloCurso}</span>${primer.creditos} créditos · ${s.length} ${s.length === 1 ? "sección" : "secciones"}${subDoc}</span>
         </span>
       </label>
       ${opcionesSecc}
@@ -459,6 +550,7 @@ function pintarCursosArmador() {
 
   $$('#cursos input[type="checkbox"]').forEach(i => i.onchange = () => {
     i.checked ? E.sel.add(i.dataset.cod) : E.sel.delete(i.dataset.cod);
+    actualizarChipsSeleccionCursos();
     resumenArmador();
     pintarDocentesArmador();
   });
@@ -485,20 +577,7 @@ function pintarCursosArmador() {
     }
   });
 
-  $$('[data-cursos]').forEach(b => b.onclick = () => {
-    const todo = b.dataset.cursos === "todos";
-    const itemsVisibles = $$('#cursos .item').filter(item => item.style.display !== "none");
-    const targets = itemsVisibles.length ? itemsVisibles : $$('#cursos .item');
-    targets.forEach(item => {
-      const i = item.querySelector('input[type="checkbox"]');
-      if (i) {
-        i.checked = todo;
-        todo ? E.sel.add(i.dataset.cod) : E.sel.delete(i.dataset.cod);
-      }
-    });
-    resumenArmador();
-    pintarDocentesArmador();
-  });
+  vincularEventosChipsCursos();
 
   // Previsualización rápida al pasar el cursor (Hover preview)
   $$('#cursos .item').forEach(item => {
@@ -513,9 +592,10 @@ function pintarCursosArmador() {
     });
   });
 
+  filtrarCursosArmador();
+  actualizarChipsSeleccionCursos();
   resumenArmador();
   pintarDocentesArmador();
-  filtrarCursosArmador();
 }
 
 const LIMITE_CREDITOS_MAX = 26;
@@ -527,12 +607,12 @@ function obtenerLimiteCreditosMax() {
 
 function resumenArmador() {
   const E = AppState.armador;
-  const lista = delCicloArmador().filter(c => E.sel.has(c.codigo));
+  const lista = E.cursos.filter(c => E.sel.has(c.codigo));
   const codigos = [...new Set(lista.map(c => c.codigo))];
   const cred = codigos.reduce((t, cod) => t + (lista.find(c => c.codigo === cod)?.creditos || 0), 0);
 
   const resumen = $("#resumenCred");
-  if (resumen) resumen.textContent = `${E.sel.size} asignaturas seleccionadas · ${cred} créditos`;
+  if (resumen) resumen.textContent = `${codigos.length} asignaturas seleccionadas · ${cred} créditos`;
 
   // Actualizar monitor y barra de progreso de créditos
   actualizarMonitorCreditos(cred, codigos.length);
@@ -605,7 +685,7 @@ function actualizarMonitorCreditos(cred, numCursos) {
 
 function pintarDocentesArmador() {
   const E = AppState.armador;
-  const lista = delCicloArmador().filter(c => E.sel.has(c.codigo));
+  const lista = E.cursos.filter(c => E.sel.has(c.codigo));
   const docs = [...new Set(lista.map(c => c.docente))].filter(d => d && d !== "SIN DOCENTE ASIGNADO" && d !== "--").sort();
 
   // Limpiar prefs de docentes que ya no están en la selección
@@ -675,7 +755,7 @@ const COLORES_HORARIO = [
 
 function armarHorarios() {
   const E = AppState.armador;
-  const lista = delCicloArmador().filter(c => E.sel.has(c.codigo));
+  const lista = E.cursos.filter(c => E.sel.has(c.codigo));
   const out = $("#salida");
   if (!out) return;
   out.innerHTML = "";
@@ -683,8 +763,8 @@ function armarHorarios() {
   if (!lista.length) { out.innerHTML = '<div class="aviso w">Selecciona al menos una asignatura.</div>'; return; }
   if (!E.dias.size) { out.innerHTML = '<div class="aviso w">Selecciona al menos un día.</div>'; return; }
 
-  const noDisponibles = new Set([...E.docPrefs.entries()].filter(([,v]) => v === 'no_disponible').map(([k]) => k));
-  const disponibles   = new Set([...E.docPrefs.entries()].filter(([,v]) => v === 'disponible').map(([k]) => k));
+  const noDisponibles = new Set([...E.docPrefs.entries()].filter(([, v]) => v === 'no_disponible').map(([k]) => k));
+  const disponibles = new Set([...E.docPrefs.entries()].filter(([, v]) => v === 'disponible').map(([k]) => k));
 
   const f = { dias: new Set(E.dias), horaMin: +$("#hmin").value, horaMax: +$("#hmax").value, docentesExcluidos: new Set(), docPrefs: E.docPrefs };
   if (f.horaMin >= f.horaMax) { out.innerHTML = '<div class="aviso w">El rango de horas está invertido.</div>'; return; }
@@ -777,12 +857,10 @@ function armarHorarios() {
 
   // Advertencia si alguna solución incluye docentes no-disponibles
   const infoPrefs = disponibles.size > 0 || noDisponibles.size > 0
-    ? `<div class="aviso i noprint" style="margin-bottom:6px"><b>Plana Docente activa:</b> ${
-        disponibles.size ? `<span style="color:#065f46">${disponibles.size} con alta prioridad</span>` : ''
-      }${ disponibles.size && noDisponibles.size ? ' · ' : ''
-      }${
-        noDisponibles.size ? `<span style="color:#991b1b">${noDisponibles.size} con baja prioridad</span>` : ''
-      }. Los horarios que incluyan docentes de baja prioridad se identifican claramente.</div>`
+    ? `<div class="aviso i noprint" style="margin-bottom:6px"><b>Plana Docente activa:</b> ${disponibles.size ? `<span style="color:#065f46">${disponibles.size} con alta prioridad</span>` : ''
+    }${disponibles.size && noDisponibles.size ? ' · ' : ''
+    }${noDisponibles.size ? `<span style="color:#991b1b">${noDisponibles.size} con baja prioridad</span>` : ''
+    }. Los horarios que incluyan docentes de baja prioridad se identifican claramente.</div>`
     : '';
 
   const fijadasCount = E.seccionesFijadas.size;
@@ -848,7 +926,7 @@ function vincularEventosResultados() {
       const sol = soluciones[solIdx];
       if (!sol) return;
 
-      const poolCursos = delCicloArmador();
+      const poolCursos = AppState.armador.cursos;
       const todasDelCurso = poolCursos.filter(c => c.codigo === cod);
       const nuevaSecObj = todasDelCurso.find(c => c.seccion === nuevaSecVal);
       if (!nuevaSecObj) return;
@@ -983,7 +1061,7 @@ function abrirModalCambioSeccion(solIdx, cod) {
   const cuerpo = $("#modalSecCuerpo");
   if (!modal || !cuerpo) return;
 
-  const poolCursos = delCicloArmador();
+  const poolCursos = AppState.armador.cursos;
   const todasDelCurso = poolCursos.filter(c => c.codigo === cod);
   const secActualObj = sol.secciones.find(c => c.codigo === cod);
   if (!secActualObj) return;
@@ -1040,7 +1118,7 @@ function abrirModalCambioSeccion(solIdx, cod) {
             <b>Horario:</b> ${cand.horarios.map(h => DIA_CORTO[h.dia] + " " + aHora(h.ini) + "–" + aHora(h.fin) + (h.aula && h.aula !== "--" ? " (" + h.aula + ")" : "")).join(" · ")}
           </div>
           <button class="btn sm btnModalAplicarSwap" data-sec="${cand.seccion}">
-            Cambiar a esta
+            Seleccionar horario
           </button>
         </div>`;
     } else {
@@ -1586,7 +1664,7 @@ function calendarioResultadoArmador(s, color, solIdx) {
 function tablaResultadoArmador(s, color, f, solIdx) {
   const ord = s.secciones.slice().sort((a, b) => a.codigo.localeCompare(b.codigo));
   const docPrefs = (f && f.docPrefs) || new Map();
-  const poolCursos = delCicloArmador();
+  const poolCursos = AppState.armador.cursos;
 
   return `<table><thead><tr><th>Asignatura</th><th style="min-width:140px">Sec. (Cambiar)</th><th>Docente</th><th>Horario</th><th>Vac.</th></tr></thead><tbody>` +
     ord.map(x => {
@@ -1919,11 +1997,11 @@ function diagnosticoInteligente({ activos = [], vacios = [], f, lista = [], codi
           </summary>
           <div style="margin-top:10px;overflow-x:auto">
             <table><thead><tr><th>Asignatura</th><th>Opciones</th><th>Horarios sobrevivientes</th></tr></thead><tbody>` +
-            activos.map(g => `<tr><td><b>${g.codigo}</b><br><span style="color:var(--muted);font-size:12px">${g.nombre}</span></td>` +
-              `<td>${g.secciones.length}</td><td style="font-size:12px">` +
-              g.secciones.map(s => `<b>Sec. ${s.seccion}:</b> ` + s.horarios.map(x => DIA_CORTO[x.dia] + " " + aHora(x.ini) + "–" + aHora(x.fin)).join(", ")).join("<br>") +
-              '</td></tr>').join("") +
-            `</tbody></table>
+      activos.map(g => `<tr><td><b>${g.codigo}</b><br><span style="color:var(--muted);font-size:12px">${g.nombre}</span></td>` +
+        `<td>${g.secciones.length}</td><td style="font-size:12px">` +
+        g.secciones.map(s => `<b>Sec. ${s.seccion}:</b> ` + s.horarios.map(x => DIA_CORTO[x.dia] + " " + aHora(x.ini) + "–" + aHora(x.fin)).join(", ")).join("<br>") +
+        '</td></tr>').join("") +
+      `</tbody></table>
           </div>
         </details>
       </div>`;
