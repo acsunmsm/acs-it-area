@@ -243,5 +243,24 @@
       "gracias": "You're welcome! 😊 That's what I'm here for. Ask me anything else.",
       "despedida": "See you soon! 👋 It was a pleasure. Come back anytime and don't miss our events. 💙⚗️"
     }
+  },
+  "verificar": {
+    "metaTitle": "Verify Certificate – ACS UNMSM",
+    "metaDescription": "Verify the authenticity of your certificate issued by the ACS Student Chapter UNMSM.",
+    "badge": "Certificate Verification",
+    "title": "Certificate Verification",
+    "subtitle": "Enter or scan your certificate code to verify its authenticity.",
+    "successTitle": "Valid Certificate",
+    "successMessage": "This certificate has been successfully verified in our records.",
+    "labelNombre": "Name",
+    "labelEvento": "Event",
+    "labelFecha": "Date",
+    "labelHoras": "Hours",
+    "labelArea": "Area",
+    "labelId": "Code",
+    "errorTitle": "Certificate Not Found",
+    "errorMessage": "The code entered does not match any valid certificate in our records.",
+    "searchedCode": "Searched code",
+    "errorHint": "Please verify the code is correct. If you believe this is an error, contact us."
   }
 }
