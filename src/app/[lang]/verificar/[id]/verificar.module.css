@@ -1,0 +1,288 @@
+/* ═══════════════════════════════════════════════
+   Verificar Certificado – Estilos
+   ═══════════════════════════════════════════════ */
+
+/* ---------- Hero Section ---------- */
+.heroSection {
+  position: relative;
+  min-height: 340px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: linear-gradient(135deg, #0b0f2e 0%, #1a1150 40%, #2d1b69 100%);
+  padding-top: calc(76px + 2.5rem);
+  padding-bottom: 2.5rem;
+}
+
+.heroOverlay {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 600px 400px at 20% 50%, rgba(111, 237, 238, 0.12) 0%, transparent 70%),
+    radial-gradient(ellipse 500px 350px at 80% 30%, rgba(129, 140, 248, 0.1) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.heroContent {
+  z-index: 2;
+}
+
+.badge {
+  display: inline-block;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #6fedee;
+  background: rgba(111, 237, 238, 0.1);
+  border: 1px solid rgba(111, 237, 238, 0.2);
+  padding: 6px 18px;
+  border-radius: 50px;
+  margin-bottom: 1.25rem;
+}
+
+.heroTitle {
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.5px;
+  margin-bottom: 0.75rem;
+  line-height: 1.2;
+}
+
+.heroSubtitle {
+  font-size: 1.05rem;
+  color: rgba(255, 255, 255, 0.7);
+  max-width: 520px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* ---------- Result Section ---------- */
+.resultSection {
+  padding: 3rem 0 4rem;
+  background: #f8fafc;
+  min-height: 50vh;
+}
+
+/* ---------- Card ---------- */
+.card {
+  position: relative;
+  background: #ffffff;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow:
+    0 4px 24px rgba(11, 27, 43, 0.06),
+    0 1px 4px rgba(11, 27, 43, 0.04);
+  border: 1px solid #e2e8f0;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  animation: cardSlideUp 0.5s ease-out;
+}
+
+.card:hover {
+  box-shadow:
+    0 8px 40px rgba(11, 27, 43, 0.1),
+    0 2px 8px rgba(11, 27, 43, 0.06);
+  transform: translateY(-2px);
+}
+
+@keyframes cardSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Borde superior de estado */
+.cardBorderSuccess {
+  height: 5px;
+  background: linear-gradient(90deg, #10b981, #34d399, #6ee7b7);
+}
+
+.cardBorderError {
+  height: 5px;
+  background: linear-gradient(90deg, #ef4444, #f87171, #fca5a5);
+}
+
+.cardBody {
+  padding: 2.5rem 2rem;
+  text-align: center;
+}
+
+@media (max-width: 576px) {
+  .cardBody {
+    padding: 2rem 1.25rem;
+  }
+}
+
+/* ---------- Icon / Mascot ---------- */
+.iconWrapper {
+  margin-bottom: 1.25rem;
+}
+
+.mascotImage {
+  object-fit: contain;
+  display: inline-block;
+  animation: iconPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s both;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.1));
+}
+
+@keyframes iconPop {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ---------- Card Text ---------- */
+.cardTitle {
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: #0b1b2b;
+  margin-bottom: 0.5rem;
+}
+
+.cardSubtitle {
+  font-size: 0.95rem;
+  color: #64748b;
+  margin-bottom: 2rem;
+  line-height: 1.5;
+}
+
+.cardSubtitleError {
+  font-size: 0.95rem;
+  color: #64748b;
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+}
+
+/* ---------- Data Grid (Success) ---------- */
+.dataGrid {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.dataRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid #f1f5f9;
+  transition: background 0.2s ease;
+}
+
+.dataRow:last-child {
+  border-bottom: none;
+}
+
+.dataRow:hover {
+  background: #f8fafc;
+}
+
+.dataLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
+}
+
+.dataIcon {
+  font-size: 1.1rem;
+}
+
+.dataValue {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #1e293b;
+  text-align: right;
+  word-break: break-word;
+  max-width: 55%;
+}
+
+.dataMono {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.85rem;
+  background: #f1f5f9;
+  padding: 4px 10px;
+  border-radius: 8px;
+  color: #475569;
+  letter-spacing: 0.3px;
+}
+
+/* ---------- Error State ---------- */
+.errorCodeBox {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.errorCodeLabel {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #991b1b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.errorCode {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #dc2626;
+  font-family: 'Courier New', Courier, monospace;
+  word-break: break-all;
+}
+
+.errorHint {
+  font-size: 0.88rem;
+  color: #94a3b8;
+  line-height: 1.6;
+  max-width: 380px;
+  margin: 0 auto;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 576px) {
+  .heroSection {
+    min-height: 260px;
+    padding-top: calc(76px + 1.5rem);
+    padding-bottom: 1.5rem;
+  }
+
+  .heroTitle {
+    font-size: 1.5rem;
+  }
+
+  .dataRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.3rem;
+    padding: 0.75rem 0.75rem;
+  }
+
+  .dataValue {
+    text-align: left;
+    max-width: 100%;
+  }
+}
