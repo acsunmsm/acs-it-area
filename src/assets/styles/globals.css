@@ -935,23 +935,14 @@ h2 {
 .nav-link-custom {
   position: relative;
   color: #444 !important;
-  font-weight: normal;
+  font-weight: 350;
   font-size: 15px;
   transition: color 0.3s ease;
   font-family: 'Stolzl', sans-serif, 'Segoe UI', Tahoma, Geneva, Verdana;
   display: block !important;
-  /* Shift hitbox upward by 15px without visually moving the text */
-  padding-top: 23px !important;
-  padding-bottom: 8px !important;
-  padding-left: 12px !important;
-  padding-right: 12px !important;
-  margin-top: -15px !important;
-
+  padding: 8px 12px !important;
+  margin: 0 !important;
   white-space: nowrap;
-  flex-shrink: 0;
-  z-index: 99999 !important;
-  pointer-events: auto !important;
-  position: relative !important;
 }
 
 .nav-icon-link,
@@ -975,8 +966,7 @@ h2 {
   position: absolute;
   width: 0;
   height: 2px;
-  bottom: 4px;
-  /* 2px por debajo del texto, respetando el padding de Bootstrap */
+  bottom: 0px;
   left: 50%;
   background-color: #412BFD;
   transition: all 0.3s ease;
@@ -985,9 +975,12 @@ h2 {
 
 .nav-link-custom:hover::after,
 .nav-link-custom.active-link::after {
-  width: calc(100% - 2rem);
-  /* El ancho exacto del texto, excluyendo el padding izquierdo y derecho */
+  width: calc(100% - 24px);
 }
+
+
+
+
 
 /* ========================================= */
 /* NEWSPAPER STYLES FOR NEWS SECTION         */

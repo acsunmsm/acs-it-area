@@ -116,3 +116,8 @@ sketch
 .ionide
 
 # End of https://www.toptal.com/developers/gitignore/api/react,nextjs,visualstudiocode
+
+# Antigravity Skills
+.agents/skills/
+skills-lock.json
+.agents

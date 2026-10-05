@@ -142,7 +142,7 @@ export default function Navbar() {
                   aria-expanded={showLanguageMenu}
                 >
                   <FontAwesomeIcon icon={faGlobe} className="me-1" />
-                  {locale === 'en' ? '🇺🇸' : '🇪🇸'}
+                  {locale === 'en' ? 'EN' : 'ES'}
                   <FontAwesomeIcon icon={faChevronDown} className="ms-1" />
                 </button>
 
@@ -160,13 +160,13 @@ export default function Navbar() {
                     className="dropdown-item d-flex align-items-center py-2"
                     onClick={() => changeLanguage('en')}
                   >
-                    <span className="me-2">🇺🇸</span> {t('english')}
+                    {t('english')}
                   </button>
                   <button
                     className="dropdown-item d-flex align-items-center py-2"
                     onClick={() => changeLanguage('es')}
                   >
-                    <span className="me-2">🇪🇸</span> {t('spanish')}
+                    {t('spanish')}
                   </button>
                 </div>
               </div>
