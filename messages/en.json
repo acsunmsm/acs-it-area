@@ -86,13 +86,22 @@
     }
   },
   "contact": {
-    "title": "Contact Us",
+    "title": "Contact Us!",
+    "subtitle": "If you have questions, suggestions, or want to collaborate with us, write to us. We are here to help you and grow together.",
     "form": {
-      "name": "Your name",
-      "email": "Your email",
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone (optional)",
+      "reason": "Select a reason",
+      "reasonOptions": {
+        "membership": "Membership / I want to join",
+        "partnership": "Partnerships / Sponsorship",
+        "events": "Questions about events",
+        "other": "Other inquiries"
+      },
       "subject": "Subject",
-      "message": "Message",
-      "submit": "Send"
+      "message": "Write your message here...",
+      "submit": "Send Message"
     }
   },
   "events": {

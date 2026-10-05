@@ -87,13 +87,22 @@
     }
   },
   "contact": {
-    "title": "Contáctanos",
+    "title": "¡Contacta con Nosotros!",
+    "subtitle": "Si tienes dudas, sugerencias o quieres colaborar con nosotros, escríbenos. Estamos aquí para ayudarte y crecer juntos.",
     "form": {
-      "name": "Tu nombre",
-      "email": "Tu correo electrónico",
+      "name": "Nombre",
+      "email": "Email",
+      "phone": "Teléfono (opcional)",
+      "reason": "Selecciona el motivo",
+      "reasonOptions": {
+        "membership": "Membresía / Quiero unirme",
+        "partnership": "Alianzas / Patrocinio",
+        "events": "Dudas sobre eventos",
+        "other": "Otras consultas"
+      },
       "subject": "Asunto",
-      "message": "Mensaje",
-      "submit": "Enviar"
+      "message": "Escribe tu mensaje aquí...",
+      "submit": "Enviar Mensaje"
     }
   },
   "events": {

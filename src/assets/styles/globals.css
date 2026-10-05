@@ -460,50 +460,179 @@ body {
   transform: scale(1.1);
 }
 
-/* Estilos para la secciÃ³n de contacto */
-.contact-section {
-  background: url('/assets/img/contact-bg.png') no-repeat center center;
+/* Contact Banner */
+.contact-banner {
+  height: 450px;
+  background-image: linear-gradient(90deg, var(--color-primary) 0%, rgba(65, 43, 253, 0) 25%, rgba(65, 43, 253, 0) 50%, rgba(65, 43, 253, 0) 100%), url('/assets/img/Fondo3.jpeg');
   background-size: cover;
+  background-position: center center;
+  position: relative;
+  display: flex;
+  margin-top: -76px;
+  padding-top: 76px;
+}
+
+.banner-content {
+  height: 100%;
+}
+
+.banner-title {
+  color: #ffffff;
+  font-size: 4rem;
+  font-weight: 400;
+  text-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  margin: 0;
+  letter-spacing: -1px;
+}
+
+/* Estilos para la sección de contacto */
+.contact-section {
+  position: relative;
+  background-color: #fafbfc;
+  /* Gris extremadamente sutil y limpio */
+  padding: 80px 0 100px;
+  overflow: hidden;
+}
+
+.icon-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 55px;
+  height: 55px;
+  background: linear-gradient(135deg, rgba(65, 43, 253, 0.08), rgba(111, 237, 238, 0.15));
   color: var(--color-primary);
-  font-weight: 600;
-  text-align: center;
-  padding: 50px 0;
+  border-radius: 16px;
+  font-size: 1.5rem;
 }
 
-.contact-form {
-  max-width: 40%;
-  margin: 0 auto;
-  padding: 20px;
-  border-radius: 10px;
-}
-
-.contact-form input,
-.contact-form textarea {
-  width: 100%;
-  margin-bottom: 0px;
-  padding: 10px;
-  border: 0px solid #ccc;
-  border-radius: 20px;
-}
-
-.contact-form button {
-  background-color: var(--color-primary);
+/* Micro-animación al pasar el mouse por los iconos */
+.icon-box:hover {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
   color: white;
-  border: none;
-  padding: 10px;
+  box-shadow: 0 12px 25px rgba(65, 43, 253, 0.25);
+  transition-duration: 0.5s;
+}
+
+.contact-form-simple {
+  background: #ffffff;
+  border-radius: 24px;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.04), 0 4px 10px rgba(0, 0, 0, 0.02);
+  border: 1px solid rgba(0, 0, 0, 0.03);
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.contact-form-simple:hover {
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.06), 0 4px 15px rgba(0, 0, 0, 0.03);
+}
+
+/* Detalle visual superior en la tarjeta */
+.contact-form-simple::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: 24px;
+  right: 24px;
+  height: 4px;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+  border-radius: 4px 4px 0 0;
+  opacity: 0.8;
+}
+
+.contact-form-simple .form-control {
   width: 100%;
+  padding: 16px 20px;
+  background: #f8fafc !important;
+  border: 1px solid transparent !important;
+  border-radius: 14px !important;
+  color: #1e293b !important;
+  font-size: 1rem;
+  font-weight: 400;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: none;
+}
+
+/* Efecto focus premium en los inputs */
+.contact-form-simple .form-control:focus {
+  outline: none;
+  background: #ffffff !important;
+  border-color: var(--color-primary) !important;
+  box-shadow: 0 8px 20px rgba(65, 43, 253, 0.06), 0 0 0 3px rgba(65, 43, 253, 0.1) !important;
+  transform: translateY(-2px);
+}
+
+.contact-form-simple .form-control::placeholder {
+  color: #94a3b8 !important;
+  font-weight: 300;
+}
+
+/* Estilo personalizado para el Select */
+.contact-form-simple select.form-control {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 1rem center !important;
+  background-size: 1.2em !important;
+  padding-right: 2.5rem !important;
+}
+
+.contact-form-simple select.form-control:focus {
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23412BFD' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='18 15 12 9 6 15'%3e%3c/polyline%3e%3c/svg%3e") !important;
+}
+
+/* Botón de Enviar Moderno */
+.btn-modern-submit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-primary);
+  color: #ffffff;
+  border: none;
   border-radius: 12px;
+  padding: 16px 24px;
+  font-size: 1.125rem;
   font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(65, 43, 253, 0.25);
+  overflow: hidden;
+  position: relative;
 }
 
-.contact-form button:hover {
-  background-color: var(--color-primary-dark);
-  transform: scale(1.05);
+.btn-modern-submit::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+  transition: left 0.6s ease;
 }
 
-.contact-form input::placeholder,
-.contact-form textarea::placeholder {
-  color: #888;
+.btn-modern-submit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(65, 43, 253, 0.35);
+  background: var(--color-primary-dark);
+  color: #ffffff;
+}
+
+.btn-modern-submit:hover::after {
+  left: 100%;
+}
+
+.btn-modern-submit:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 8px rgba(65, 43, 253, 0.2);
+}
+
+.btn-modern-submit svg {
+  transition: transform 0.3s ease;
+}
+
+.btn-modern-submit:hover svg {
+  transform: translate(4px, -4px);
 }
 
 /* Estilos para la secciÃ³n de capÃ­tulos */
