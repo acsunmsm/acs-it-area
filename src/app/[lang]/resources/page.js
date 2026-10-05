@@ -24,16 +24,15 @@ import {
 } from 'react-icons/fa';
 
 const RECURSOS = [
-  { id: 'pubchem', categoria: 'bases', url: 'https://pubchem.ncbi.nlm.nih.gov/', icon: FaFlask },
-  { id: 'nist', categoria: 'bases', url: 'https://webbook.nist.gov/chemistry/', icon: FaAtom },
-  { id: 'sds', categoria: 'bases', url: 'https://pubchem.ncbi.nlm.nih.gov/#query=safety%20data%20sheet', icon: FaShieldAlt },
-  { id: 'chemtools', categoria: 'herramientas', url: '/chemtools', isInternal: true, icon: FaTools, isFeatured: true },
-  { id: 'chemdraw', categoria: 'herramientas', url: 'https://molview.org/', icon: FaDrawPolygon },
-  { id: 'horario', categoria: 'herramientas', url: '/horario', isInternal: true, icon: FaCalendarAlt, isFeatured: true },
-  { id: 'acsPubs', categoria: 'revistas', url: 'https://pubs.acs.org/', icon: FaBookOpen },
-  { id: 'rsc', categoria: 'revistas', url: 'https://www.rsc.org/', icon: FaLandmark },
-  { id: 'becas', categoria: 'formacion', url: 'https://www.acs.org/education/students/college.html', icon: FaGraduationCap },
-  { id: 'ceviche', categoria: 'formacion', url: null, icon: FaUsers },
+  { id: 'pubchem', categoria: 'bases', url: 'https://pubchem.ncbi.nlm.nih.gov/' },
+  { id: 'nist', categoria: 'bases', url: 'https://webbook.nist.gov/chemistry/' },
+  { id: 'sds', categoria: 'bases', url: 'https://pubchem.ncbi.nlm.nih.gov/#query=safety%20data%20sheet' },
+  { id: 'chemtools', categoria: 'herramientas', url: '/chemtools', isInternal: true, isFeatured: true },
+  { id: 'chemdraw', categoria: 'herramientas', url: 'https://molview.org/' },
+  { id: 'horario', categoria: 'herramientas', url: '/horario', isInternal: true, isFeatured: true },
+  { id: 'acsPubs', categoria: 'revistas', url: 'https://pubs.acs.org/' },
+  { id: 'rsc', categoria: 'revistas', url: 'https://www.rsc.org/' },
+  { id: 'becas', categoria: 'formacion', url: 'https://www.acs.org/education/students/college.html' },
 ];
 
 const ORDEN_CATEGORIAS = ['bases', 'herramientas', 'revistas', 'formacion'];
@@ -158,69 +157,69 @@ const STARS = [
   { top: '8%', left: '12%', size: 2.2, color: '#ffffff', duration: '3.2s', delay: '0.2s' },
   { top: '15%', left: '85%', size: 2.4, color: '#6FEDEE', duration: '4.5s', delay: '1.1s' },
   { top: '22%', left: '28%', size: 1.8, color: '#ffffff', duration: '2.8s', delay: '0.5s' },
-  { top: '28%', left: '72%', size: 2.5, color: '#ffd400', duration: '5s', delay: '2s' },
+  { top: '28%', left: '72%', size: 2.5, color: '#6FEDEE', duration: '5s', delay: '2s' },
   { top: '35%', left: '6%', size: 1.8, color: '#ffffff', duration: '3s', delay: '0.8s' },
-  { top: '42%', left: '92%', size: 2.2, color: '#c084fc', duration: '4s', delay: '1.5s' },
+  { top: '42%', left: '92%', size: 2.2, color: '#412BFD', duration: '4s', delay: '1.5s' },
   { top: '55%', left: '18%', size: 2.4, color: '#6FEDEE', duration: '3.6s', delay: '0.3s' },
   { top: '62%', left: '80%', size: 1.8, color: '#ffffff', duration: '4.2s', delay: '2.2s' },
   { top: '70%', left: '35%', size: 2.5, color: '#ffffff', duration: '3.8s', delay: '1.7s' },
-  { top: '78%', left: '88%', size: 1.8, color: '#ffd400', duration: '4.8s', delay: '0.9s' },
-  { top: '84%', left: '10%', size: 2.2, color: '#c084fc', duration: '3.4s', delay: '2.5s' },
+  { top: '78%', left: '88%', size: 1.8, color: '#6FEDEE', duration: '4.8s', delay: '0.9s' },
+  { top: '84%', left: '10%', size: 2.2, color: '#412BFD', duration: '3.4s', delay: '2.5s' },
   { top: '12%', left: '50%', size: 1.8, color: '#ffffff', duration: '4s', delay: '0.4s' },
   { top: '88%', left: '60%', size: 2.2, color: '#6FEDEE', duration: '3.1s', delay: '1.3s' },
   { top: '18%', left: '68%', size: 1.8, color: '#ffffff', duration: '4.6s', delay: '0.7s' },
-  { top: '48%', left: '4%', size: 2.2, color: '#ffd400', duration: '3.9s', delay: '1.9s' },
+  { top: '48%', left: '4%', size: 2.2, color: '#6FEDEE', duration: '3.9s', delay: '1.9s' },
   { top: '65%', left: '95%', size: 1.8, color: '#ffffff', duration: '4.4s', delay: '0.1s' },
   { top: '75%', left: '22%', size: 2.2, color: '#6FEDEE', duration: '3.3s', delay: '2.4s' },
   { top: '32%', left: '88%', size: 1.8, color: '#ffffff', duration: '5.2s', delay: '1.2s' },
-  { top: '5%', left: '38%', size: 1.8, color: '#c084fc', duration: '3.7s', delay: '0.6s' },
+  { top: '5%', left: '38%', size: 1.8, color: '#412BFD', duration: '3.7s', delay: '0.6s' },
   { top: '92%', left: '42%', size: 2.4, color: '#ffffff', duration: '4.1s', delay: '1.8s' },
   { top: '25%', left: '3%', size: 1.8, color: '#6FEDEE', duration: '3.5s', delay: '2.1s' },
   { top: '58%', left: '84%', size: 2.2, color: '#ffffff', duration: '4.3s', delay: '0.8s' },
-  { top: '14%', left: '96%', size: 1.8, color: '#ffd400', duration: '3.8s', delay: '1.6s' },
+  { top: '14%', left: '96%', size: 1.8, color: '#6FEDEE', duration: '3.8s', delay: '1.6s' },
   { top: '82%', left: '74%', size: 1.8, color: '#ffffff', duration: '4.7s', delay: '2.3s' },
 
   // Estrellas muy pequeñas añadidas (polvo estelar cósmico sutil)
   { top: '4%', left: '19%', size: 1.2, color: '#ffffff', duration: '3.1s', delay: '0.5s' },
   { top: '6%', left: '62%', size: 1, color: '#93c5fd', duration: '4.2s', delay: '1.2s' },
   { top: '9%', left: '80%', size: 1.4, color: '#ffffff', duration: '3.7s', delay: '2.0s' },
-  { top: '11%', left: '33%', size: 1, color: '#ffd400', duration: '4.8s', delay: '0.3s' },
+  { top: '11%', left: '33%', size: 1, color: '#6FEDEE', duration: '4.8s', delay: '0.3s' },
   { top: '13%', left: '2%', size: 1.2, color: '#ffffff', duration: '3.3s', delay: '1.7s' },
   { top: '16%', left: '44%', size: 1, color: '#6FEDEE', duration: '5.1s', delay: '0.8s' },
   { top: '19%', left: '76%', size: 1.3, color: '#ffffff', duration: '2.9s', delay: '2.4s' },
-  { top: '20%', left: '90%', size: 1, color: '#c084fc', duration: '4.0s', delay: '0.9s' },
+  { top: '20%', left: '90%', size: 1, color: '#412BFD', duration: '4.0s', delay: '0.9s' },
   { top: '23%', left: '15%', size: 1.2, color: '#ffffff', duration: '3.5s', delay: '1.4s' },
   { top: '24%', left: '58%', size: 1, color: '#ffffff', duration: '4.6s', delay: '2.1s' },
   { top: '27%', left: '38%', size: 1.4, color: '#93c5fd', duration: '3.8s', delay: '0.6s' },
-  { top: '30%', left: '83%', size: 1, color: '#ffd400', duration: '4.3s', delay: '1.8s' },
+  { top: '30%', left: '83%', size: 1, color: '#6FEDEE', duration: '4.3s', delay: '1.8s' },
   { top: '31%', left: '20%', size: 1.2, color: '#ffffff', duration: '3.6s', delay: '0.2s' },
   { top: '33%', left: '48%', size: 1, color: '#6FEDEE', duration: '5.3s', delay: '2.6s' },
   { top: '36%', left: '65%', size: 1.3, color: '#ffffff', duration: '3.4s', delay: '1.0s' },
-  { top: '38%', left: '25%', size: 1, color: '#c084fc', duration: '4.1s', delay: '1.5s' },
+  { top: '38%', left: '25%', size: 1, color: '#412BFD', duration: '4.1s', delay: '1.5s' },
   { top: '40%', left: '78%', size: 1.2, color: '#ffffff', duration: '3.9s', delay: '0.7s' },
   { top: '43%', left: '12%', size: 1, color: '#ffffff', duration: '4.7s', delay: '2.2s' },
   { top: '45%', left: '86%', size: 1.4, color: '#93c5fd', duration: '3.2s', delay: '0.4s' },
-  { top: '47%', left: '34%', size: 1, color: '#ffd400', duration: '4.9s', delay: '1.9s' },
+  { top: '47%', left: '34%', size: 1, color: '#6FEDEE', duration: '4.9s', delay: '1.9s' },
   { top: '50%', left: '70%', size: 1.2, color: '#ffffff', duration: '3.3s', delay: '1.3s' },
   { top: '52%', left: '9%', size: 1, color: '#6FEDEE', duration: '4.4s', delay: '0.8s' },
   { top: '54%', left: '96%', size: 1.3, color: '#ffffff', duration: '3.8s', delay: '2.3s' },
-  { top: '57%', left: '40%', size: 1, color: '#c084fc', duration: '4.2s', delay: '0.1s' },
+  { top: '57%', left: '40%', size: 1, color: '#412BFD', duration: '4.2s', delay: '0.1s' },
   { top: '60%', left: '60%', size: 1.2, color: '#ffffff', duration: '3.5s', delay: '1.6s' },
   { top: '63%', left: '26%', size: 1, color: '#ffffff', duration: '5.0s', delay: '2.5s' },
   { top: '66%', left: '72%', size: 1.4, color: '#93c5fd', duration: '3.7s', delay: '0.9s' },
-  { top: '68%', left: '14%', size: 1, color: '#ffd400', duration: '4.5s', delay: '1.1s' },
+  { top: '68%', left: '14%', size: 1, color: '#6FEDEE', duration: '4.5s', delay: '1.1s' },
   { top: '71%', left: '86%', size: 1.2, color: '#ffffff', duration: '3.1s', delay: '2.0s' },
   { top: '73%', left: '48%', size: 1, color: '#6FEDEE', duration: '4.8s', delay: '0.6s' },
   { top: '76%', left: '64%', size: 1.3, color: '#ffffff', duration: '3.6s', delay: '1.8s' },
-  { top: '79%', left: '3%', size: 1, color: '#c084fc', duration: '4.0s', delay: '0.4s' },
+  { top: '79%', left: '3%', size: 1, color: '#412BFD', duration: '4.0s', delay: '0.4s' },
   { top: '81%', left: '46%', size: 1.2, color: '#ffffff', duration: '3.9s', delay: '2.2s' },
   { top: '83%', left: '92%', size: 1, color: '#ffffff', duration: '4.6s', delay: '1.5s' },
   { top: '85%', left: '32%', size: 1.4, color: '#93c5fd', duration: '3.4s', delay: '0.7s' },
-  { top: '87%', left: '78%', size: 1, color: '#ffd400', duration: '5.2s', delay: '2.7s' },
+  { top: '87%', left: '78%', size: 1, color: '#6FEDEE', duration: '5.2s', delay: '2.7s' },
   { top: '89%', left: '16%', size: 1.2, color: '#ffffff', duration: '3.2s', delay: '1.2s' },
   { top: '91%', left: '70%', size: 1, color: '#6FEDEE', duration: '4.1s', delay: '0.3s' },
   { top: '94%', left: '24%', size: 1.3, color: '#ffffff', duration: '3.7s', delay: '1.9s' },
-  { top: '95%', left: '84%', size: 1, color: '#c084fc', duration: '4.5s', delay: '0.9s' },
+  { top: '95%', left: '84%', size: 1, color: '#412BFD', duration: '4.5s', delay: '0.9s' },
   { top: '96%', left: '52%', size: 1.2, color: '#ffffff', duration: '3.5s', delay: '2.4s' },
   { top: '97%', left: '7%', size: 1, color: '#ffffff', duration: '4.3s', delay: '1.1s' },
 ];
@@ -377,70 +376,33 @@ export default function ResourcesPage() {
         </div>
       </section>
 
-      {/* ---------- Barra de Filtros y Aviso (Sección de Herramientas al bajar) ---------- */}
-      <section id="herramientas" className="py-4" style={{ background: '#ffffff', borderBottom: '1px solid #e2e8f0', scrollMarginTop: '76px' }}>
+
+
+      {/* ---------- Barra de Filtros y Aviso (Modo Claro Premium) ---------- */}
+      <section id="herramientas" className="py-4 cosmic-light-bottom" style={{ background: '#ffffff', borderTop: '1px solid #e2e8f0', borderBottom: '1px solid #f1f5f9', scrollMarginTop: '76px' }}>
         <div className="container">
-          <div className="d-flex justify-content-center flex-wrap gap-2">
+          <div className="d-flex justify-content-center flex-wrap gap-3">
             <button
               onClick={() => setFiltro('todas')}
-              className="btn rounded-pill px-3 py-2 d-inline-flex align-items-center gap-2"
-              style={{
-                fontWeight: 600,
-                fontSize: '0.9rem',
-                transition: 'all 0.2s ease',
-                background: filtro === 'todas' ? 'linear-gradient(135deg, #0054a6 0%, #412BFD 100%)' : '#f8fafc',
-                color: filtro === 'todas' ? '#ffffff' : '#475569',
-                border: filtro === 'todas' ? '1.5px solid transparent' : '1.5px solid #e2e8f0',
-                boxShadow: filtro === 'todas' ? '0 4px 14px rgba(65, 43, 253, 0.28)' : 'none',
-              }}
+              className={`cosmic-light-filter-btn ${filtro === 'todas' ? 'active' : ''}`}
             >
-              <FaThLarge size={13} />
+              <FaThLarge size={14} />
               <span>Todos</span>
-              <span
-                className="badge rounded-pill"
-                style={{
-                  background: filtro === 'todas' ? 'rgba(255,255,255,0.25)' : '#e2e8f0',
-                  color: filtro === 'todas' ? '#ffffff' : '#475569',
-                  fontSize: '0.72rem',
-                }}
-              >
-                {RECURSOS.length}
-              </span>
+              <span className="cosmic-light-filter-count">{RECURSOS.length}</span>
             </button>
 
             {ORDEN_CATEGORIAS.map((cat) => {
-              const config = CATEGORIAS_CONFIG[cat];
-              const IconComp = config.icon;
               const count = RECURSOS.filter((r) => r.categoria === cat).length;
-              const isSelected = filtro === cat;
-
+              const IconComp = CATEGORIAS_CONFIG[cat].icon;
               return (
                 <button
                   key={cat}
                   onClick={() => setFiltro(cat)}
-                  className="btn rounded-pill px-3 py-2 d-inline-flex align-items-center gap-2"
-                  style={{
-                    fontWeight: 600,
-                    fontSize: '0.9rem',
-                    transition: 'all 0.2s ease',
-                    background: isSelected ? 'linear-gradient(135deg, #0054a6 0%, #412BFD 100%)' : '#f8fafc',
-                    color: isSelected ? '#ffffff' : '#475569',
-                    border: isSelected ? '1.5px solid transparent' : '1.5px solid #e2e8f0',
-                    boxShadow: isSelected ? '0 4px 14px rgba(65, 43, 253, 0.28)' : 'none',
-                  }}
+                  className={`cosmic-light-filter-btn ${filtro === cat ? 'active' : ''}`}
                 >
-                  <IconComp size={13} />
+                  <IconComp size={14} />
                   <span>{t(`categorias.${cat}`)}</span>
-                  <span
-                    className="badge rounded-pill"
-                    style={{
-                      background: isSelected ? 'rgba(255,255,255,0.25)' : '#e2e8f0',
-                      color: isSelected ? '#ffffff' : '#475569',
-                      fontSize: '0.72rem',
-                    }}
-                  >
-                    {count}
-                  </span>
+                  <span className="cosmic-light-filter-count">{count}</span>
                 </button>
               );
             })}
@@ -448,163 +410,66 @@ export default function ResourcesPage() {
         </div>
       </section>
 
-      {/* ---------- Cuadrícula de Recursos ---------- */}
-      <section className="py-5" style={{ background: '#f8fafc' }}>
+      {/* ---------- Cuadrícula Clara ---------- */}
+      <section className="py-5 cosmic-light-bottom" style={{ background: '#ffffff', minHeight: '50vh' }}>
         <div className="container">
-
           {ORDEN_CATEGORIAS.map((categoria) => {
             if (filtro !== 'todas' && filtro !== categoria) return null;
-
             const delCategoria = RECURSOS.filter((r) => r.categoria === categoria);
             if (delCategoria.length === 0) return null;
-
             const config = CATEGORIAS_CONFIG[categoria];
             const CatIcon = config.icon;
 
             return (
               <div key={categoria} className="mb-5">
-                {/* Encabezado de Categoría */}
-                <div
-                  className="d-flex align-items-center gap-2 mb-4 pb-2"
-                  style={{ borderBottom: '2px solid rgba(65, 43, 253, 0.1)' }}
-                >
-                  <span
-                    style={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      width: '36px',
-                      height: '36px',
-                      borderRadius: '10px',
-                      background: config.badgeBg,
-                      color: config.color,
-                      fontSize: '17px',
-                    }}
-                  >
-                    <CatIcon />
-                  </span>
-                  <h2 className="h4 fw-bold mb-0" style={{ color: '#0b1b2b' }}>
+                <div className="d-flex align-items-center gap-3 mb-4 pb-2">
+                  <div className="cosmic-light-category-icon" style={{ background: config.badgeBg, color: config.color }}>
+                    <CatIcon size={20} />
+                  </div>
+                  <h2 className="h4 fw-bold mb-0" style={{ color: '#0f172a', letterSpacing: '-0.01em' }}>
                     {t(`categorias.${categoria}`)}
                   </h2>
-                  <span
-                    className="badge rounded-pill ms-2"
-                    style={{
-                      background: config.badgeBg,
-                      color: config.badgeText,
-                      fontSize: '0.78rem',
-                      fontWeight: 700,
-                    }}
-                  >
-                    {delCategoria.length} {delCategoria.length === 1 ? 'recurso' : 'recursos'}
-                  </span>
                 </div>
 
-                {/* Tarjetas de Recursos */}
                 <div className="row g-4">
                   {delCategoria.map((recurso, idx) => {
-                    const RecursoIcon = recurso.icon || FaFlask;
+                    const isOfficial = recurso.isFeatured;
 
                     return (
-                      <Reveal
-                        key={recurso.id}
-                        delay={idx % 3}
-                        className="col-md-6 col-lg-4"
-                      >
-                        <article
-                          className="ficha-recurso"
-                          style={{
-                            background: '#ffffff',
-                            border: '1.5px solid #e2e8f0',
-                            borderRadius: '16px',
-                            boxShadow: '0 4px 16px rgba(11, 27, 43, 0.04)',
-                          }}
-                        >
-                          {/* Fila superior: Categoría + Badge oficial + Ícono */}
-                          <div className="d-flex align-items-center justify-content-between mb-3">
-                            <div className="d-flex align-items-center gap-2">
-                              <span
-                                className="ficha-recurso__etiqueta mb-0"
-                                style={{
-                                  background: config.badgeBg,
-                                  color: config.badgeText,
-                                  borderColor: 'transparent',
-                                }}
-                              >
-                                {t(`categorias.${categoria}`)}
-                              </span>
-                              {recurso.isFeatured && (
-                                <span className="badge-oficial-acs">
-                                  <FaShieldAlt size={10} />
-                                  <span>Oficial ACS</span>
-                                </span>
-                              )}
-                            </div>
+                      <Reveal key={recurso.id} delay={idx % 3} className="col-md-6 col-lg-4">
+                        <article className={`cosmic-light-card ${isOfficial ? 'cosmic-light-card-official' : ''}`}>
 
-                            <span
-                              style={{
-                                display: 'inline-flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                width: '38px',
-                                height: '38px',
-                                borderRadius: '10px',
-                                background: config.badgeBg,
-                                color: config.color,
-                                fontSize: '18px',
-                                flexShrink: 0,
-                              }}
-                            >
-                              <RecursoIcon />
-                            </span>
+                          <div className="cosmic-light-card-header">
+                            {isOfficial && (
+                              <div className="acs-exclusive-label">
+                                <span className="acs-dot"></span> Proyecto Original
+                              </div>
+                            )}
                           </div>
 
-                          {/* Título */}
-                          <h3 className="ficha-recurso__titulo">
-                            {t(`fichas.${recurso.id}.titulo`)}
-                          </h3>
+                          <div className="cosmic-light-card-body">
+                            <h3 className="cosmic-light-card-title">{t(`fichas.${recurso.id}.titulo`)}</h3>
+                            <p className="cosmic-light-card-text">{t(`fichas.${recurso.id}.texto`)}</p>
+                          </div>
 
-                          {/* Descripción */}
-                          <p className="ficha-recurso__texto">
-                            {t(`fichas.${recurso.id}.texto`)}
-                          </p>
-
-                          {/* Enlaces y Acciones */}
-                          {recurso.url ? (
-                            recurso.isInternal || recurso.url.startsWith('/') ? (
-                              <Link
-                                className="ficha-recurso__enlace"
-                                href={`/${lang}${recurso.url}`}
-                              >
-                                <span>{t('visitar')}</span>
-                                <FaArrowRight size={12} />
-                              </Link>
+                          <div className="cosmic-light-card-footer">
+                            {recurso.url ? (
+                              recurso.isInternal || recurso.url.startsWith('/') ? (
+                                <Link className="cosmic-light-card-link" href={`/${lang}${recurso.url}`}>
+                                  Abrir recurso <FaArrowRight size={11} className="ms-2" />
+                                </Link>
+                              ) : (
+                                <a className="cosmic-light-card-link" href={recurso.url} target="_blank" rel="noopener noreferrer">
+                                  Abrir recurso <FaExternalLinkAlt size={10} className="ms-2" />
+                                </a>
+                              )
                             ) : (
-                              <a
-                                className="ficha-recurso__enlace"
-                                href={recurso.url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                              >
-                                <span>{t('visitar')}</span>
-                                <FaExternalLinkAlt size={11} />
-                              </a>
-                            )
-                          ) : (
-                            <span
-                              style={{
-                                marginTop: 'auto',
-                                alignSelf: 'flex-start',
-                                fontSize: '0.82rem',
-                                fontWeight: 600,
-                                color: '#94a3b8',
-                                background: '#f1f5f9',
-                                padding: '5px 12px',
-                                borderRadius: '8px',
-                              }}
-                            >
-                              Próximamente
-                            </span>
-                          )}
+                              <span className="cosmic-light-card-soon">Próximamente</span>
+                            )}
+
+
+                          </div>
+
                         </article>
                       </Reveal>
                     );
