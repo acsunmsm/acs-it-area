@@ -29,7 +29,7 @@ export default function Footer() {
             <img src="/assets/img/Whitelogo.svg" alt="ACS UNMSM" className="footer-acs-logo" />
 
             <div className="footer-acs-contact">
-              <p>acs@unmsm.edu.pe</p>
+              <p>acs.unmsm@gmail.com</p>
               <p>Facultad de Química e Ingeniería Química, UNMSM<br />Lima, Perú</p>
             </div>
 

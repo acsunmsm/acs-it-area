@@ -79,7 +79,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h5 className="mb-1" style={{ fontWeight: '700', color: 'var(--color-primary)' }}>Email</h5>
-                    <p className="mb-0 text-muted">acs@unmsm.edu.pe</p>
+                    <p className="mb-0 text-muted">acs.unmsm@gmail.com</p>
                   </div>
                 </div>
 
