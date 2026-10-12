@@ -14,6 +14,7 @@ import { RevealWords } from '@/src/components/Reveal';
 
 export default function EventsPage() {
   const router = useRouter();
+  const locale = useLocale();
   const t = useTranslations('events');
 
   // Estados principales
@@ -23,12 +24,33 @@ export default function EventsPage() {
   const [showEditModal, setShowEditModal] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
 
+  // Búsqueda y preview
+  const [previewFlyer, setPreviewFlyer] = useState(null); // { url, title }
   const [currentSearchInput, setCurrentSearchInput] = useState('');
   const [actualSearchTerm, setActualSearchTerm] = useState('');
 
   // Verificación de sesión de usuario
   const { session, loading: authLoading } = useAuth();
   const isAuthenticated = !!session;
+
+  // Manejador de teclado para cerrar lightbox con Escape y bloqueo de scroll
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        setPreviewFlyer(null);
+      }
+    };
+    if (previewFlyer) {
+      window.addEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = '';
+    };
+  }, [previewFlyer]);
 
   // Formatear hora de 24h → 12h (con AM/PM)
   const formatTime12Hour = (time24h) => {
@@ -66,7 +88,7 @@ export default function EventsPage() {
 
   // Ir a la página de detalles de un evento
   const handleDetailsClick = (event) => {
-    router.push(`events/${event.id}/details`);
+    router.push(`/${locale}/events/${event.id}/details`);
   };
 
   // Función para manejar el clic en "Inscríbete"
@@ -74,8 +96,14 @@ export default function EventsPage() {
     if (isEventExpired(event.fecha_programada)) {
       alert(t('alertExpired'));
     } else {
-      window.open(`events/${event.id}/register`, '_blank');
+      window.open(`/${locale}/events/${event.id}/register`, '_blank');
     }
+  };
+
+  // Limpiar búsqueda
+  const handleClearSearch = () => {
+    setCurrentSearchInput('');
+    setActualSearchTerm('');
   };
 
   // Cargar eventos desde Supabase (con búsqueda y límite de 10)
@@ -421,15 +449,17 @@ export default function EventsPage() {
             className="display-4 fw-bold mb-3"
             style={{ color: '#ffffff', letterSpacing: '-1px' }}
           />
-          <p style={{ color: 'rgba(226, 223, 223, 0.9)', fontSize: '1.15rem', maxWidth: '600px', margin: '0 auto 0 0' }} className="mx-auto mx-md-0">
-            Descubre y participa en las actividades, conferencias y talleres organizados para nuestra comunidad.
+          <p style={{ color: 'rgba(226, 223, 223, 0.9)', fontSize: '1.15rem', maxWidth: '600px', margin: '0 auto 0 0', fontFamily: 'Stolzl, sans-serif' }} className="mx-auto mx-md-0">
+            {t('intro')}
           </p>
         </div>
       </section>
 
       <div className="container" style={{ flexGrow: 1 }}>
+        {/* Barra de búsqueda interactiva */}
         <div className="events-search-container">
           <form onSubmit={handleSearchSubmit} className="events-search-form">
+            <i className="fas fa-search events-search-icon"></i>
             <input
               type="text"
               className="events-search-input"
@@ -437,15 +467,26 @@ export default function EventsPage() {
               value={currentSearchInput}
               onChange={(e) => setCurrentSearchInput(e.target.value)}
             />
+            {currentSearchInput && (
+              <button
+                type="button"
+                className="events-search-clear"
+                onClick={handleClearSearch}
+                aria-label="Limpiar búsqueda"
+                title="Limpiar búsqueda"
+              >
+                <i className="fas fa-times"></i>
+              </button>
+            )}
             <button type="submit" className="events-search-btn">
-              <i className="fas fa-search me-2"></i> {t('searchButton')}
+              <span>{t('searchButton')}</span>
             </button>
           </form>
         </div>
 
         {isAuthenticated && (
           <div className="d-flex justify-content-end mb-4 px-2">
-            <button onClick={handleLogout} className="btn btn-outline-danger fw-bold" style={{ borderRadius: '20px', padding: '8px 20px' }}>
+            <button onClick={handleLogout} className="btn btn-outline-danger fw-bold" style={{ borderRadius: '20px', padding: '8px 20px', fontFamily: 'Stolzl, sans-serif' }}>
               <i className="fas fa-sign-out-alt me-2"></i> {t('logout')}
             </button>
           </div>
@@ -468,26 +509,51 @@ export default function EventsPage() {
 
               return (
                 <div key={event.id} className="event-card">
+                  {/* Contenedor del flyer sin recorte y con fondo ambiental */}
                   <div className="event-image-wrapper">
                     {event.imagen_url ? (
-                      <img src={event.imagen_url} alt={event.nombre || 'Evento'} className="event-image" />
+                      <>
+                        <div
+                          className="event-image-ambient"
+                          style={{ backgroundImage: `url(${event.imagen_url})` }}
+                          aria-hidden="true"
+                        />
+                        <img
+                          src={event.imagen_url}
+                          alt={event.titulo || event.nombre || 'Evento ACS UNMSM'}
+                          className="event-image"
+                          loading="lazy"
+                        />
+                        <button
+                          type="button"
+                          className="event-flyer-expand-btn"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setPreviewFlyer({
+                              url: event.imagen_url,
+                              title: event.titulo || event.nombre || 'Flyer del evento'
+                            });
+                          }}
+                          title={t('viewFlyer')}
+                          aria-label={t('viewFlyer')}
+                        >
+                          <i className="fas fa-expand-arrows-alt"></i>
+                          <span>{t('viewFlyer')}</span>
+                        </button>
+                      </>
                     ) : (
                       <div className="event-no-image">
-                        <i className="fas fa-image"></i>
+                        <i className="fas fa-calendar-alt"></i>
                         <span>{t('noImage')}</span>
                       </div>
                     )}
-                    <div className={`event-status-badge ${isExpired ? 'status-expired' : 'status-active'}`}>
-                      {isExpired ? t('statusExpired') : t('statusNext')}
-                    </div>
                   </div>
 
+                  {/* Contenido descriptivo del evento con tipografía Stolzl */}
                   <div className="event-content">
-                    <div className="event-type">
-                      <i className="fas fa-tag"></i> {event.nombre}
-                    </div>
-
-                    <h3 className="event-title">{event.titulo}</h3>
+                    <h3 className="event-title" title={event.titulo}>
+                      {event.titulo}
+                    </h3>
 
                     <ul className="event-info-list">
                       <li className="event-info-item">
@@ -550,6 +616,29 @@ export default function EventsPage() {
           </div>
         )}
       </div>
+
+      {/* Modal Lightbox para ver flyer completo en alta resolución */}
+      {previewFlyer && (
+        <div className="flyer-lightbox-overlay" onClick={() => setPreviewFlyer(null)} role="dialog" aria-modal="true">
+          <div className="flyer-lightbox-dialog" onClick={(e) => e.stopPropagation()}>
+            <button
+              type="button"
+              className="flyer-lightbox-close"
+              onClick={() => setPreviewFlyer(null)}
+              aria-label={t('closePreview')}
+              title={t('closePreview')}
+            >
+              <i className="fas fa-times"></i>
+            </button>
+            <div className="flyer-lightbox-header">
+              <h4>{previewFlyer.title}</h4>
+            </div>
+            <div className="flyer-lightbox-body">
+              <img src={previewFlyer.url} alt={previewFlyer.title} className="flyer-lightbox-img" />
+            </div>
+          </div>
+        </div>
+      )}
 
       <Footer />
       {showEditModal && (

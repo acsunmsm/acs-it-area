@@ -37,26 +37,213 @@ export default async function Officers({ params }) {
   const k12Coordinator = t('roles.k12Coordinator');
   const k12SubCoordinator = t('roles.k12SubCoordinator');
 
-  const officers = [
-    [facultyAdvisor, 'PhD Jose Orlando Calvay Castillo', 'advisor@acs-unmsm.org', 'josecalvay.png'],
-    [president, 'Breiner Smith Fuentes Bulnes', 'president@acs-unmsm.org', 'breiner_fuentes.jpg'],
-    [president2, 'Geraldine Campos Arias', 'president@acs-unmsm.org', 'geraldine_campos.jpg'],
-    [vicePresident, 'Rosario Cinthya Yaya Paitan', 'vicepresident@acs-unmsm.org', 'rosario_yaya.jpg'],
-    [treasurer, 'Yaquelin Cristina Juana Rivera Antonio', 'treasurer@acs-unmsm.org', 'yaquelin_rivera.jpeg'],
-    [secretary, 'Jean Franco Toledo Rodriguez', 'secretary@acs-unmsm.org', 'jean_toledo.jpg'],
-    [marketingCoordinator, 'Angelica Esther Naucapoma Chillcce', 'chief.marketing@acs-unmsm.org', 'angelica_naucapoma.jpg'],
-    [marketingSubCoordinator, 'Cielo Brighitt Rodriguez Montes', 'marketing@acs-unmsm.org', 'cielo_rodriguez.jpeg'],
-    [eventsCoordinator, 'Antonio Alburqueque Ampuero', 'chief.project.manager@acs-unmsm.org', 'antonio_alburqueque.jpg'],
-    [eventsSubCoordinator, 'Andres Sebastián Bailon Vento', 'project.manager@acs-unmsm.org', 'andres_bailon.jpg'],
-    [humanResources, 'Yoselin Estefany Alvarez Cueva', 'chief.human.resources@acs-unmsm.org', 'yoselin_alvarez.jpg'],
-    [humanResourcesSubCoordinator, 'Geancarlos Genaro Cora Díaz', 'human.resources@acs-unmsm.org', 'geancarlos_cora.jpg'],
-    [externalLiaison, 'Javier Antony Sanchez Hilasaca', 'external.liaison@acs-unmsm.org', 'javier_sanchez.jpg'],
-    [internalLiaison, 'Kessia Brigitte Cordova Tantalean', 'internal.liaison@acs-unmsm.org', 'kesia_cordova.jpg'],
-    [cio, 'Gonzalo Manuel Aguilar Espinoza', 'cio@acs-unmsm.org', 'gonzalo.jpg'],
-    [dcio, 'Paolo Jesus Pichilingue La Torre', 'dcio@acs-unmsm.org', 'paolo.jpeg'],
-    [k12Coordinator, 'Jeremy Antonio Silva More', 'k12@acs-unmsm.org', 'jeremy_silva.jpg'],
-    [k12SubCoordinator, 'Ricardo Javier Gomez Sangay', 'subk12@acs-unmsm.org', 'ricardo.jpeg']
+  const areas = [
+    {
+      id: 'advisor',
+      title: t('areas.advisor'),
+      type: 'advisor',
+      columns: 1,
+      members: [
+        {
+          role: facultyAdvisor,
+          name: 'PhD Jose Orlando Calvay Castillo',
+          email: 'advisor@acs-unmsm.org',
+          image: 'josecalvay.png',
+          isAdvisor: true,
+          affiliation: t('advisorAffiliation')
+        }
+      ]
+    },
+    {
+      id: 'presidency',
+      title: t('areas.presidency'),
+      type: 'board',
+      columns: 3,
+      members: [
+        {
+          role: president,
+          name: 'Breiner Smith Fuentes Bulnes',
+          email: 'president@acs-unmsm.org',
+          image: 'breiner_fuentes.jpg',
+        },
+        {
+          role: president2,
+          name: 'Geraldine Campos Arias',
+          email: 'president@acs-unmsm.org',
+          image: 'geraldine_campos.jpg',
+        },
+        {
+          role: vicePresident,
+          name: 'Rosario Cinthya Yaya Paitan',
+          email: 'vicepresident@acs-unmsm.org',
+          image: 'rosario_yaya.jpg',
+        }
+      ]
+    },
+    {
+      id: 'executive',
+      title: t('areas.executive'),
+      type: 'board',
+      columns: 2,
+      members: [
+        {
+          role: secretary,
+          name: 'Jean Franco Toledo Rodriguez',
+          email: 'secretary@acs-unmsm.org',
+          image: 'jean_toledo.jpg',
+        },
+        {
+          role: treasurer,
+          name: 'Yaquelin Cristina Juana Rivera Antonio',
+          email: 'treasurer@acs-unmsm.org',
+          image: 'yaquelin_rivera.jpeg',
+        }
+      ]
+    },
+    {
+      id: 'marketing',
+      title: t('areas.marketing'),
+      type: 'coordination',
+      columns: 2,
+      members: [
+        {
+          role: marketingCoordinator,
+          name: 'Angelica Esther Naucapoma Chillcce',
+          email: 'chief.marketing@acs-unmsm.org',
+          image: 'angelica_naucapoma.jpg',
+        },
+        {
+          role: marketingSubCoordinator,
+          name: 'Cielo Brighitt Rodriguez Montes',
+          email: 'marketing@acs-unmsm.org',
+          image: 'cielo_rodriguez.jpeg',
+        }
+      ]
+    },
+    {
+      id: 'events',
+      title: t('areas.events'),
+      type: 'coordination',
+      columns: 2,
+      members: [
+        {
+          role: eventsCoordinator,
+          name: 'Antonio Alburqueque Ampuero',
+          email: 'chief.project.manager@acs-unmsm.org',
+          image: 'antonio_alburqueque.jpg',
+        },
+        {
+          role: eventsSubCoordinator,
+          name: 'Andres Sebastián Bailon Vento',
+          email: 'project.manager@acs-unmsm.org',
+          image: 'andres_bailon.jpg',
+        }
+      ]
+    },
+    {
+      id: 'humanResources',
+      title: t('areas.humanResources'),
+      type: 'coordination',
+      columns: 2,
+      members: [
+        {
+          role: humanResources,
+          name: 'Yoselin Estefany Alvarez Cueva',
+          email: 'chief.human.resources@acs-unmsm.org',
+          image: 'yoselin_alvarez.jpg',
+        },
+        {
+          role: humanResourcesSubCoordinator,
+          name: 'Geancarlos Genaro Cora Díaz',
+          email: 'human.resources@acs-unmsm.org',
+          image: 'geancarlos_cora.jpg',
+        }
+      ]
+    },
+    {
+      id: 'liaison',
+      title: t('areas.liaison'),
+      type: 'coordination',
+      columns: 2,
+      members: [
+        {
+          role: externalLiaison,
+          name: 'Javier Antony Sanchez Hilasaca',
+          email: 'external.liaison@acs-unmsm.org',
+          image: 'javier_sanchez.jpg',
+        },
+        {
+          role: internalLiaison,
+          name: 'Kessia Brigitte Cordova Tantalean',
+          email: 'internal.liaison@acs-unmsm.org',
+          image: 'kesia_cordova.jpg',
+        }
+      ]
+    },
+    {
+      id: 'technology',
+      title: t('areas.technology'),
+      type: 'coordination',
+      columns: 2,
+      members: [
+        {
+          role: cio,
+          name: 'Gonzalo Manuel Aguilar Espinoza',
+          email: 'cio@acs-unmsm.org',
+          image: 'gonzalo.jpg',
+        },
+        {
+          role: dcio,
+          name: 'Paolo Jesus Pichilingue La Torre',
+          email: 'dcio@acs-unmsm.org',
+          image: 'paolo.jpeg',
+        }
+      ]
+    },
+    {
+      id: 'k12',
+      title: t('areas.k12'),
+      type: 'coordination',
+      columns: 2,
+      members: [
+        {
+          role: k12Coordinator,
+          name: 'Jeremy Antonio Silva More',
+          email: 'k12@acs-unmsm.org',
+          image: 'jeremy_silva.jpg',
+        },
+        {
+          role: k12SubCoordinator,
+          name: 'Ricardo Javier Gomez Sangay',
+          email: 'subk12@acs-unmsm.org',
+          image: 'ricardo.jpeg',
+        }
+      ]
+    }
   ];
+
+  const i18n = {
+    advisorSection: t('advisorSection'),
+    advisorAffiliation: t('advisorAffiliation'),
+    boardHeading: t('boardHeading'),
+    areas: {
+      advisor: t('areas.advisor'),
+      presidency: t('areas.presidency'),
+      executive: t('areas.executive'),
+      coordinations: t('areas.coordinations'),
+    },
+    singleMember: t('singleMember'),
+    multipleMembers: t('multipleMembers'),
+    filters: {
+      all: t('filters.all'),
+      advisor: t('filters.advisor'),
+      presidency: t('filters.presidency'),
+      executive: t('filters.executive'),
+      coordinations: t('filters.coordinations'),
+    },
+    copyEmail: t('copyEmail'),
+    copied: t('copied'),
+  };
 
   return (
     <>
@@ -131,7 +318,7 @@ export default async function Officers({ params }) {
           </p>
         </div>
       </section>
-      <OfficersList officers={officers} title={t('title')} />
+      <OfficersList areas={areas} title={t('title')} i18n={i18n} />
 
       <Footer />
     </>

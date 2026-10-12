@@ -2,6 +2,7 @@
 import { useEffect, useRef } from 'react';
 import Script from 'next/script';
 import { useTranslations } from 'next-intl';
+import '@/src/assets/styles/whatsapp-chat-support.css';
 
 export default function WhatsAppButton() {
   const t = useTranslations('whatsAppButton');

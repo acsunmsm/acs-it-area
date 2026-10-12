@@ -2,6 +2,7 @@ import Navbar from '@/src/components/Navbar';
 import HeroCarousel from '@/src/components/HeroCarousel';
 import Footer from '@/src/components/Footer';
 import SponsorsCarousel from '@/src/components/SponsorsCarousel';
+import AwardsSection from '@/src/components/AwardsSection';
 import FeaturedEventPopup from '@/src/components/FeaturedEventPopup';
 import MascotaBot from '@/src/components/MascotaBot';
 import { getTranslations } from 'next-intl/server';
@@ -41,6 +42,9 @@ export default async function HomePage({ params }) {
           </div>
         </div>
       </section>
+
+      {/* Reconocimientos Internacionales & Premios */}
+      <AwardsSection />
 
       <SponsorsCarousel />
       <Footer />
