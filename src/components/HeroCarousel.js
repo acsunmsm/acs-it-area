@@ -1,11 +1,15 @@
 'use client';
 
+import { useState, useRef, useCallback } from 'react';
 import { useTranslations } from 'next-intl';
 import '@/src/assets/styles/hero.css';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function HeroCarousel() {
   const t = useTranslations('homePage');
+  const [showVideo, setShowVideo] = useState(false);
+  const [slidingOut, setSlidingOut] = useState(false);
+  const videoRef = useRef(null);
 
   const handleScroll = (e) => {
     e.preventDefault();
@@ -16,6 +20,23 @@ export default function HeroCarousel() {
       window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
     }
   };
+
+  const handleCircleClick = useCallback(() => {
+    setShowVideo(true);
+    setSlidingOut(false);
+    // Prevent page scrolling while video is playing
+    document.body.style.overflow = 'hidden';
+  }, []);
+
+  const handleVideoEnd = useCallback(() => {
+    setSlidingOut(true);
+    // After the slide-out animation completes, remove the overlay
+    setTimeout(() => {
+      setShowVideo(false);
+      setSlidingOut(false);
+      document.body.style.overflow = '';
+    }, 500); // matches the CSS transition duration
+  }, []);
 
   return (
     <section className="hero-container">
@@ -41,6 +62,8 @@ export default function HeroCarousel() {
         initial={{ opacity: 0, scale: 0.5 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.8, delay: 0.3 }}
+        onClick={handleCircleClick}
+        style={{ cursor: 'pointer' }}
         className="floating-element shape-right-1-color"></motion.div>
       <motion.img 
         initial={{ opacity: 0, x: 50 }}
@@ -81,6 +104,24 @@ export default function HeroCarousel() {
           {t('portadaCta')}
         </motion.button>
       </motion.div>
+
+      {/* Fullscreen Video Overlay */}
+      {showVideo && (
+        <div
+          className={`video-overlay-bienvenida${slidingOut ? ' video-overlay-slide-out' : ''}`}
+        >
+          <video
+            ref={videoRef}
+            className="video-fullscreen-bienvenida"
+            src="/assets/img/bienvenida.mp4"
+            autoPlay
+            playsInline
+            muted={false}
+            onEnded={handleVideoEnd}
+          />
+        </div>
+      )}
     </section>
   );
 }
+
