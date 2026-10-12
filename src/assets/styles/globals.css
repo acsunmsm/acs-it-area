@@ -95,15 +95,25 @@ body {
 /* --------------------------------------------------------------------------
    1. Faculty Advisor (Asesor de Facultad) - Unified Card Layout
    -------------------------------------------------------------------------- */
-.officer-advisor-single-wrapper {
-  display: flex;
-  justify-content: center;
-  width: 100%;
+.officer-advisor-single-wrapper,
+.officer-vice-wrapper {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  width: 100% !important;
 }
 
-.officer-advisor-single-wrapper .officer-grid-card {
+.officer-advisor-single-wrapper .officer-grid-card,
+.officer-vice-wrapper .officer-grid-card {
+  width: 100% !important;
+  max-width: 590px !important;
+}
+
+.officer-presidency-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
   width: 100%;
-  max-width: 590px;
 }
 
 /* --------------------------------------------------------------------------
@@ -568,7 +578,9 @@ body {
     font-size: 1.15rem;
   }
 
-  .officer-advisor-single-wrapper {
+  .officer-advisor-single-wrapper,
+  .officer-vice-wrapper,
+  .officer-vice-wrapper .officer-grid-card {
     max-width: 100%;
   }
 }
