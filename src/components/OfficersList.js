@@ -255,6 +255,7 @@ export default function OfficersList({ areas = [], officers = [], title, i18n = 
       <div className="officers-areas-list">
         {filteredAreas.map((area) => {
           const isAdvisorArea = area.type === 'advisor' || area.id === 'advisor';
+          const isPresidencyArea = area.id === 'presidency';
           const isTwoColumns = area.columns === 2;
           const isThreeColumns = area.columns === 3;
 
@@ -276,6 +277,31 @@ export default function OfficersList({ areas = [], officers = [], title, i18n = 
                     isSpacious={true}
                     i18n={i18n}
                   />
+                </div>
+              ) : isPresidencyArea ? (
+                <div className="officer-presidency-wrapper">
+                  {/* Presidentes arriba (2 columnas con fichas amplias) */}
+                  <div className="officers-grid officers-grid-2col officer-presidents-grid">
+                    {area.members.slice(0, 2).map((member, mIdx) => (
+                      <OfficerCard
+                        key={mIdx}
+                        member={member}
+                        isSpacious={true}
+                        i18n={i18n}
+                      />
+                    ))}
+                  </div>
+
+                  {/* Vicepresidencia abajo (centrada y con el mismo tamaño y estilo idéntico al Asesor) */}
+                  {area.members.length > 2 && (
+                    <div className="officer-advisor-single-wrapper officer-vice-wrapper">
+                      <OfficerCard
+                        member={area.members[2]}
+                        isSpacious={true}
+                        i18n={i18n}
+                      />
+                    </div>
+                  )}
                 </div>
               ) : (
                 <div

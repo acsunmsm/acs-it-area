@@ -139,7 +139,7 @@ export default function AwardsSection() {
           <div className="awards-branding">
             <div className="d-inline-flex align-items-center justify-content-center">
               <img
-                src="/assets/img/whitelogo.svg"
+                src="/assets/img/Whitelogo.svg"
                 alt="ACS White Logo"
                 className="awards-whitelogo-img"
               />
@@ -433,13 +433,7 @@ export default function AwardsSection() {
           max-width: 90vw;
           object-fit: contain;
           filter: drop-shadow(0 6px 20px rgba(0, 0, 0, 0.45));
-          transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), filter 0.3s ease;
           display: block;
-        }
-
-        .awards-whitelogo-img:hover {
-          transform: scale(1.05);
-          filter: drop-shadow(0 8px 26px rgba(245, 197, 66, 0.4));
         }
 
         @media (max-width: 992px) {
