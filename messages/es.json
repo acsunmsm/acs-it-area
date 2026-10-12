@@ -60,11 +60,49 @@
     "portadaTitulo": "Química que transforma",
     "portadaDestacado": "el Perú",
     "portadaTexto": "Somos el capítulo estudiantil de la American Chemical Society en la Universidad Nacional Mayor de San Marcos, Decana de América. Divulgamos, investigamos y formamos comunidad.",
-    "portadaCta": "Conócenos"
+    "portadaCta": "Conócenos",
+    "alliedChapters": "Capítulos Aliados"
+  },
+  "awards": {
+    "badge": "Reconocimiento Internacional",
+    "title": "PREMIO OUTSTANDING",
+    "subtitle": "& Green Chemistry Designation",
+    "description": "Otorgado por el Comité de Educación (SOCED) de la American Chemical Society en reconocimiento a la excelencia de nuestra comunidad estudiantil y su compromiso con la química verde.",
+    "academicYear": "AÑO ACADÉMICO 2025 - 2026",
+    "outstandingAward": "Outstanding Student Communities Award",
+    "greenChemAward": "Green Chemistry Student Communities Award",
+    "verifyCredential": "Verificar Credencial Oficial",
+    "issuer": "American Chemical Society (ACS)"
   },
   "officers": {
     "title": "Directiva del Capítulo",
     "intro": "Conoce al equipo de líderes estudiantiles que impulsan la ciencia, el desarrollo y nuestra comunidad en la Universidad Nacional Mayor de San Marcos.",
+    "advisorSection": "Asesoría Académica",
+    "advisorAffiliation": "Facultad de Química e Ingeniería Química – UNMSM",
+    "boardHeading": "Mesa Directiva y Coordinaciones",
+    "filters": {
+      "all": "Todos",
+      "advisor": "Asesoría",
+      "presidency": "Presidencia",
+      "executive": "Secretaría y Tesorería",
+      "coordinations": "Coordinaciones"
+    },
+    "singleMember": "integrante",
+    "multipleMembers": "integrantes",
+    "copyEmail": "Copiar correo",
+    "copied": "¡Copiado!",
+    "areas": {
+      "advisor": "Asesor de Facultad",
+      "presidency": "Presidencia y Vicepresidencia",
+      "executive": "Secretaría y Tesorería",
+      "coordinations": "Coordinaciones",
+      "marketing": "Coordinación de Marketing",
+      "events": "Coordinación de Eventos y Proyectos",
+      "humanResources": "Coordinación de Talento Humano",
+      "liaison": "Coordinación de Vinculación",
+      "technology": "Coordinación de Tecnologías de la Información",
+      "k12": "Coordinación de Divulgación Científica K-12"
+    },
     "roles": {
       "facultyAdvisor": "Asesor de Facultad",
       "president": "Presidente",
@@ -89,6 +127,17 @@
   "contact": {
     "title": "¡Contacta con Nosotros!",
     "subtitle": "Si tienes dudas, sugerencias o quieres colaborar con nosotros, escríbenos. Estamos aquí para ayudarte y crecer juntos.",
+    "bannerTitle": "Contacto",
+    "emailLabel": "Email",
+    "location": "Ubicación",
+    "locationAddress": "Facultad de Química e Ingeniería Química, UNMSM",
+    "status": {
+      "recaptchaError": "Error: reCAPTCHA no está listo.",
+      "captchaRequired": "Por favor, completa el CAPTCHA.",
+      "success": "¡Mensaje enviado exitosamente!",
+      "error": "Error al enviar el mensaje.",
+      "networkError": "Error de red al enviar el formulario."
+    },
     "form": {
       "name": "Nombre",
       "email": "Email",
@@ -129,7 +178,12 @@
     "deleteConfirm": "¿Estás seguro de que quieres eliminar este evento? Esta acción no se puede deshacer.",
     "deleteSuccess": "Evento eliminado exitosamente.",
     "logoutError": "No se pudo cerrar la sesión. Inténtalo de nuevo.",
-    "logoutSuccess": "Sesión cerrada exitosamente."
+    "logoutSuccess": "Sesión cerrada exitosamente.",
+    "filterAll": "Todos los eventos",
+    "filterUpcoming": "Próximos",
+    "filterPast": "Finalizados",
+    "viewFlyer": "Ver flyer completo",
+    "closePreview": "Cerrar"
   },
   "heroCarousel": {
     "slide1": "Súmate a la comunidad química más activa de San Marcos",
@@ -146,6 +200,11 @@
   "resources": {
     "title": "Recursos",
     "intro": "Una biblioteca abierta para el capítulo: bases de datos, herramientas de cálculo, revistas y convocatorias. Todo lo que usamos, en un solo lugar.",
+    "badge": "✦ ACS UNMSM • RECURSOS CIENTÍFICOS ✦",
+    "exploreTools": "Explorar Herramientas",
+    "all": "Todos",
+    "originalProject": "Proyecto Original",
+    "comingSoon": "Próximamente",
     "aviso": "Sección en construcción. Estos enlaces son un punto de partida; si conoces alguno que falte, escríbenos.",
     "visitar": "Abrir recurso",
     "volver": "Volver a Recursos",

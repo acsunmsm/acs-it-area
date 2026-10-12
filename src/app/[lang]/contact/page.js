@@ -19,14 +19,14 @@ export default function ContactPage() {
     const formData = new FormData(form);
 
     if (typeof grecaptcha === 'undefined') {
-      setStatus('Error: reCAPTCHA no está listo.');
+      setStatus(t('status.recaptchaError') || 'Error: reCAPTCHA no está listo.');
       return;
     }
 
     const captcha = grecaptcha.getResponse();
 
     if (!captcha) {
-      setStatus('Por favor, completa el CAPTCHA.');
+      setStatus(t('status.captchaRequired') || 'Por favor, completa el CAPTCHA.');
       return;
     }
 
@@ -39,14 +39,14 @@ export default function ContactPage() {
       const data = await res.json();
 
       if (res.ok) {
-        setStatus('¡Mensaje enviado exitosamente!');
+        setStatus(t('status.success') || '¡Mensaje enviado exitosamente!');
         form.reset();
         grecaptcha.reset();
       } else {
-        setStatus(data.error || 'Error al enviar el mensaje.');
+        setStatus(data.error || t('status.error') || 'Error al enviar el mensaje.');
       }
     } catch (err) {
-      setStatus('Error de red al enviar el formulario.');
+      setStatus(t('status.networkError') || 'Error de red al enviar el formulario.');
     }
   };
 
@@ -56,8 +56,8 @@ export default function ContactPage() {
 
       {/* Banner Principal */}
       <section className="contact-banner">
-        <div className="w-100 d-flex align-items-end justify-content-start" style={{ height: '100%', padding: '0 0 30px 40px' }}>
-          <h1 className="banner-title mb-0">Contacto</h1>
+        <div className="w-100 d-flex align-items-end justify-content-start" style={{ height: '100%', padding: '0 0 30px clamp(20px, 4vw, 40px)' }}>
+          <h1 className="banner-title mb-0">{t('bannerTitle') || 'Contacto'}</h1>
         </div>
       </section>
 
@@ -66,7 +66,7 @@ export default function ContactPage() {
           <Reveal delay={0.5}>
             <div className="row align-items-center">
               <div className="col-lg-5 mb-5 mb-lg-0 text-start">
-                <h2 style={{ color: 'var(--color-primary-dark)', fontWeight: '800', fontSize: '3rem', marginBottom: '1rem' }}>
+                <h2 style={{ color: 'var(--color-primary-dark)', fontWeight: '800', fontSize: 'clamp(2rem, 4vw, 3rem)', marginBottom: '1rem' }}>
                   {t('title')}
                 </h2>
                 <p className="text-muted mb-5" style={{ fontSize: '1.1rem' }}>
@@ -78,7 +78,7 @@ export default function ContactPage() {
                     <i className="fas fa-envelope"></i>
                   </div>
                   <div>
-                    <h5 className="mb-1" style={{ fontWeight: '700', color: 'var(--color-primary)' }}>Email</h5>
+                    <h5 className="mb-1" style={{ fontWeight: '700', color: 'var(--color-primary)' }}>{t('emailLabel') || 'Email'}</h5>
                     <p className="mb-0 text-muted">acs.unmsm@gmail.com</p>
                   </div>
                 </div>
@@ -88,8 +88,8 @@ export default function ContactPage() {
                     <i className="fas fa-map-marker-alt"></i>
                   </div>
                   <div>
-                    <h5 className="mb-1" style={{ fontWeight: '700', color: 'var(--color-primary)' }}>Ubicación</h5>
-                    <p className="mb-0 text-muted">Facultad de Química e Ingeniería Química, UNMSM</p>
+                    <h5 className="mb-1" style={{ fontWeight: '700', color: 'var(--color-primary)' }}>{t('location') || 'Ubicación'}</h5>
+                    <p className="mb-0 text-muted">{t('locationAddress') || 'Facultad de Química e Ingeniería Química, UNMSM'}</p>
                   </div>
                 </div>
               </div>

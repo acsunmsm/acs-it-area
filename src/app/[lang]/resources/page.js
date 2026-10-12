@@ -352,7 +352,7 @@ export default function ResourcesPage() {
         <div className="cosmic-hero__content">
           <div>
             <span className="cosmic-badge">
-              ✦ ACS UNMSM • RECURSOS CIENTÍFICOS ✦
+              {t('badge') || '✦ ACS UNMSM • RECURSOS CIENTÍFICOS ✦'}
             </span>
           </div>
 
@@ -369,7 +369,7 @@ export default function ResourcesPage() {
               onClick={scrollToHerramientas}
               className="btn-cosmic-scroll"
             >
-              <span>Explorar Herramientas</span>
+              <span>{t('exploreTools') || 'Explorar Herramientas'}</span>
               <FaArrowRight size={13} style={{ transform: 'rotate(90deg)' }} />
             </button>
           </div>
@@ -387,7 +387,7 @@ export default function ResourcesPage() {
               className={`cosmic-light-filter-btn ${filtro === 'todas' ? 'active' : ''}`}
             >
               <FaThLarge size={14} />
-              <span>Todos</span>
+              <span>{t('all') || 'Todos'}</span>
               <span className="cosmic-light-filter-count">{RECURSOS.length}</span>
             </button>
 
@@ -442,7 +442,7 @@ export default function ResourcesPage() {
                           <div className="cosmic-light-card-header">
                             {isOfficial && (
                               <div className="acs-exclusive-label">
-                                <span className="acs-dot"></span> Proyecto Original
+                                <span className="acs-dot"></span> {t('originalProject') || 'Proyecto Original'}
                               </div>
                             )}
                           </div>
@@ -456,15 +456,15 @@ export default function ResourcesPage() {
                             {recurso.url ? (
                               recurso.isInternal || recurso.url.startsWith('/') ? (
                                 <Link className="cosmic-light-card-link" href={`/${lang}${recurso.url}`}>
-                                  Abrir recurso <FaArrowRight size={11} className="ms-2" />
+                                  {t('visitar') || 'Abrir recurso'} <FaArrowRight size={11} className="ms-2" />
                                 </Link>
                               ) : (
                                 <a className="cosmic-light-card-link" href={recurso.url} target="_blank" rel="noopener noreferrer">
-                                  Abrir recurso <FaExternalLinkAlt size={10} className="ms-2" />
+                                  {t('visitar') || 'Abrir recurso'} <FaExternalLinkAlt size={10} className="ms-2" />
                                 </a>
                               )
                             ) : (
-                              <span className="cosmic-light-card-soon">Próximamente</span>
+                              <span className="cosmic-light-card-soon">{t('comingSoon') || 'Próximamente'}</span>
                             )}
 
 
