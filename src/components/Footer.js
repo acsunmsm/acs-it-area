@@ -86,6 +86,7 @@ export default function Footer() {
             <ul className="footer-acs-links-list">
               <li><Link href="/events">{t('events')}</Link></li>
               <li><Link href="/news">{t('news')}</Link></li>
+              <li><Link href="/verificar">{t('verify')}</Link></li>
             </ul>
           </div>
 
