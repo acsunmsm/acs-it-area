@@ -2894,10 +2894,6 @@ h2 {
   transition: transform 0.5s ease;
 }
 
-.news-row-card:hover .news-row-image {
-  transform: scale(1.06);
-}
-
 .news-row-content {
   flex: 1;
   display: flex;
@@ -2981,16 +2977,10 @@ h2 {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  transition: all 0.2s ease;
   background: transparent;
   border: none;
   padding: 0;
   cursor: pointer;
-}
-
-.news-row-card:hover .news-row-vermas {
-  color: #1E127E;
-  transform: translateX(4px);
 }
 
 /* News Admin Toolbar & Buttons */

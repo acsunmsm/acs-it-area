@@ -1,17 +1,18 @@
 import Navbar from '@/src/components/Navbar';
 import Footer from '@/src/components/Footer';
 import Image from 'next/image';
+import { Link } from '@/src/i18n/navigation';
 import { getTranslations } from 'next-intl/server';
 import { supabaseServer } from '@/src/lib/supabase-server';
 import styles from './verificar.module.css';
 
 // ---------- Metadata dinámica ----------
 export async function generateMetadata({ params }) {
-  const { lang } = await params;
+  const { lang, id } = await params;
   const t = await getTranslations({ locale: lang, namespace: 'verificar' });
 
   return {
-    title: t('metaTitle'),
+    title: `${t('metaTitle')} – ${id}`,
     description: t('metaDescription'),
   };
 }
@@ -21,15 +22,58 @@ export default async function VerificarCertificado({ params }) {
   const { lang, id } = await params;
   const t = await getTranslations({ locale: lang, namespace: 'verificar' });
 
-  // Fetch del certificado desde Supabase
-  const { data: certificado, error } = await supabaseServer
-    .from('certificados')
-    .select('*')
-    .eq('id_certificado', id)
-    .single();
+  const cleanId = decodeURIComponent(id || '').trim();
+  let certificados = [];
 
-  // Determinar si el certificado es válido
-  const isValid = !error && certificado;
+  // 1. Intentar buscar por documento de identidad (columna 'documento_identidad' en Supabase)
+  try {
+    const { data: byDoc, error: errDoc } = await supabaseServer
+      .from('certificados')
+      .select('*')
+      .eq('documento_identidad', cleanId);
+
+    if (!errDoc && byDoc && byDoc.length > 0) {
+      certificados = byDoc;
+    }
+  } catch (e) {
+    // Continuamos si hay error
+  }
+
+  // 2. Fallbacks alternativos de nombres de columna de documento
+  if (certificados.length === 0) {
+    try {
+      const { data: byDocAlt } = await supabaseServer
+        .from('certificados')
+        .select('*')
+        .or(`dni.eq.${cleanId},documento_de_identidad.eq.${cleanId}`);
+
+      if (byDocAlt && byDocAlt.length > 0) {
+        certificados = byDocAlt;
+      }
+    } catch (e) {
+      // Ignorar si las columnas no existen
+    }
+  }
+
+  // 3. Si no se encontró por documento, buscar por id_certificado (QR o código directo)
+  if (certificados.length === 0) {
+    try {
+      const { data: byId, error: errId } = await supabaseServer
+        .from('certificados')
+        .select('*')
+        .eq('id_certificado', cleanId);
+
+      if (!errId && byId && byId.length > 0) {
+        certificados = byId;
+      }
+    } catch (e) {
+      // Error
+    }
+  }
+
+  // Determinar si se encontraron certificados
+  const isValid = certificados.length > 0;
+  const hasMultiple = certificados.length > 1;
 
   return (
     <>
@@ -37,16 +81,11 @@ export default async function VerificarCertificado({ params }) {
 
       <main className="tema-biblioteca">
         <section className={styles.heroSection}>
-          {/* Overlay con gradiente */}
           <div className={styles.heroOverlay} />
 
           <div className={`container position-relative ${styles.heroContent}`}>
             <div className="row justify-content-center">
               <div className="col-lg-8 col-xl-7 text-center">
-                {/* Encabezado */}
-                <span className={styles.badge}>
-                  🔐 {t('badge')}
-                </span>
                 <h1 className={styles.heroTitle}>
                   {t('title')}
                 </h1>
@@ -65,11 +104,11 @@ export default async function VerificarCertificado({ params }) {
               <div className="col-lg-7 col-xl-6">
 
                 {isValid ? (
-                  /* ─── Certificado encontrado ─── */
+                  /* ─── Certificados encontrados ─── */
                   <div className={styles.card}>
                     <div className={styles.cardBorderSuccess} />
                     <div className={styles.cardBody}>
-                      {/* Imagen de éxito */}
+                      {/* Imagen de Otto */}
                       <div className={styles.iconWrapper}>
                         <Image
                           src="/assets/img/otto-celebra.png"
@@ -82,54 +121,75 @@ export default async function VerificarCertificado({ params }) {
                       </div>
 
                       <h2 className={styles.cardTitle}>
-                        {t('successTitle')}
+                        {hasMultiple ? t('successTitleMultiple') : t('successTitle')}
                       </h2>
                       <p className={styles.cardSubtitle}>
-                        {t('successMessage')}
+                        {hasMultiple
+                          ? t('successMessageMultiple', { count: certificados.length })
+                          : t('successMessage')}
                       </p>
 
-                      {/* Datos del certificado */}
-                      <div className={styles.dataGrid}>
-                        <DataRow
-                          label={t('labelNombre')}
-                          value={certificado.nombre_persona}
-                          icon="👤"
-                        />
-                        <DataRow
-                          label={t('labelEvento')}
-                          value={certificado.evento}
-                          icon="📋"
-                        />
-                        <DataRow
-                          label={t('labelFecha')}
-                          value={certificado.fecha}
-                          icon="📅"
-                        />
-                        <DataRow
-                          label={t('labelHoras')}
-                          value={certificado.horas}
-                          icon="⏱️"
-                        />
-                        <DataRow
-                          label={t('labelArea')}
-                          value={certificado.area}
-                          icon="🏷️"
-                        />
-                        <DataRow
-                          label={t('labelId')}
-                          value={certificado.id_certificado}
-                          icon="🔑"
-                          isMono
-                        />
+                      {/* Lista de certificados */}
+                      <div className={styles.certList}>
+                        {certificados.map((cert, index) => (
+                          <div key={cert.id_certificado || index} className={hasMultiple && index > 0 ? styles.certBlockDivider : ''}>
+                            {hasMultiple && (
+                              <div className={styles.certNumberHeader}>
+                                <span>{t('certificateNumber', { index: index + 1 })}</span>
+                              </div>
+                            )}
+
+                            <div className={styles.dataTable}>
+                              <div className={styles.dataRow}>
+                                <span className={styles.dataLabel}>{t('labelNombre')}</span>
+                                <span className={styles.dataValue}>{cert.nombre_persona || '—'}</span>
+                              </div>
+
+                              <div className={styles.dataRow}>
+                                <span className={styles.dataLabel}>{t('labelEvento')}</span>
+                                <span className={styles.dataValue}>{cert.evento || '—'}</span>
+                              </div>
+
+                              <div className={styles.dataRow}>
+                                <span className={styles.dataLabel}>{t('labelFecha')}</span>
+                                <span className={styles.dataValue}>{cert.fecha || '—'}</span>
+                              </div>
+
+                              <div className={styles.dataRow}>
+                                <span className={styles.dataLabel}>{t('labelHoras')}</span>
+                                <span className={styles.dataValue}>{cert.horas || '—'}</span>
+                              </div>
+
+                              <div className={styles.dataRow}>
+                                <span className={styles.dataLabel}>{t('labelArea')}</span>
+                                <span className={styles.dataValue}>{cert.area || '—'}</span>
+                              </div>
+
+                              <div className={styles.dataRow}>
+                                <span className={styles.dataLabel}>{t('labelId')}</span>
+                                <span className={`${styles.dataValue} ${styles.dataCode}`}>
+                                  {cert.id_certificado || '—'}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Botón de volver */}
+                      <div className={styles.returnBtnWrapper}>
+                        <Link href="/verificar" className={styles.returnBtn}>
+                          ← {t('verifyAnother')}
+                        </Link>
                       </div>
                     </div>
                   </div>
                 ) : (
-                  /* ─── Certificado NO encontrado ─── */
+                  /* ─── Certificados NO encontrados ─── */
                   <div className={styles.card}>
                     <div className={styles.cardBorderError} />
                     <div className={styles.cardBody}>
-                      {/* Imagen de error */}
+                      {/* Imagen de Otto */}
                       <div className={styles.iconWrapper}>
                         <Image
                           src="/assets/img/otto-piensa.png"
@@ -148,7 +208,7 @@ export default async function VerificarCertificado({ params }) {
                         {t('errorMessage')}
                       </p>
 
-                      {/* Código buscado */}
+                      {/* Documento buscado */}
                       <div className={styles.errorCodeBox}>
                         <span className={styles.errorCodeLabel}>
                           {t('searchedCode')}
@@ -159,6 +219,12 @@ export default async function VerificarCertificado({ params }) {
                       <p className={styles.errorHint}>
                         {t('errorHint')}
                       </p>
+
+                      <div className={styles.returnBtnWrapper}>
+                        <Link href="/verificar" className={styles.returnBtn}>
+                          ← {t('verifyAnother')}
+                        </Link>
+                      </div>
                     </div>
                   </div>
                 )}
@@ -171,20 +237,5 @@ export default async function VerificarCertificado({ params }) {
 
       <Footer />
     </>
-  );
-}
-
-// ---------- Componente auxiliar para filas de datos ----------
-function DataRow({ label, value, icon, isMono = false }) {
-  return (
-    <div className={styles.dataRow}>
-      <div className={styles.dataLabel}>
-        <span className={styles.dataIcon}>{icon}</span>
-        <span>{label}</span>
-      </div>
-      <div className={`${styles.dataValue} ${isMono ? styles.dataMono : ''}`}>
-        {value || '—'}
-      </div>
-    </div>
   );
 }

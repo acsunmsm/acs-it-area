@@ -43,6 +43,7 @@
     "officers": "Officers",
     "events": "Events",
     "news": "News",
+    "verify": "Verify Certificate",
     "contact": "Contact",
     "copyright": "Copyright © {year} ACS UNMSM Student Chapter"
   },
@@ -239,6 +240,10 @@
         "titulo": "Schedule Generator",
         "texto": "Academic schedule planner based on UNMSM SUM report. Generates conflict-free combinations, filters professors, tracks credits, and compares backup plans."
       },
+      "verificar": {
+        "titulo": "Certificate Verification",
+        "texto": "Check and validate the authenticity of official certificates and credentials issued by the ACS Student Chapter UNMSM."
+      },
       "nist": {
         "titulo": "NIST WebBook",
         "texto": "Peer-checked thermodynamic data and reference spectra. For when you need a reliable, citable value."
@@ -313,22 +318,36 @@
     }
   },
   "verificar": {
-    "metaTitle": "Verify Certificate – ACS UNMSM",
-    "metaDescription": "Verify the authenticity of your certificate issued by the ACS Student Chapter UNMSM.",
+    "metaTitle": "Certificate Query & Verification – ACS UNMSM",
+    "metaDescription": "Query and verify the authenticity of your certificates issued by the ACS Student Chapter UNMSM by entering your identity document number.",
     "badge": "Certificate Verification",
     "title": "Certificate Verification",
-    "subtitle": "Enter or scan your certificate code to verify its authenticity.",
+    "subtitle": "Enter your ID or passport number to query all your official certificates and credentials.",
     "successTitle": "Valid Certificate",
+    "successTitleMultiple": "Official Certificates Found",
     "successMessage": "This certificate has been successfully verified in our records.",
-    "labelNombre": "Name",
+    "successMessageMultiple": "{count} official certificates were found issued to:",
+    "certificateNumber": "Certificate #{index}",
+    "labelNombre": "Holder",
     "labelEvento": "Event",
     "labelFecha": "Date",
     "labelHoras": "Hours",
     "labelArea": "Area",
-    "labelId": "Code",
-    "errorTitle": "Certificate Not Found",
-    "errorMessage": "The code entered does not match any valid certificate in our records.",
-    "searchedCode": "Searched code",
-    "errorHint": "Please verify the code is correct. If you believe this is an error, contact us."
+    "labelId": "Official Code",
+    "errorTitle": "Certificates Not Found",
+    "errorMessage": "No certificates were found registered with the entered ID document in our records.",
+    "searchedCode": "Searched document",
+    "errorHint": "Please verify that the document number is entered correctly. If you believe this is an error or recently attended an event, contact us.",
+    "searchTitle": "Certificate Query",
+    "searchSubtitle": "Enter your identification number (ID, Citizen Card, Passport) to query and verify all certificates issued to your name by the ACS Student Chapter UNMSM.",
+    "inputLabel": "Identity Document (ID / Passport)",
+    "inputPlaceholder": "e.g., 72345678 or document number",
+    "submitButton": "Query Certificates",
+    "inputHelp": "Enter your identification document number to list all your registered academic credentials.",
+    "emptyCodeError": "Please enter your identity document number.",
+    "backToResources": "Back to Resources",
+    "verifyAnother": "Query another document",
+    "officialIssuer": "ACS Student Chapter UNMSM • Official Registry",
+    "statusVerified": "Authentic Official Credential"
   }
 }

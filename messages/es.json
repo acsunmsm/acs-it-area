@@ -44,6 +44,7 @@
     "officers": "Directiva",
     "events": "Eventos",
     "news": "Noticias",
+    "verify": "Verificar Certificado",
     "contact": "Contacto",
     "copyright": "Copyright © {year} ACS UNMSM Student Chapter"
   },
@@ -240,6 +241,10 @@
         "titulo": "Generador de horarios",
         "texto": "Planificador de horarios a partir del reporte del SUM (UNMSM). Genera combinaciones sin cruces, filtra docentes, controla créditos y permite comparar planes de respaldo."
       },
+      "verificar": {
+        "titulo": "Verificación de Certificados",
+        "texto": "Consulta y valida la autenticidad de constancias y certificados oficiales emitidos por el ACS Student Chapter UNMSM."
+      },
       "nist": {
         "titulo": "NIST WebBook",
         "texto": "Datos termodinámicos comprobados por pares y espectros de referencia. Para cuando necesites un valor confiable y citable."
@@ -314,22 +319,36 @@
     }
   },
   "verificar": {
-    "metaTitle": "Verificar Certificado – ACS UNMSM",
-    "metaDescription": "Verifica la autenticidad de tu certificado emitido por el ACS Student Chapter UNMSM.",
+    "metaTitle": "Consulta y Verificación de Certificados – ACS UNMSM",
+    "metaDescription": "Consulta y verifica la autenticidad de tus certificados emitidos por el ACS Student Chapter UNMSM ingresando tu documento de identidad.",
     "badge": "Verificación de Certificados",
-    "title": "Verificación de Certificado",
-    "subtitle": "Ingresa o escanea el código de tu certificado para comprobar su autenticidad.",
+    "title": "Verificación de Certificados",
+    "subtitle": "Ingresa tu documento de identidad para consultar todas tus constancias y certificados oficiales.",
     "successTitle": "Certificado Válido",
+    "successTitleMultiple": "Certificados Oficiales Encontrados",
     "successMessage": "Este certificado ha sido verificado exitosamente en nuestros registros.",
-    "labelNombre": "Nombre",
+    "successMessageMultiple": "Se encontraron {count} certificados emitidos a nombre de:",
+    "certificateNumber": "Certificado #{index}",
+    "labelNombre": "Titular",
     "labelEvento": "Evento",
     "labelFecha": "Fecha",
     "labelHoras": "Horas",
     "labelArea": "Área",
-    "labelId": "Código",
-    "errorTitle": "Certificado No Encontrado",
-    "errorMessage": "El código ingresado no corresponde a ningún certificado válido en nuestros registros.",
-    "searchedCode": "Código buscado",
-    "errorHint": "Verifica que el código esté escrito correctamente. Si crees que es un error, contáctanos."
+    "labelId": "Código Oficial",
+    "errorTitle": "Certificados No Encontrados",
+    "errorMessage": "No se encontraron certificados registrados con el documento ingresado en nuestros registros.",
+    "searchedCode": "Documento buscado",
+    "errorHint": "Verifica que el número de documento esté escrito correctamente. Si crees que es un error o acabas de participar en un evento, contáctanos.",
+    "searchTitle": "Consulta de Certificados",
+    "searchSubtitle": "Ingresa tu número de documento de identidad (DNI, Cédula, Pasaporte) para consultar y verificar tus certificados emitidos por ACS UNMSM.",
+    "inputLabel": "Documento de Identidad (DNI, Cédula, Pasaporte)",
+    "inputPlaceholder": "Ej: 72345678 o número de identificación",
+    "submitButton": "Consultar Certificados",
+    "inputHelp": "Ingresa tu número de identificación para listar todas tus constancias académicas registradas.",
+    "emptyCodeError": "Por favor, ingresa tu número de documento de identidad.",
+    "backToResources": "Volver a Recursos",
+    "verifyAnother": "Consultar otro documento",
+    "officialIssuer": "ACS Student Chapter UNMSM • Registro Oficial",
+    "statusVerified": "Credencial Oficial Auténtica"
   }
 }
