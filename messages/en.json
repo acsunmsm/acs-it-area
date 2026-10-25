@@ -183,7 +183,9 @@
     "filterUpcoming": "Upcoming",
     "filterPast": "Finished",
     "viewFlyer": "View full flyer",
-    "closePreview": "Close"
+    "closePreview": "Close",
+    "loadMore": "Load more",
+    "loadingMore": "Loading more events..."
   },
   "heroCarousel": {
     "slide1": "Join the most active chemistry community in San Marcos",

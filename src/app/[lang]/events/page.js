@@ -17,9 +17,14 @@ export default function EventsPage() {
   const locale = useLocale();
   const t = useTranslations('events');
 
+  const PAGE_SIZE = 10;
+
   // Estados principales
   const [events, setEvents] = useState([]);
   const [loadingEvents, setLoadingEvents] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [hasMore, setHasMore] = useState(false);
+  const [page, setPage] = useState(0);
   const [error, setError] = useState(null);
   const [showEditModal, setShowEditModal] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
@@ -104,16 +109,21 @@ export default function EventsPage() {
   const handleClearSearch = () => {
     setCurrentSearchInput('');
     setActualSearchTerm('');
+    setPage(0);
   };
 
-  // Cargar eventos desde Supabase (con búsqueda y límite de 10)
-  async function fetchEvents(search = '') {
-    setLoadingEvents(true);
+  // Cargar eventos desde Supabase con paginación
+  async function fetchEvents(pageNumber = 0, search = '', isLoadMore = false) {
+    if (isLoadMore) {
+      setLoadingMore(true);
+    } else {
+      setLoadingEvents(true);
+    }
     setError(null);
 
     let query = supabase
       .from('eventos')
-      .select('*, inscription')
+      .select('*, inscription', { count: 'exact' })
       .order('fecha', { ascending: false });
 
     if (search) {
@@ -121,35 +131,60 @@ export default function EventsPage() {
       query = query.or(`titulo.ilike.%${search}%,descripcion.ilike.%${search}%`);
     }
 
-    query = query.limit(10);
+    const from = pageNumber * PAGE_SIZE;
+    const to = from + PAGE_SIZE - 1;
+    query = query.range(from, to);
 
     try {
-      const { data, error: supabaseError } = await query;
+      const { data, count, error: supabaseError } = await query;
 
       if (supabaseError) {
         console.error('Error fetching events:', supabaseError);
         setError(t('errorFetch'));
-        setEvents([]);
+        if (!isLoadMore) setEvents([]);
       } else {
-        setEvents(data);
+        const fetchedData = data || [];
+        if (isLoadMore) {
+          setEvents((prev) => [...prev, ...fetchedData]);
+        } else {
+          setEvents(fetchedData);
+        }
+
+        const currentTotal = from + fetchedData.length;
+        const totalAvailable = count ?? 0;
+        setHasMore(count != null ? currentTotal < totalAvailable : fetchedData.length === PAGE_SIZE);
       }
     } catch (err) {
       console.error('Unexpected error fetching events:', err);
       setError('Ocurrió un error inesperado al cargar los eventos.');
-      setEvents([]);
+      if (!isLoadMore) setEvents([]);
     } finally {
-      setLoadingEvents(false);
+      if (isLoadMore) {
+        setLoadingMore(false);
+      } else {
+        setLoadingEvents(false);
+      }
     }
   }
+
+  // Cargar más eventos (siguiente página)
+  const handleLoadMore = () => {
+    if (loadingMore || !hasMore) return;
+    const nextPage = page + 1;
+    setPage(nextPage);
+    fetchEvents(nextPage, actualSearchTerm, true);
+  };
 
   // Guardar término de búsqueda cuando el usuario hace submit
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     setActualSearchTerm(currentSearchInput);
+    setPage(0);
   };
 
   useEffect(() => {
-    fetchEvents(actualSearchTerm);
+    setPage(0);
+    fetchEvents(0, actualSearchTerm, false);
   }, [actualSearchTerm]);
 
   useEffect(() => {
@@ -204,7 +239,8 @@ export default function EventsPage() {
         }
 
         alert(t('deleteSuccess'));
-        fetchEvents(actualSearchTerm);
+        setPage(0);
+        fetchEvents(0, actualSearchTerm, false);
       } catch (err) {
         console.error('Error al eliminar evento:', err);
         setError(err.message || 'Ocurrió un error al eliminar el evento.');
@@ -615,6 +651,29 @@ export default function EventsPage() {
             })}
           </div>
         )}
+
+        {events.length > 0 && hasMore && (
+          <div className="btn-load-more-container">
+            <button
+              type="button"
+              onClick={handleLoadMore}
+              disabled={loadingMore}
+              className="btn-load-more"
+            >
+              {loadingMore ? (
+                <>
+                  <i className="fas fa-spinner fa-spin"></i>
+                  <span>{t('loadingMore')}</span>
+                </>
+              ) : (
+                <>
+                  <i className="fas fa-plus-circle"></i>
+                  <span>{t('loadMore')}</span>
+                </>
+              )}
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Modal Lightbox para ver flyer completo en alta resolución */}
@@ -655,7 +714,8 @@ export default function EventsPage() {
             event={selectedEvent}
             onSave={() => {
               console.log('DEBUG (EventsPage): onSave disparado desde EventoForm. Recargando eventos y cerrando modal.');
-              fetchEvents(actualSearchTerm);
+              setPage(0);
+              fetchEvents(0, actualSearchTerm, false);
               setShowEditModal(false);
               setSelectedEvent(null);
             }}

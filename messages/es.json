@@ -184,7 +184,9 @@
     "filterUpcoming": "Próximos",
     "filterPast": "Finalizados",
     "viewFlyer": "Ver flyer completo",
-    "closePreview": "Cerrar"
+    "closePreview": "Cerrar",
+    "loadMore": "Cargar más",
+    "loadingMore": "Cargando más eventos..."
   },
   "heroCarousel": {
     "slide1": "Súmate a la comunidad química más activa de San Marcos",
