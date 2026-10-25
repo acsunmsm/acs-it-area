@@ -2493,6 +2493,48 @@ h2 {
   background: #f5c6cb;
 }
 
+/* Botón Cargar Más */
+.btn-load-more-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0 60px 0;
+}
+
+.btn-load-more {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: #ffffff;
+  color: #412BFD;
+  border: 2px solid #412BFD;
+  padding: 12px 32px;
+  border-radius: 50px;
+  font-family: 'Stolzl', sans-serif;
+  font-weight: 600;
+  font-size: 0.98rem;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(65, 43, 253, 0.1);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-load-more:hover:not(:disabled) {
+  background: linear-gradient(135deg, #412BFD 0%, #2a15c7 100%);
+  color: #ffffff;
+  box-shadow: 0 8px 24px rgba(65, 43, 253, 0.3);
+}
+
+.btn-load-more:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.btn-load-more:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+}
+
 .no-events-container {
   text-align: center;
   padding: 60px 20px;
