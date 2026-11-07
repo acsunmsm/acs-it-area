@@ -21,7 +21,6 @@ import '@/src/assets/styles/quimica.css';
   poder sobrescribir a quimica.css.
 */
 import '@/src/assets/styles/temas.css';
-/* Los bloques del menú: cada uno con el efecto de su sección. */
 import '@/src/assets/styles/menu.css';
 /* La portada, con el lenguaje visual del ACS de los 150 años. */
 import { config } from '@fortawesome/fontawesome-svg-core';

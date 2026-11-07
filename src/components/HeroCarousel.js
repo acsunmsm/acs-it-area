@@ -1,127 +1,14 @@
-'use client';
+import { readdir } from 'node:fs/promises';
+import path from 'node:path';
+import HeroCarouselClient from './HeroCarouselClient';
 
-import { useState, useRef, useCallback } from 'react';
-import { useTranslations } from 'next-intl';
-import '@/src/assets/styles/hero.css';
-import { motion, AnimatePresence } from 'framer-motion';
+export default async function HeroCarousel() {
+  const directory = path.join(process.cwd(), 'public/assets/img/fondosinicio');
+  const files = await readdir(directory, { withFileTypes: true });
+  const photos = files
+    .filter(file => file.isFile() && /\.(avif|jpe?g|png|webp)$/i.test(file.name))
+    .map(file => `/assets/img/fondosinicio/${encodeURIComponent(file.name)}`)
+    .sort((first, second) => first.localeCompare(second));
 
-export default function HeroCarousel() {
-  const t = useTranslations('homePage');
-  const [showVideo, setShowVideo] = useState(false);
-  const [slidingOut, setSlidingOut] = useState(false);
-  const videoRef = useRef(null);
-
-  const handleScroll = (e) => {
-    e.preventDefault();
-    const section = document.querySelector('.hero-section');
-    if (section) {
-      section.scrollIntoView({ behavior: 'smooth' });
-    } else {
-      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-    }
-  };
-
-  const handleCircleClick = useCallback(() => {
-    setShowVideo(true);
-    setSlidingOut(false);
-    // Prevent page scrolling while video is playing
-    document.body.style.overflow = 'hidden';
-  }, []);
-
-  const handleVideoEnd = useCallback(() => {
-    setSlidingOut(true);
-    // After the slide-out animation completes, remove the overlay
-    setTimeout(() => {
-      setShowVideo(false);
-      setSlidingOut(false);
-      document.body.style.overflow = '';
-    }, 500); // matches the CSS transition duration
-  }, []);
-
-  return (
-    <section className="hero-container">
-      {/* Lado Izquierdo (3 figuras) */}
-      <motion.img 
-        initial={{ opacity: 0, x: -50 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.8, delay: 0.2 }}
-        src="/assets/img/000643421W.jpg" alt="Students" className="floating-element shape-left-1" />
-      <motion.img 
-        initial={{ opacity: 0, x: -50 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.8, delay: 0.4 }}
-        src="/assets/img/Fondo2.jpeg" alt="Campus" className="floating-element shape-left-2" />
-      <motion.div 
-        initial={{ opacity: 0, scale: 0.5 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.8, delay: 0.6 }}
-        className="floating-element shape-left-3-color"></motion.div>
-
-      {/* Lado Derecho (3 figuras) */}
-      <motion.div 
-        initial={{ opacity: 0, scale: 0.5 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.8, delay: 0.3 }}
-        onClick={handleCircleClick}
-        style={{ cursor: 'pointer' }}
-        className="floating-element shape-right-1-color"></motion.div>
-      <motion.img 
-        initial={{ opacity: 0, x: 50 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.8, delay: 0.5 }}
-        src="/assets/img/about.jpg" alt="UNMSM" className="floating-element shape-right-2" />
-      <motion.img 
-        initial={{ opacity: 0, x: 50 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.8, delay: 0.7 }}
-        src="https://images.pexels.com/photos/2280571/pexels-photo-2280571.jpeg?auto=compress&cs=tinysrgb&w=500" alt="Industry" className="floating-element shape-right-3" />
-
-      {/* Contenido Central */}
-      <motion.div 
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        className="content-wrapper">
-        <motion.h1 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.3 }}
-          className="title">
-          {t('portadaTitulo')} <span className="highlight">{t('portadaDestacado')}</span>
-        </motion.h1>
-        <motion.p 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.5 }}
-          className="subtitle">
-          {t('portadaTexto')}
-        </motion.p>
-        <motion.button 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.7 }}
-          onClick={handleScroll} className="cta-button">
-          {t('portadaCta')}
-        </motion.button>
-      </motion.div>
-
-      {/* Fullscreen Video Overlay */}
-      {showVideo && (
-        <div
-          className={`video-overlay-bienvenida${slidingOut ? ' video-overlay-slide-out' : ''}`}
-        >
-          <video
-            ref={videoRef}
-            className="video-fullscreen-bienvenida"
-            src="/assets/img/bienvenida.mp4"
-            autoPlay
-            playsInline
-            muted={false}
-            onEnded={handleVideoEnd}
-          />
-        </div>
-      )}
-    </section>
-  );
+  return <HeroCarouselClient photos={photos} />;
 }
-
