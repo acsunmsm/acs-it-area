@@ -64,7 +64,7 @@ export default function MascotaBot() {
   const t = useTranslations('mascota');
 
   const [abierto, setAbierto] = useState(false);
-  const [bocadillo, setBocadillo] = useState(true);
+  const [mostrarSaludo, setMostrarSaludo] = useState(false);
   const [mensajes, setMensajes] = useState([]);
   const [texto, setTexto] = useState('');
   const [pose, setPose] = useState(POSE_DEFECTO); // qué dibujo de Otto se ve
@@ -117,7 +117,7 @@ export default function MascotaBot() {
 
   const abrir = () => {
     setAbierto(true);
-    setBocadillo(false);
+    setMostrarSaludo(false);
     setPose(POSE_DEFECTO);
     setTimeout(() => inputRef.current?.focus(), 100);
   };
@@ -131,16 +131,9 @@ export default function MascotaBot() {
 
   return (
     <div className="mascota-wrap">
-      {bocadillo && !abierto && (
-        <div className="mascota-bocadillo" role="status">
+      {mostrarSaludo && !abierto && (
+        <div className="mascota-bocadillo" role="tooltip">
           {saludoHora()}
-          <button
-            className="mascota-bocadillo__x"
-            onClick={() => setBocadillo(false)}
-            aria-label={t('cerrar')}
-          >
-            ×
-          </button>
         </div>
       )}
 
@@ -200,6 +193,10 @@ export default function MascotaBot() {
       <button
         className={`mascota-btn ${abierto ? 'mascota-btn--activo' : ''}`}
         onClick={abrir}
+        onMouseEnter={() => setMostrarSaludo(true)}
+        onMouseLeave={() => setMostrarSaludo(false)}
+        onFocus={() => setMostrarSaludo(true)}
+        onBlur={() => setMostrarSaludo(false)}
         aria-label={t('abrir')}
       >
         {/* Burbujas que suben del tubo — solo en la pose por defecto,
@@ -310,25 +307,13 @@ export default function MascotaBot() {
           color: #1d2b3a;
           border: 1px solid #e0e6ed;
           border-radius: 14px 14px 14px 4px;
-          padding: 12px 34px 12px 16px;
+          padding: 12px 16px;
           max-width: 240px;
           font-size: 14px;
           line-height: 1.45;
           box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
           animation: mascota-aparece 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .mascota-bocadillo__x {
-          position: absolute;
-          top: 4px;
-          right: 8px;
-          border: none;
-          background: transparent;
-          font-size: 18px;
-          line-height: 1;
-          color: #9aa5b1;
-          cursor: pointer;
-        }
-
         @keyframes mascota-aparece {
           from { opacity: 0; transform: translateY(10px) scale(0.95); }
           to   { opacity: 1; transform: translateY(0) scale(1); }

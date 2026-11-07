@@ -16,6 +16,9 @@
     "details": "Learn more"
   },
   "navbar": {
+    "institutionalNav": "Chapter information",
+    "primaryNav": "Main menu",
+    "webmail": "Chapter webmail",
     "home": "Home",
     "about": "About",
     "officers": "Officers",
@@ -61,6 +64,7 @@
     "portadaDestacado": "Peru",
     "portadaTexto": "We are the student chapter of the American Chemical Society at the Universidad Nacional Mayor de San Marcos, the oldest university in the Americas. We share science, do research and build community.",
     "portadaCta": "Get to know us",
+    "portadaGaleria": "Image {numero} in the ACS UNMSM student chapter banner",
     "alliedChapters": "Allied Chapters"
   },
   "awards": {

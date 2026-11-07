@@ -16,6 +16,9 @@
     "details": "Saber más"
   },
   "navbar": {
+    "institutionalNav": "Información del capítulo",
+    "primaryNav": "Menú principal",
+    "webmail": "Correo institucional",
     "home": "Inicio",
     "about": "Nosotros",
     "officers": "Directiva",
@@ -62,6 +65,7 @@
     "portadaDestacado": "el Perú",
     "portadaTexto": "Somos el capítulo estudiantil de la American Chemical Society en la Universidad Nacional Mayor de San Marcos, Decana de América. Divulgamos, investigamos y formamos comunidad.",
     "portadaCta": "Conócenos",
+    "portadaGaleria": "Imagen {numero} de la portada del capítulo estudiantil ACS UNMSM",
     "alliedChapters": "Capítulos Aliados"
   },
   "awards": {

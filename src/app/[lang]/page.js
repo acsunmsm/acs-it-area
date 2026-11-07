@@ -17,7 +17,7 @@ export default async function HomePage({ params }) {
       <HeroCarousel />
 
       {/* Contenido principal */}
-      <section className="hero-section py-10">
+      <section id="conocenos" className="hero-section py-10">
         <div className="container">
           <div className="row hero-content align-items-center">
             <div className="col-md-6 hero-image text-center">
