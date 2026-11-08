@@ -1,4 +1,17 @@
 {
+  "publication": {
+    "backEvents": "Back to events",
+    "backNews": "Back to news",
+    "missingEvent": "The event could not be loaded",
+    "missingNews": "The article could not be loaded",
+    "date": "Date",
+    "time": "Time",
+    "mode": "Format",
+    "openPoster": "Open the full event poster in a new tab",
+    "openImage": "Open the full image in a new tab",
+    "posterAlt": "Event poster for {title}",
+    "imageAlt": "Cover image for {title}"
+  },
   "about": {
     "title": "Who are we?",
     "intro": "We are the American Chemical Society Student Chapter of the National University of San Marcos, dedicated to fostering interest in chemistry and science within the student community.",
@@ -55,17 +68,24 @@
     "description": "If you see this message in English, localization works."
   },
   "homePage": {
-    "welcome": "Welcome to ACS UNMSM",
-    "welcomePart1": "Welcome to the ACS International Student Chapter UNMSM! We are excited to welcome you to our student chapter of the American Chemical Society at the National University of San Marcos. Here you will find information about our activities, projects, and opportunities to grow alongside a community passionate about chemistry. We believe in continuous learning and collaboration, which is why we are open to hearing your ideas, comments, and suggestions. If you want to be part of this space, contribute with initiatives, or simply learn more about us, contact us.",
-    "welcomePart2": "Together we can promote chemistry and make a positive impact!",
-    "welcomePart3": "We look forward to seeing you! 💙⚗️",
-    "JoinUs": "Become a member",
+    "welcome": "Welcome to <chapter>ACS UNMSM</chapter>",
+    "welcomeIntro": "We're students at San Marcos who love sharing what we learn about chemistry. We run workshops, try out experiments and visit local schools to do science with their students.",
+    "welcomeInvitation": "Would you like to come to a workshop or suggest our next experiment?",
+    "welcomeContact": "Get in touch",
+    "workshopAlt": "Students and chapter members wave from behind a table with flasks of yellow liquid.",
+    "workshopCaption": "School chemistry workshop",
     "portadaTitulo": "Chemistry that transforms",
     "portadaDestacado": "Peru",
     "portadaTexto": "We are the student chapter of the American Chemical Society at the Universidad Nacional Mayor de San Marcos, the oldest university in the Americas. We share science, do research and build community.",
     "portadaCta": "Get to know us",
     "portadaGaleria": "Image {numero} in the ACS UNMSM student chapter banner",
-    "alliedChapters": "Allied Chapters"
+    "alliedChapters": "Allied chapters",
+    "alliesIntro": "Our American Chemical Society network in Peru.",
+    "chapterNames": {
+      "uni": "Universidad Nacional de Ingeniería Student Chapter",
+      "pucp": "Pontifical Catholic University of Peru Student Chapter",
+      "peru": "ACS Peru International Chapter"
+    }
   },
   "awards": {
     "badge": "International Recognition",
@@ -129,6 +149,7 @@
     }
   },
   "contact": {
+    "carbonitoSubject": "Question from Carbonito",
     "title": "Contact Us!",
     "subtitle": "If you have questions, suggestions, or want to collaborate with us, write to us. We are here to help you and grow together.",
     "bannerTitle": "Contact",
@@ -291,6 +312,7 @@
     }
   },
   "mascota": {
+    "consultarEquipo": "Ask the team this question",
     "nombre": "Carbonito",
     "abrir": "Chat with Carbonito, our mascot",
     "cerrar": "Close",
@@ -298,9 +320,21 @@
     "saludoManana": "Good morning! ☀️",
     "saludoTarde": "Good afternoon! 🧪",
     "saludoNoche": "Good evening! 🌙",
-    "bienvenida": "I'm Carbonito, the ACS UNMSM mascot. I can tell you about the chapter, our events, how to join, or share a fun chemistry fact. What would you like to know?",
+    "bienvenida": "I'm Carbonito, the ACS UNMSM otter. 🦦 Ask me how to join the chapter, what's on, or what you're curious about in chemistry. I can follow the thread, too. Try “iron” and then “what is its mass?” Where shall we start?",
+    "entradas": {
+      "fun": ["I've got one for you!", "This is one of my favorites!"],
+      "element": ["Hmm, nice choice! Let's see what the periodic table tells us.", "Let's get to know this element! Here are a few things about it.", "Oh, I like this one. Take a look at its details with me."],
+      "elementFollowup": ["Of course! Let's stick with that element.", "Sure, let's look at that detail together."],
+      "science": ["Good question! Let's take it step by step.", "Hmm, let's explore that together.", "Happy to explain!"],
+      "publications": ["Sure! Let's see what the chapter has posted.", "Happy to help. Let's check the chapter's updates."],
+      "chapter": ["Sure, I'd be happy to tell you!", "Glad you asked!", "Let's take a look together."],
+      "clarify": ["Happy to help! I just need one detail.", "Sure, let's narrow it down."]
+    },
     "placeholder": "Type something…",
-    "noEntiendo": "Hmm, I don't know that one yet 😅. I'm still learning. Try the buttons below, ask me about events or fun facts, or reach us through the Contact page.",
+    "buscando": "Checking…",
+    "reintentar": "Try again",
+    "errorConexion": "Oops, I couldn’t load my reply. Shall we try again?",
+    "noEntiendo": "Hmm, I don’t know that one yet. Could you ask another way? You can also choose a topic or ask the team.",
     "sugerencias": {
       "quienes": "What is ACS UNMSM?",
       "unirse": "How do I join?",
