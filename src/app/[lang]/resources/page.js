@@ -228,7 +228,7 @@ export default function ResourcesPage() {
   };
 
   return (
-    <main className="tema-biblioteca" style={{ background: '#f8fafc', minHeight: '100vh' }}>
+    <main className="tema-biblioteca" style={{ background: '#06070a', minHeight: '100vh' }}>
       <Navbar />
 
       {/* ---------- Hero Cósmico Espacial (Fondo del espacio, matraces y fórmulas volando) ---------- */}
@@ -369,7 +369,7 @@ export default function ResourcesPage() {
 
 
       {/* ---------- Barra de Filtros y Aviso (Modo Claro Premium) ---------- */}
-      <section id="herramientas" className="py-4 cosmic-light-bottom" style={{ background: '#ffffff', borderTop: '1px solid #e2e8f0', borderBottom: '1px solid #f1f5f9', scrollMarginTop: '76px' }}>
+      <section id="herramientas" className="py-4 cosmic-light-bottom" style={{ background: '#ffffff', borderTop: '1px solid #e2e8f0', borderBottom: '1px solid #f1f5f9', scrollMarginTop: 'var(--chapter-main-height, 4rem)' }}>
         <div className="container">
           <div className="d-flex justify-content-center flex-wrap gap-3">
             <button
