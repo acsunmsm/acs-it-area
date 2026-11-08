@@ -322,13 +322,37 @@
     "saludoNoche": "Good evening! 🌙",
     "bienvenida": "I'm Carbonito, the ACS UNMSM otter. 🦦 Ask me how to join the chapter, what's on, or what you're curious about in chemistry. I can follow the thread, too. Try “iron” and then “what is its mass?” Where shall we start?",
     "entradas": {
-      "fun": ["I've got one for you!", "This is one of my favorites!"],
-      "element": ["Hmm, nice choice! Let's see what the periodic table tells us.", "Let's get to know this element! Here are a few things about it.", "Oh, I like this one. Take a look at its details with me."],
-      "elementFollowup": ["Of course! Let's stick with that element.", "Sure, let's look at that detail together."],
-      "science": ["Good question! Let's take it step by step.", "Hmm, let's explore that together.", "Happy to explain!"],
-      "publications": ["Sure! Let's see what the chapter has posted.", "Happy to help. Let's check the chapter's updates."],
-      "chapter": ["Sure, I'd be happy to tell you!", "Glad you asked!", "Let's take a look together."],
-      "clarify": ["Happy to help! I just need one detail.", "Sure, let's narrow it down."]
+      "fun": [
+        "I've got one for you!",
+        "This is one of my favorites!"
+      ],
+      "element": [
+        "Hmm, nice choice! Let's see what the periodic table tells us.",
+        "Let's get to know this element! Here are a few things about it.",
+        "Oh, I like this one. Take a look at its details with me."
+      ],
+      "elementFollowup": [
+        "Of course! Let's stick with that element.",
+        "Sure, let's look at that detail together."
+      ],
+      "science": [
+        "Good question! Let's take it step by step.",
+        "Hmm, let's explore that together.",
+        "Happy to explain!"
+      ],
+      "publications": [
+        "Sure! Let's see what the chapter has posted.",
+        "Happy to help. Let's check the chapter's updates."
+      ],
+      "chapter": [
+        "Sure, I'd be happy to tell you!",
+        "Glad you asked!",
+        "Let's take a look together."
+      ],
+      "clarify": [
+        "Happy to help! I just need one detail.",
+        "Sure, let's narrow it down."
+      ]
     },
     "placeholder": "Type something…",
     "buscando": "Checking…",
@@ -379,7 +403,7 @@
     "searchedCode": "Searched document",
     "errorHint": "Please verify that the document number is entered correctly. If you believe this is an error or recently attended an event, contact us.",
     "searchTitle": "Certificate Query",
-    "searchSubtitle": "Enter your identification number (ID, Citizen Card, Passport) to query and verify all certificates issued to your name by the ACS Student Chapter UNMSM.",
+    "searchSubtitle": "Enter your identification number (ID, Passport) to query and verify all certificates issued to your name by the ACS Student Chapter UNMSM.",
     "inputLabel": "Identity Document (ID / Passport)",
     "inputPlaceholder": "e.g., 72345678 or document number",
     "submitButton": "Query Certificates",

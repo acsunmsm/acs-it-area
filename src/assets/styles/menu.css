@@ -69,7 +69,9 @@ body:has(.chapter-nav) {
   transform: scaleX(1);
 }
 
-.chapter-nav__link[data-institutional] { --link-accent: var(--ink); }
+.chapter-nav__link[data-institutional] {
+  --link-accent: var(--ink);
+}
 
 .chapter-nav__mail {
   display: inline-flex;
@@ -140,7 +142,7 @@ body:has(.chapter-nav) {
   cursor: pointer;
 }
 
-.chapter-nav__language-option + .chapter-nav__language-option {
+.chapter-nav__language-option+.chapter-nav__language-option {
   margin-top: .75rem;
   border-top: 1px solid var(--rule);
   border-radius: 0 0 99px 99px;
@@ -152,7 +154,7 @@ body:has(.chapter-nav) {
   background: var(--chromium-blue);
 }
 
-.chapter-nav__language-option + .chapter-nav__language-option:is(:hover, :focus-visible, [aria-current]) {
+.chapter-nav__language-option+.chapter-nav__language-option:is(:hover, :focus-visible, [aria-current]) {
   border-radius: 99px;
 }
 
@@ -185,16 +187,21 @@ body:has(.chapter-nav) {
 @media (hover: hover) and (prefers-reduced-motion: no-preference) {
   .chapter-nav__brand:hover .chapter-nav__logo {
     background-image: linear-gradient(90deg,
-      var(--chromium-blue) 32%, var(--vanadium-yellow) 41%,
-      var(--methyl-orange) 50%, var(--cupric-blue) 58%, var(--chromium-blue) 66%);
+        var(--chromium-blue) 32%, var(--vanadium-yellow) 41%,
+        var(--methyl-orange) 50%, var(--cupric-blue) 58%, var(--chromium-blue) 66%);
     background-size: 310% 100%;
     animation: chapter-logo-sweep 420ms ease-out;
   }
 }
 
 @keyframes chapter-logo-sweep {
-  from { background-position: 100% 50%; }
-  to { background-position: 0% 50%; }
+  from {
+    background-position: 100% 50%;
+  }
+
+  to {
+    background-position: 0% 50%;
+  }
 }
 
 .chapter-nav__primary {
@@ -235,8 +242,14 @@ body:has(.chapter-nav) {
     gap: .5rem;
   }
 
-  .chapter-nav__brand { width: min(70vw, 19rem); }
-  .chapter-nav__toggle { display: inline-flex; }
+  .chapter-nav__brand {
+    width: min(70vw, 19rem);
+  }
+
+  .chapter-nav__toggle {
+    display: inline-flex;
+  }
+
   .chapter-nav__tools {
     align-items: flex-start;
     width: 100%;
@@ -244,6 +257,7 @@ body:has(.chapter-nav) {
     margin-top: .35rem;
     padding-top: .35rem;
   }
+
   .chapter-nav__language-menu {
     position: static;
     margin-bottom: .5rem;
@@ -276,5 +290,7 @@ body:has(.chapter-nav) {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .chapter-nav__link::after { transition: none; }
+  .chapter-nav__link::after {
+    transition: none;
+  }
 }
