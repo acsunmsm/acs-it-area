@@ -404,7 +404,7 @@
     "searchedCode": "Documento buscado",
     "errorHint": "Verifica que el número de documento esté escrito correctamente. Si crees que es un error o acabas de participar en un evento, contáctanos.",
     "searchTitle": "Consulta de Certificados",
-    "searchSubtitle": "Ingresa tu número de documento de identidad (DNI, Cédula, Pasaporte) para consultar y verificar tus certificados emitidos por ACS UNMSM.",
+    "searchSubtitle": "Ingresa tu número de documento de identidad (DNI, Pasaporte) para consultar y verificar tus certificados emitidos por ACS UNMSM.",
     "inputLabel": "Documento de Identidad (DNI, Pasaporte)",
     "inputPlaceholder": "Ej: 72345678 o número de identificación",
     "submitButton": "Consultar Certificados",
