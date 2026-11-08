@@ -1,10 +1,9 @@
 :root {
-  --chapter-utility-height: 1.9375rem;
-  --chapter-main-height: 3.25rem;
+  --chapter-main-height: 4rem;
 }
 
 body:has(.chapter-nav) {
-  padding-top: calc(var(--chapter-utility-height) + var(--chapter-main-height));
+  padding-top: var(--chapter-main-height);
 }
 
 .chapter-nav {
@@ -20,15 +19,10 @@ body:has(.chapter-nav) {
   z-index: 1030;
   color: var(--ink);
   font: 300 1rem/1.2 'Stolzl', sans-serif;
-  transition: transform 220ms ease;
-}
-
-.chapter-nav[data-scrolled='true'] {
-  transform: translateY(calc(-1 * var(--chapter-utility-height)));
 }
 
 .chapter-nav__inner {
-  width: min(81%, 76rem);
+  width: min(90%, 82rem);
   margin-inline: auto;
   display: flex;
   align-items: center;
@@ -36,32 +30,15 @@ body:has(.chapter-nav) {
   gap: 1rem;
 }
 
-.chapter-nav__utility {
-  --link-accent: var(--ink);
-  background-color: var(--vanadium-yellow);
-  background-image: url('/assets/img/famarillo.png');
-  background-position: center;
-  background-size: cover;
-  font-size: .7rem;
-}
-
-.chapter-nav__utility .chapter-nav__inner {
-  min-height: var(--chapter-utility-height);
-}
-
-.chapter-nav__secondary,
 .chapter-nav__tools,
 .chapter-nav__primary {
   display: flex;
   align-items: center;
 }
 
-.chapter-nav__secondary {
-  gap: clamp(.4rem, 1vw, 1rem);
-}
-
 .chapter-nav__tools {
-  gap: clamp(.5rem, 1.1vw, 1rem);
+  gap: .4rem;
+  font-size: .87rem;
 }
 
 .chapter-nav__link {
@@ -92,9 +69,7 @@ body:has(.chapter-nav) {
   transform: scaleX(1);
 }
 
-.chapter-nav__utility .chapter-nav__link {
-  min-height: var(--chapter-utility-height);
-}
+.chapter-nav__link[data-institutional] { --link-accent: var(--ink); }
 
 .chapter-nav__mail {
   display: inline-flex;
@@ -104,8 +79,8 @@ body:has(.chapter-nav) {
 }
 
 .chapter-nav__mail {
-  min-width: 1.5rem;
-  min-height: 1.5rem;
+  min-width: 2.5rem;
+  min-height: 2.75rem;
   font-size: 1.2em;
 }
 
@@ -121,7 +96,7 @@ body:has(.chapter-nav) {
   display: inline-flex;
   align-items: center;
   gap: .35em;
-  min-height: 1.5rem;
+  min-height: 2.75rem;
   padding: 0;
   border: 0;
   color: var(--ink);
@@ -194,7 +169,8 @@ body:has(.chapter-nav) {
 .chapter-nav__brand {
   display: flex;
   align-items: center;
-  width: clamp(13rem, 20.5vw, 18rem);
+  width: clamp(14rem, 22vw, 19.75rem);
+  flex-shrink: 0;
   min-height: calc(var(--chapter-main-height) - 1px);
 }
 
@@ -223,7 +199,7 @@ body:has(.chapter-nav) {
 
 .chapter-nav__primary {
   align-self: stretch;
-  gap: clamp(.8rem, 1.55vw, 1.6rem);
+  gap: clamp(.75rem, 1.3vw, 1.35rem);
   font-size: clamp(.78rem, 1vw, .9rem);
 }
 
@@ -249,10 +225,9 @@ body:has(.chapter-nav) {
   outline-offset: -2px;
 }
 
-@media (max-width: 47.99rem) {
+@media (max-width: 61.99rem) {
   :root {
-    --chapter-utility-height: 2rem;
-    --chapter-main-height: 3.25rem;
+    --chapter-main-height: 3.75rem;
   }
 
   .chapter-nav__inner {
@@ -260,11 +235,20 @@ body:has(.chapter-nav) {
     gap: .5rem;
   }
 
-  .chapter-nav__utility { font-size: .72rem; }
-  .chapter-nav__brand { width: min(68vw, 18rem); }
+  .chapter-nav__brand { width: min(70vw, 19rem); }
   .chapter-nav__toggle { display: inline-flex; }
-  .chapter-nav__mail,
-  .chapter-nav__language-trigger { min-height: 1.5rem; }
+  .chapter-nav__tools {
+    align-items: flex-start;
+    width: 100%;
+    border-top: 1px solid var(--rule);
+    margin-top: .35rem;
+    padding-top: .35rem;
+  }
+  .chapter-nav__language-menu {
+    position: static;
+    margin-bottom: .5rem;
+    width: min(16rem, calc(100vw - 6rem));
+  }
 
   .chapter-nav__primary {
     position: absolute;
@@ -272,7 +256,7 @@ body:has(.chapter-nav) {
     display: none;
     align-items: flex-start;
     gap: 0;
-    max-height: calc(100dvh - var(--chapter-utility-height) - var(--chapter-main-height));
+    max-height: calc(100dvh - var(--chapter-main-height));
     overflow-y: auto;
     padding: .5rem 1rem 1rem;
     background: var(--paper);
@@ -291,17 +275,6 @@ body:has(.chapter-nav) {
   }
 }
 
-@media (max-width: 30rem) {
-  .chapter-nav__tools .chapter-nav__link span {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip-path: inset(50%);
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .chapter-nav { transition: none; }
   .chapter-nav__link::after { transition: none; }
 }

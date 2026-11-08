@@ -29,6 +29,12 @@ Para contribuir a mejorar este proyecto, sigue estos pasos:
     ```
 5.  **Crea un Pull Request (PR):** Abre un Pull Request a la rama `main` del repositorio para que podamos revisar tus cambios.
 
+### Carbonito
+
+El asistente del inicio consulta la directiva y los recursos que usa la web, además de las tablas públicas `eventos` y `noticias` con la clave anónima de Supabase. Las fichas bilingües están en `src/lib/carbonito/knowledge.js`. Los valores de los 118 elementos proceden de la [tabla de PubChem](https://pubchem.ncbi.nlm.nih.gov/rest/pug/periodictable/JSON). Al cambiar contenido o reconocimiento, ejecuta `npm run test:carbonito` para comprobar las conversaciones de referencia.
+
+Para activar la selección de fuentes con IA, configura `CARBONITO_OLLAMA_MODEL` con el nombre de un modelo instalado en un servicio Ollama accesible desde el servidor de Next.js. La URL predeterminada es `http://127.0.0.1:11434`. Para otro servidor, define `CARBONITO_OLLAMA_URL`. Reinicia Next.js después de configurar las variables. La [API de Ollama](https://docs.ollama.com/api/chat) recibe la pregunta cuando la búsqueda local no encuentra una respuesta. Carbonito valida el identificador de fuente seleccionado antes de mostrar la información al visitante.
+
 ### Instala las dependencias
 Instala Node.js para hacer más facil la instalación de las dependencias necesarias.
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Header from '../../../components/Navbar';
 import Footer from '../../../components/Footer';
 import Script from 'next/script';
@@ -11,6 +11,17 @@ import { useTranslations, useLocale } from 'next-intl';
 export default function ContactPage() {
   const t = useTranslations('contact');
   const [status, setStatus] = useState(null); // para mostrar mensajes
+  const formRef = useRef(null);
+  useEffect(() => {
+    if (window.location.hash !== '#consulta-carbonito' || !formRef.current) return;
+    try {
+      const draft = sessionStorage.getItem('carbonito.contactDraft');
+      if (!draft) return;
+      formRef.current.elements.message.value = draft.slice(0, 500);
+      formRef.current.elements.subject.value = t('carbonitoSubject');
+      sessionStorage.removeItem('carbonito.contactDraft');
+    } catch { /* The visitor can still fill in the form manually. */ }
+  }, [t]);
 
   const handleSubmit = async (e) => {
     e.preventDefault(); // evita recargar la página
@@ -96,7 +107,7 @@ export default function ContactPage() {
 
               <div className="col-lg-7">
                 <div className="contact-form-simple p-4 p-md-5">
-                  <form onSubmit={handleSubmit} className="d-flex flex-column gap-4">
+                  <form ref={formRef} id="consulta-carbonito" onSubmit={handleSubmit} className="d-flex flex-column gap-4">
                     <div className="row g-3">
                       <div className="col-md-6">
                         <input

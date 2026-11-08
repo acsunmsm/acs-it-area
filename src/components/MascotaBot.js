@@ -1,74 +1,34 @@
 'use client';
 
-/**
- * MASCOTA BOT — asistente de bienvenida del capítulo (Carbonito, la nutria química)
- *
- * Aparece abajo a la izquierda (la derecha ya la ocupa WhatsApp), saluda
- * según la hora y responde preguntas básicas con respuestas preparadas
- * (por reglas de palabras clave: NO usa IA de pago, es gratis y no necesita
- * servidor).
- *
- * Novedad: Otto CAMBIA DE POSE según lo que pasa en la charla. Hay cuatro
- * dibujos (sin fondo) y cada momento usa el que mejor encaja:
- *
- *   · otto-default   → tranquilo con su tubo de ensayo (reposo y bienvenida)
- *   · otto-explica   → señalando con el dedo (cuando responde algo)
- *   · otto-celebra   → con confeti (saludos y agradecimientos)
- *   · otto-piensa    → mano en la barbilla (cuando no sabe responder)
- *
- * Accesibilidad:
- *   · Todos los textos salen de las traducciones (namespace "mascota").
- *   · Las animaciones se apagan solas con prefers-reduced-motion. En ese
- *     modo la pose SÍ cambia (es información, no movimiento), pero sin el
- *     rebote de transición.
- *   · Se cierra con Escape; los botones tienen etiquetas para lectores de
- *     pantalla.
- */
-
 import { useState, useEffect, useRef } from 'react';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 
-/**
- * Reglas de conversación. Cada una tiene:
- *   · claves    → palabras que disparan la respuesta
- *   · respuesta → clave del texto en las traducciones
- *   · pose      → qué dibujo de Otto mostrar al responder
- *
- * El orden importa: gana la primera que coincida. Los saludos van al final
- * por ser los más genéricos.
- */
-const REGLAS = [
-  // Sobre la propia mascota (va primero para que "¿quién eres?" no lo capture
-  // la regla de "qué es el ACS").
-  { respuesta: 'presentacion', pose: 'celebra', claves: ['te llamas', 'tu nombre', 'quien eres', 'quien sos', 'que eres', 'eres tu', 'carbonito', 'mascota'] },
-  // Curiosidades y química
-  { respuesta: 'curiosidad',   pose: 'explica', claves: ['curiosidad', 'dato', 'sabias', 'elemento', 'tabla periodica', 'molecula', 'reaccion quimica', 'cuentame algo'] },
-  { respuesta: 'chiste',       pose: 'celebra', claves: ['chiste', 'broma', 'gracioso', 'risa', 'divierte', 'joke'] },
-  // Información práctica del capítulo
-  { respuesta: 'redes',        pose: 'explica', claves: ['redes', 'instagram', 'facebook', 'tiktok', 'linkedin', 'siguen', 'sociales', 'social'] },
-  { respuesta: 'ubicacion',    pose: 'explica', claves: ['donde estan', 'donde queda', 'ubicaci', 'facultad', 'direccion', 'encuentran', 'where'] },
-  { respuesta: 'unirse',       pose: 'explica', claves: ['unir', 'inscrib', 'miembro', 'membre', 'join', 'participar', 'apuntar'] },
-  { respuesta: 'eventos',      pose: 'explica', claves: ['evento', 'taller', 'charla', 'actividad', 'event', 'workshop'] },
-  { respuesta: 'contacto',     pose: 'explica', claves: ['contact', 'correo', 'email', 'escribir', 'reach'] },
-  { respuesta: 'quienes',      pose: 'explica', claves: ['quienes', 'que es', 'acs', 'capitul', 'chapter', 'about'] },
-  { respuesta: 'despedida',    pose: 'celebra', claves: ['adios', 'chau', 'chao', 'bye', 'hasta luego', 'nos vemos', 'me voy'] },
-  { respuesta: 'animo',        pose: 'celebra', claves: ['dia', 'day', 'como estas', 'que tal', 'how are', 'todo bien', 'cansad'] },
-  { respuesta: 'gracias',      pose: 'celebra', claves: ['gracias', 'thanks', 'thank', 'genial', 'bien hecho'] },
-  { respuesta: 'saludo',       pose: 'celebra', claves: ['hola', 'hi', 'hey', 'buenas', 'hello', 'saludos'] },
-];
-
-const POSE_DEFECTO = 'default';
-const POSE_NO_ENTIENDE = 'piensa';
+function openingGroup(topic, previousTopic) {
+  if (topic.startsWith('element-')) return topic === previousTopic ? 'elementFollowup' : 'element';
+  if (['ph', 'mole', 'molarity', 'periodic'].includes(topic)) return 'science';
+  if (['fact', 'joke'].includes(topic)) return 'fun';
+  if (['events', 'news'].includes(topic)) return 'publications';
+  if (topic === 'clarify') return 'clarify';
+  // These messages already address the visitor in Carbonito's own voice.
+  if (['hello', 'identity', 'bye', 'thanks', 'mood', 'unknown'].includes(topic)) return null;
+  return 'chapter';
+}
 
 export default function MascotaBot() {
   const t = useTranslations('mascota');
+  const lang = useLocale();
+  const [pending, setPending] = useState(false);
+  const activeRequest = useRef(null);
+  const context = useRef(null);
+  const nextOpening = useRef(new Map());
 
   const [abierto, setAbierto] = useState(false);
   const [mostrarSaludo, setMostrarSaludo] = useState(false);
   const [mensajes, setMensajes] = useState([]);
   const [texto, setTexto] = useState('');
-  const [pose, setPose] = useState(POSE_DEFECTO); // qué dibujo de Otto se ve
-  const finRef = useRef(null);
+  const [pose, setPose] = useState('default');
+  const logRef = useRef(null);
+  const latestRef = useRef(null);
   const inputRef = useRef(null);
 
   const saludoHora = () => {
@@ -79,15 +39,12 @@ export default function MascotaBot() {
   };
 
   useEffect(() => {
-    if (abierto && mensajes.length === 0) {
-      setMensajes([{ de: 'bot', texto: `${saludoHora()} ${t('bienvenida')}` }]);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [abierto]);
-
-  useEffect(() => {
-    finRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
-  }, [mensajes]);
+    const log = logRef.current;
+    const latest = latestRef.current;
+    if (!log || !latest || mensajes.length <= 1) return;
+    // Keep the start of a long reply visible, including its opening line.
+    log.scrollTop += latest.getBoundingClientRect().top - log.getBoundingClientRect().top - log.clientTop - parseFloat(getComputedStyle(log).paddingTop);
+  }, [mensajes, abierto]);
 
   useEffect(() => {
     const onKey = (e) => { if (e.key === 'Escape') setAbierto(false); };
@@ -95,30 +52,55 @@ export default function MascotaBot() {
     return () => window.removeEventListener('keydown', onKey);
   }, []);
 
-  // Busca la regla que coincide; devuelve el texto y la pose asociada.
-  const responder = (entrada) => {
-    const limpio = entrada.toLowerCase();
-    const regla = REGLAS.find((r) => r.claves.some((c) => limpio.includes(c)));
-    if (regla) return { texto: t(`respuestas.${regla.respuesta}`), pose: regla.pose };
-    return { texto: t('noEntiendo'), pose: POSE_NO_ENTIENDE };
-  };
+  useEffect(() => () => activeRequest.current?.abort(), []);
 
-  const enviar = (valor) => {
-    const msg = (valor ?? texto).trim();
-    if (!msg) return;
-    setMensajes((prev) => [...prev, { de: 'user', texto: msg }]);
+  const enviar = async (valor) => {
+    const question = (valor ?? texto).trim();
+    if (!question || activeRequest.current) return;
+    const controller = new AbortController();
+    activeRequest.current = controller;
+    setPending(true);
+    setMensajes(prev => [...prev, { de: 'user', texto: question }]);
     setTexto('');
-    setTimeout(() => {
-      const r = responder(msg);
-      setMensajes((prev) => [...prev, { de: 'bot', texto: r.texto }]);
-      setPose(r.pose); // Otto cambia de expresión
-    }, 350);
+    setPose('piensa');
+    try {
+      const res = await fetch('/api/carbonito', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question, lang, previous: context.current }),
+        signal: AbortSignal.any([controller.signal, AbortSignal.timeout(24000)])
+      });
+      if (!res.ok) throw new Error('Chat unavailable');
+      const reply = await res.json();
+      const group = openingGroup(reply.context.topic, context.current?.topic);
+      let replyText = reply.text;
+      if (group) {
+        const openings = t.raw(`entradas.${group}`);
+        const index = nextOpening.current.get(group) ?? 0;
+        replyText = `${openings[index]}\n\n${reply.text}`;
+        nextOpening.current.set(group, (index + 1) % openings.length);
+      }
+      if (!['thanks', 'hello', 'mood'].includes(reply.context.topic)) context.current = reply.context;
+      const unresolved = reply.context.topic === 'unknown';
+      setMensajes(prev => [...prev, { de: 'bot', texto: replyText, links: reply.links, question: unresolved ? question : null }]);
+      setPose(reply.pose);
+    } catch {
+      if (controller.signal.aborted) return;
+      setMensajes(prev => [...prev, { de: 'bot', texto: t('errorConexion'), retry: question }]);
+      setPose('piensa');
+    } finally {
+      activeRequest.current = null;
+      if (!controller.signal.aborted) setPending(false);
+    }
   };
 
   const abrir = () => {
+    if (mensajes.length === 0) {
+      setMensajes([{ de: 'bot', texto: `${saludoHora()} ${t('bienvenida')}` }]);
+    }
     setAbierto(true);
     setMostrarSaludo(false);
-    setPose(POSE_DEFECTO);
+    setPose('default');
     setTimeout(() => inputRef.current?.focus(), 100);
   };
 
@@ -153,14 +135,25 @@ export default function MascotaBot() {
             </button>
           </div>
 
-          <div className="mascota-panel__mensajes">
+          <div ref={logRef} className="mascota-panel__mensajes" role="log" aria-live="polite">
             {mensajes.map((m, i) => (
-              <div key={i} className={`mascota-msg mascota-msg--${m.de}`}>
+              <div key={i} ref={i === mensajes.length - 1 ? latestRef : null} className={`mascota-msg mascota-msg--${m.de}`}>
                 {m.texto}
+                {m.links?.length > 0 && (
+                  <ul className="mascota-fuentes">
+                    {m.links.map(link => <li key={link.href}>{m.question ? (
+                      <a href={link.href + '#consulta-carbonito'} onClick={() => {
+                        try { sessionStorage.setItem('carbonito.contactDraft', m.question); } catch { /* Contact is still available. */ }
+                      }}>{t('consultarEquipo')}</a>
+                    ) : <a href={link.href}>{link.label}</a>}</li>)}
+                  </ul>
+                )}
+                {m.retry && i === mensajes.length - 1 && <button type="button" disabled={pending} onClick={() => enviar(m.retry)}>{t('reintentar')}</button>}
               </div>
             ))}
 
-            {mensajes.length <= 1 && (
+            {pending && <div role="status" className="mascota-msg mascota-msg--bot">{t('buscando')}</div>}
+            {(mensajes.length <= 1 || mensajes.at(-1)?.question) && !pending && (
               <div className="mascota-sugerencias">
                 {SUGERENCIAS.map((s) => (
                   <button key={s.clave} onClick={() => enviar(s.etiqueta)}>
@@ -170,7 +163,6 @@ export default function MascotaBot() {
               </div>
             )}
 
-            <div ref={finRef} />
           </div>
 
           <form
@@ -179,12 +171,13 @@ export default function MascotaBot() {
           >
             <input
               ref={inputRef}
+              maxLength={500}
               value={texto}
               onChange={(e) => setTexto(e.target.value)}
               placeholder={t('placeholder')}
               aria-label={t('placeholder')}
             />
-            <button type="submit" aria-label={t('enviar')}>→</button>
+            <button type="submit" disabled={pending || !texto.trim()} aria-label={t('enviar')}>→</button>
           </form>
         </div>
       )}
@@ -396,6 +389,10 @@ export default function MascotaBot() {
           align-self: flex-end;
           border-bottom-right-radius: 4px;
         }
+
+        .mascota-fuentes { padding-left: 1rem; margin: .45rem 0 0; }
+        .mascota-fuentes a { color: #3020b6; text-decoration: underline; overflow-wrap: anywhere; }
+        .mascota-panel__entrada button:disabled { opacity: .55; }
 
         .mascota-sugerencias {
           display: flex;

@@ -4,7 +4,7 @@
   overflow: hidden;
   display: grid;
   align-items: center;
-  min-height: calc(100dvh - var(--chapter-utility-height) - var(--chapter-main-height));
+  min-height: calc(100dvh - var(--chapter-main-height));
   color: white;
   background: linear-gradient(110deg, #2919a2, #412bfd 72%, #503bfb);
   font-family: 'Stolzl', sans-serif;
@@ -116,7 +116,7 @@
 }
 
 #conocenos {
-  scroll-margin-top: calc(var(--chapter-utility-height) + var(--chapter-main-height));
+  scroll-margin-top: var(--chapter-main-height);
 }
 
 @media (max-width: 50rem) {

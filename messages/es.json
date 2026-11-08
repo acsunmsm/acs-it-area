@@ -1,4 +1,17 @@
 {
+  "publication": {
+    "backEvents": "Volver a eventos",
+    "backNews": "Volver a noticias",
+    "missingEvent": "No se pudo cargar el evento",
+    "missingNews": "No se pudo cargar la noticia",
+    "date": "Fecha",
+    "time": "Hora",
+    "mode": "Modalidad",
+    "openPoster": "Abrir el afiche completo en otra pestaña",
+    "openImage": "Abrir la imagen completa en otra pestaña",
+    "posterAlt": "Afiche de {title}",
+    "imageAlt": "Imagen de portada de {title}"
+  },
   "about": {
     "title": "¿Quiénes somos?",
     "intro": "Somos el Chapter Estudiantil de la American Chemical Society de la Universidad Nacional Mayor de San Marcos, dedicado a fomentar el interés por la química y la ciencia en la comunidad estudiantil.",
@@ -56,17 +69,24 @@
     "description": "Si ves este mensaje en español, la localización funciona."
   },
   "homePage": {
-    "welcome": "Bienvenido al ACS UNMSM",
-    "welcomePart1": "¡Bienvenidos al ACS International Student Chapter UNMSM! Nos emociona darte la bienvenida a nuestro capítulo estudiantil de la American Chemical Society en la Universidad Nacional Mayor de San Marcos. Aquí encontrarás información sobre nuestras actividades, proyectos y oportunidades para crecer junto a una comunidad apasionada por la química. Creemos en el aprendizaje continuo y la colaboración, por eso estamos abiertos a escuchar tus ideas, comentarios y sugerencias.Si quieres ser parte de este espacio, contribuir con iniciativas o simplemente conocer más sobre nosotros, contáctanos.",
-    "welcomePart2": "¡Juntos podemos impulsar la química y generar un impacto positivo!",
-    "welcomePart3": "¡Te esperamos! 💙⚗️",
-    "JoinUs": "Hazte miembro",
+    "welcome": "Bienvenido al <chapter>ACS UNMSM</chapter>",
+    "welcomeIntro": "Somos estudiantes de San Marcos y nos gusta compartir la química que aprendemos. Organizamos talleres, probamos experimentos y visitamos colegios para hacer ciencia con sus estudiantes.",
+    "welcomeInvitation": "¿Te gustaría participar en un taller o proponer el próximo experimento?",
+    "welcomeContact": "Escríbenos",
+    "workshopAlt": "Estudiantes y miembros del capítulo saludan detrás de una mesa con matraces de líquido amarillo.",
+    "workshopCaption": "Taller de química con escolares",
     "portadaTitulo": "Química que transforma",
     "portadaDestacado": "el Perú",
     "portadaTexto": "Somos el capítulo estudiantil de la American Chemical Society en la Universidad Nacional Mayor de San Marcos, Decana de América. Divulgamos, investigamos y formamos comunidad.",
     "portadaCta": "Conócenos",
     "portadaGaleria": "Imagen {numero} de la portada del capítulo estudiantil ACS UNMSM",
-    "alliedChapters": "Capítulos Aliados"
+    "alliedChapters": "Capítulos aliados",
+    "alliesIntro": "Nuestra red de la American Chemical Society en el Perú.",
+    "chapterNames": {
+      "uni": "Capítulo estudiantil de la Universidad Nacional de Ingeniería",
+      "pucp": "Capítulo estudiantil de la Pontificia Universidad Católica del Perú",
+      "peru": "Capítulo Internacional de la ACS en el Perú"
+    }
   },
   "awards": {
     "badge": "Reconocimiento Internacional",
@@ -130,6 +150,7 @@
     }
   },
   "contact": {
+    "carbonitoSubject": "Consulta desde Carbonito",
     "title": "¡Contacta con Nosotros!",
     "subtitle": "Si tienes dudas, sugerencias o quieres colaborar con nosotros, escríbenos. Estamos aquí para ayudarte y crecer juntos.",
     "bannerTitle": "Contacto",
@@ -292,6 +313,7 @@
     }
   },
   "mascota": {
+    "consultarEquipo": "Consultar al equipo con esta pregunta",
     "nombre": "Carbonito",
     "abrir": "Chatea con Carbonito, nuestra mascota",
     "cerrar": "Cerrar",
@@ -299,9 +321,21 @@
     "saludoManana": "¡Buenos días! ☀️",
     "saludoTarde": "¡Buenas tardes! 🧪",
     "saludoNoche": "¡Buenas noches! 🌙",
-    "bienvenida": "Soy Carbonito, la mascota del ACS UNMSM. Puedo contarte sobre el capítulo, los eventos, cómo unirte o soltarte alguna curiosidad química. ¿Qué quieres saber?",
+    "bienvenida": "Soy Carbonito, la nutria del ACS UNMSM. 🦦 Puedes preguntarme cómo unirte al capítulo, qué eventos hay o qué te intriga de la química. También puedo seguir el hilo. Prueba con «hierro» y luego «¿y su masa?». ¿Con qué empezamos?",
+    "entradas": {
+      "fun": ["¡Tengo uno para ti!", "¡Este me gusta mucho!"],
+      "element": ["Mmm, ¡buena elección! Veamos qué nos cuenta la tabla periódica.", "¡Vamos a conocerlo! Te comparto algunos datos de este elemento.", "Ah, este me gusta. Mira su ficha conmigo."],
+      "elementFollowup": ["¡Claro! Sigamos con ese elemento.", "Sí, veamos ese detalle juntos."],
+      "science": ["¡Buena pregunta! Vamos por partes.", "Mmm, veámoslo juntos.", "¡Te cuento!"],
+      "publications": ["¡Claro! Veamos qué ha publicado el capítulo.", "Con gusto, revisemos la información del capítulo."],
+      "chapter": ["¡Claro, te cuento!", "Con gusto, te ayudo.", "¡Vamos a verlo juntos!"],
+      "clarify": ["¡Te ayudo! Solo me falta un detalle.", "Claro, vamos a precisarlo."]
+    },
     "placeholder": "Escríbeme algo…",
-    "noEntiendo": "Mmm, esa no me la sé todavía 😅. Estoy aprendiendo. Prueba con los botones de abajo, pregúntame por eventos o curiosidades, o escríbenos desde la página de Contacto.",
+    "buscando": "Consultando…",
+    "reintentar": "Reintentar",
+    "errorConexion": "Uy, no pude cargar mi respuesta. ¿Lo intentamos de nuevo?",
+    "noEntiendo": "Mmm, esa todavía no me la sé. ¿Probamos con otras palabras? También puedes elegir un tema o consultar al equipo.",
     "sugerencias": {
       "quienes": "¿Qué es el ACS UNMSM?",
       "unirse": "¿Cómo me uno?",
