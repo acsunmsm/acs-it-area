@@ -1,14 +1,14 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
+import { removePublicationCover, updatePublication } from '../lib/updatePublication';
 import { supabase } from '../lib/supabaseClient'; // Asegúrate de que esta ruta sea correcta
 import { useRouter } from 'next/navigation'; // ¡Importa useRouter aquí!
 import { Editor } from '@tinymce/tinymce-react';
 export default function EventoForm({ event, onSave, onCancel }) {
-  console.log('DEBUG (EventoForm): Componente EventoForm renderizado. Prop "event":', event);
 
   // Inicializa el estado con los datos del evento si se proporciona, o con valores vacíos
-  const [id, setId] = useState(event?.id || null);
+  const id = event?.id || null;
   const [titulo, setTitulo] = useState(event?.titulo || '');
   const [descripcion, setDescripcion] = useState(event?.descripcion || '');
   // Formatea la fecha para el input type="date" (YYYY-MM-DD)
@@ -26,47 +26,6 @@ export default function EventoForm({ event, onSave, onCancel }) {
   const fileInputRef = useRef(null);
   const router = useRouter(); // Inicializa el router
 
-  // useEffect para actualizar el estado del formulario cuando el prop 'event' cambia
-  // Esto es CRUCIAL para que el formulario se pre-rellene cuando se abre el modal para editar
-  useEffect(() => {
-    console.log('DEBUG (EventoForm): useEffect disparado. Valor actual de "event":', event);
-    if (event) {
-      setId(event.id);
-      setTitulo(event.titulo);
-      setDescripcion(event.descripcion);
-      setFecha(event.fecha ? new Date(event.fecha).toISOString().split('T')[0] : '');
-      // 🆕 Actualizar estado de hora y modalidad al editar
-      setHora(event.hora || '');
-      setModalidad(event.modalidad || '');
-      // ✅ Actualizar estado de inscripción al editar
-      setInscripcion(event.inscription ?? true);
-      setImagenUrlActual(event.imagen_url || null);
-      setImagen(null); // Resetea el archivo de imagen seleccionado al cambiar de evento
-      if (fileInputRef.current) {
-        fileInputRef.current.value = null; // Limpia el input de archivo
-      }
-      console.log('DEBUG (EventoForm): Estado inicializado para edición:', { id: event.id, titulo: event.titulo, fecha: event.fecha, hora: event.hora, modalidad: event.modalidad, inscripcion: event.inscription, imagenUrlActual: event.imagen_url });
-    } else {
-      // Si no hay evento (modo creación), resetea todos los campos
-      setId(null);
-      setTitulo('');
-      setDescripcion('');
-      setFecha('');
-      // 🆕 Resetear hora y modalidad en modo creación
-      setHora('');
-      setModalidad('');
-      // ✅ Resetear inscripción a su valor por defecto
-      setInscripcion(true);
-      setImagen(null);
-      setImagenUrlActual(null);
-      if (fileInputRef.current) {
-        fileInputRef.current.value = null;
-      }
-      console.log('DEBUG (EventoForm): Estado inicializado para creación (vacío).');
-    }
-    setError(null); // Limpia cualquier error anterior
-  }, [event]); // Dependencia: el objeto 'event'. Se ejecuta cada vez que 'event' cambia.
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -81,27 +40,10 @@ export default function EventoForm({ event, onSave, onCancel }) {
           throw new Error('Tipo de archivo no permitido. Sube una imagen JPEG, PNG, GIF o WebP.');
         }
 
-        // Eliminar la imagen antigua del storage de Supabase si estamos editando y había una imagen previa
-        if (imagenUrlActual && id) {
-          const parts = imagenUrlActual.split('/public/');
-          const filePathToDelete = parts.length > 1 ? parts[1].split('/').slice(1).join('/') : null;
-          if (filePathToDelete) {
-            console.log('DEBUG (EventoForm): Eliminando imagen antigua del storage:', filePathToDelete);
-            const { error: storageDeleteError } = await supabase.storage
-              .from('eventos')
-              .remove([filePathToDelete]);
-            if (storageDeleteError) {
-              console.warn('Advertencia: No se pudo eliminar la imagen antigua del storage:', storageDeleteError.message);
-            }
-          }
-        }
-
-        // Subir la nueva imagen
         const fileExt = imagen.name.split('.').pop();
         const fileName = `${Date.now()}-${Math.random().toString(36).substring(2, 9)}.${fileExt}`;
         const filePath = `flyers/${fileName}`;
 
-        console.log('DEBUG (EventoForm): Subiendo nueva imagen a:', filePath);
         const { error: uploadError } = await supabase.storage
           .from('eventos')
           .upload(filePath, imagen, {
@@ -123,13 +65,7 @@ export default function EventoForm({ event, onSave, onCancel }) {
           throw new Error('No se pudo obtener la URL pública de la imagen después de la subida.');
         }
         finalImagenUrl = publicData.publicUrl;
-        console.log('DEBUG (EventoForm): Nueva imagen subida, URL:', finalImagenUrl);
-      } else if (imagenUrlActual === null && event?.imagen_url) {
-        // Caso en que el usuario tenía una imagen, pero la quitó explícitamente (imagenUrlActual = null)
-        // y no seleccionó una nueva. finalImagenUrl ya es null, lo cual es correcto.
-        // Si quieres eliminar la imagen del storage en este caso, necesitarías un botón específico
-        // para "quitar imagen" que dispare la eliminación en el storage.
-        // Por ahora, solo se elimina si se sube una nueva.
+
       }
 
       // 🆕 Combinar fecha + hora
@@ -155,20 +91,15 @@ export default function EventoForm({ event, onSave, onCancel }) {
       let dbError = null;
       if (id) {
         // Modo Edición: Actualizar evento existente
-        console.log('DEBUG (EventoForm): Modo Edición. Actualizando evento con ID:', id, 'Datos:', eventData);
-        const { error: updateError } = await supabase
-          .from('eventos')
-          .update(eventData)
-          .eq('id', id);
-        dbError = updateError;
+        await updatePublication('eventos', id, event?.imagen_url, eventData);
       } else {
         // Modo Creación: Insertar nuevo evento
-        console.log('DEBUG (EventoForm): Modo Creación. Insertando nuevo evento. Datos:', eventData);
         const { error: insertError } = await supabase.from('eventos').insert(eventData);
         dbError = insertError;
       }
 
       if (dbError) {
+        if (imagen && dbError.code) await removePublicationCover(finalImagenUrl);
         console.error('Error guardando evento en la base de datos:', dbError);
         throw new Error(`No se pudo guardar el evento. Por favor, revisa los datos: ${dbError.message}`);
       }
@@ -177,11 +108,9 @@ export default function EventoForm({ event, onSave, onCancel }) {
 
       if (id) { // Si estamos editando, cerramos el modal y refrescamos la lista
         if (onSave) {
-          console.log('DEBUG (EventoForm): Llamando a onSave del padre (modo edición).');
           onSave(); // Llama a la función del padre para refrescar la lista y cerrar el modal
         }
       } else { // Si estamos creando, redirigimos a la página de eventos
-        console.log('DEBUG (EventoForm): Modo creación. Redirigiendo a /events.');
         router.push('/es/events'); // Redirige a la página de eventos
       }
 
@@ -421,7 +350,6 @@ export default function EventoForm({ event, onSave, onCancel }) {
                   if (fileInputRef.current) {
                     fileInputRef.current.value = null;
                   }
-                  console.log('DEBUG (EventoForm): Imagen actual eliminada del estado.');
                 }}
                 style={{
                   padding: '5px 10px',

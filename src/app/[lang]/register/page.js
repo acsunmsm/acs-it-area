@@ -28,7 +28,6 @@ export default function RegisterPage() {
       } else if (data.user) {
         // Registro exitoso. Si tienes la confirmación por correo, indica al usuario.
         setMessage('¡Registro exitoso! Por favor, revisa tu correo electrónico para confirmar tu cuenta y luego inicia sesión.')
-        console.log('Usuario registrado:', data.user)
         // Opcional: Podrías redirigir a una página de confirmación de email si lo deseas:
         // router.push('/check-your-email');
       } else {

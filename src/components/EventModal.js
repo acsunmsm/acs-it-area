@@ -10,7 +10,6 @@ export default function EventModal({ show, onClose, children, title = 'Detalles 
     return null;
   }
 
-  console.log('DEBUG (EventModal): Modal renderizado con título:', title);
 
   return (
     // Overlay de fondo oscuro

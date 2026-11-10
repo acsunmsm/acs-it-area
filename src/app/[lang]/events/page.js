@@ -1,7 +1,8 @@
 'use client';
 
+import { removePublicationCover } from '@/src/lib/updatePublication';
 import { supabase } from '../../../lib/supabaseClient'; // Asegúrate de que esta ruta sea correcta
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import Navbar from '../../../components/Navbar';
 import Footer from '../../../components/Footer';
@@ -36,11 +37,13 @@ function EventPhotoColumn({ side }) {
   );
 }
 
+const PAGE_SIZE = 10;
+
 export default function EventsPage() {
   const locale = useLocale();
   const t = useTranslations('events');
 
-  const PAGE_SIZE = 10;
+  const requestId = useRef(0);
 
   // Estados principales
   const [events, setEvents] = useState([]);
@@ -126,23 +129,17 @@ export default function EventsPage() {
   // Limpiar búsqueda
   const handleClearSearch = () => {
     setCurrentSearchInput('');
-    setActualSearchTerm('');
-    setPage(0);
+    if (actualSearchTerm) searchEvents('');
   };
 
   // Cargar eventos desde Supabase con paginación
-  async function fetchEvents(pageNumber = 0, search = '', isLoadMore = false) {
-    if (isLoadMore) {
-      setLoadingMore(true);
-    } else {
-      setLoadingEvents(true);
-    }
-    setError(null);
-
+  const fetchEvents = useCallback(async (pageNumber, search, isLoadMore = false) => {
+    const currentRequest = ++requestId.current;
     let query = supabase
       .from('eventos')
-      .select('*, inscription', { count: 'exact' })
-      .order('fecha', { ascending: false });
+      .select('*', { count: 'exact' })
+      .order('fecha', { ascending: false })
+      .order('id', { ascending: false });
 
     if (search) {
       // Buscar por título o descripción
@@ -156,11 +153,14 @@ export default function EventsPage() {
     try {
       const { data, count, error: supabaseError } = await query;
 
+      if (currentRequest !== requestId.current) return;
+      setError(null);
       if (supabaseError) {
         console.error('Error fetching events:', supabaseError);
         setError(t('errorFetch'));
         if (!isLoadMore) setEvents([]);
       } else {
+        setPage(pageNumber);
         const fetchedData = data || [];
         if (isLoadMore) {
           setEvents((prev) => [...prev, ...fetchedData]);
@@ -173,23 +173,29 @@ export default function EventsPage() {
         setHasMore(count != null ? currentTotal < totalAvailable : fetchedData.length === PAGE_SIZE);
       }
     } catch (err) {
+      if (currentRequest !== requestId.current) return;
       console.error('Unexpected error fetching events:', err);
       setError('Ocurrió un error inesperado al cargar los eventos.');
       if (!isLoadMore) setEvents([]);
     } finally {
-      if (isLoadMore) {
+      if (currentRequest === requestId.current) {
         setLoadingMore(false);
-      } else {
         setLoadingEvents(false);
       }
     }
+  }, [t]);
+
+  function searchEvents(term) {
+    setLoadingEvents(true);
+    setActualSearchTerm(term);
+    fetchEvents(0, term);
   }
 
   // Cargar más eventos (siguiente página)
   const handleLoadMore = () => {
     if (loadingMore || !hasMore) return;
+    setLoadingMore(true);
     const nextPage = page + 1;
-    setPage(nextPage);
     fetchEvents(nextPage, actualSearchTerm, true);
   };
 
@@ -197,14 +203,14 @@ export default function EventsPage() {
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     if (loadingEvents || authLoading || loadingMore) return;
-    setActualSearchTerm(currentSearchInput);
-    setPage(0);
+    if (currentSearchInput !== actualSearchTerm || error) searchEvents(currentSearchInput);
   };
 
   useEffect(() => {
-    setPage(0);
-    fetchEvents(0, actualSearchTerm, false);
-  }, [actualSearchTerm]);
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- State updates follow the Supabase response.
+    fetchEvents(0, '');
+    return () => { requestId.current++; };
+  }, [fetchEvents]);
 
   useEffect(() => {
     document.title = `${t('title')} - ACS UNMSM`;
@@ -212,10 +218,8 @@ export default function EventsPage() {
 
   //Editar evento
   const handleEditClick = (event) => {
-    console.log('DEBUG (EventsPage): Botón Editar clickeado. Evento seleccionado:', event);
     setSelectedEvent(event);
     setShowEditModal(true);
-    console.log('DEBUG (EventsPage): showEditModal establecido a true.');
   };
 
   // Eliminar evento
@@ -223,42 +227,12 @@ export default function EventsPage() {
     if (window.confirm(t('deleteConfirm'))) {
       setLoadingEvents(true);
       try {
-        const { data: eventData, error: fetchError } = await supabase
-          .from('eventos')
-          .select('imagen_url')
-          .eq('id', eventId)
-          .single();
-
-        if (fetchError) {
-          throw new Error(`Error al obtener el evento para eliminar: ${fetchError.message}`);
-        }
-
-        if (eventData?.imagen_url) {
-          const parts = eventData.imagen_url.split('/public/');
-          const filePath = parts.length > 1 ? parts[1].split('/').slice(1).join('/') : null;
-
-          if (filePath) {
-            const { error: storageError } = await supabase.storage
-              .from('eventos')
-              .remove([filePath]);
-
-            if (storageError) {
-              console.warn('Advertencia: No se pudo eliminar la imagen del storage:', storageError.message);
-            }
-          }
-        }
-
-        const { error: deleteError } = await supabase
-          .from('eventos')
-          .delete()
-          .eq('id', eventId);
-
-        if (deleteError) {
-          throw new Error(`Error al eliminar el evento de la base de datos: ${deleteError.message}`);
-        }
+        const { data, error } = await supabase.from('eventos').delete()
+          .eq('id', eventId).select('imagen_url').single();
+        if (error) throw error;
+        await removePublicationCover(data.imagen_url);
 
         alert(t('deleteSuccess'));
-        setPage(0);
         fetchEvents(0, actualSearchTerm, false);
       } catch (err) {
         console.error('Error al eliminar evento:', err);
@@ -330,11 +304,10 @@ export default function EventsPage() {
             </div>
           )}
 
+          {error && !busy && <p className="agenda-message" role="alert">{error}</p>}
           {busy ? (
             <p className="agenda-message" role="status">{t('loadingMessage')}</p>
-          ) : error ? (
-            <p className="agenda-message" role="alert">{error}</p>
-          ) : events.length === 0 ? (
+          ) : error && events.length === 0 ? null : events.length === 0 ? (
             <div className="no-events-container">
               <i className="fas fa-calendar-times no-events-icon"></i>
               <h3 className="no-events-text">
@@ -452,7 +425,7 @@ export default function EventsPage() {
             </div>
           )}
 
-          {!busy && !error && events.length > 0 && hasMore && (
+          {!busy && events.length > 0 && hasMore && (
             <div className="agenda-pagination">
               <button
                 type="button"
@@ -496,7 +469,6 @@ export default function EventsPage() {
       {showEditModal && (
         <EventModal
           onClose={() => {
-            console.log('DEBUG (EventsPage): Cerrando EventModal. Reseteando showEditModal y selectedEvent.');
             setShowEditModal(false);
             setSelectedEvent(null);
           }}
@@ -504,16 +476,14 @@ export default function EventsPage() {
           show={showEditModal}
         >
           <EventoForm
+            key={selectedEvent?.id || 'new'}
             event={selectedEvent}
             onSave={() => {
-              console.log('DEBUG (EventsPage): onSave disparado desde EventoForm. Recargando eventos y cerrando modal.');
-              setPage(0);
               fetchEvents(0, actualSearchTerm, false);
               setShowEditModal(false);
               setSelectedEvent(null);
             }}
             onCancel={() => {
-              console.log('DEBUG (EventsPage): onCancel disparado desde EventoForm. Cerrando modal.');
               setShowEditModal(false);
               setSelectedEvent(null);
             }}

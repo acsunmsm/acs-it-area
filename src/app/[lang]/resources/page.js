@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import Navbar from '@/src/components/Navbar';
 import Footer from '@/src/components/Footer';
-import Reveal, { RevealLetters } from '@/src/components/Reveal';
+import Reveal from '@/src/components/Reveal';
 import { useTranslations, useLocale } from 'next-intl';
 import {
   FaDatabase,
@@ -12,13 +12,6 @@ import {
   FaBookOpen,
   FaGraduationCap,
   FaExternalLinkAlt,
-  FaFlask,
-  FaAtom,
-  FaShieldAlt,
-  FaCalendarAlt,
-  FaDrawPolygon,
-  FaLandmark,
-  FaUsers,
   FaArrowRight,
   FaThLarge
 } from 'react-icons/fa';

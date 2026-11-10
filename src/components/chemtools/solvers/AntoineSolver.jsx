@@ -3,7 +3,7 @@
 import React, { useState, useMemo } from 'react';
 import KatexMath from '../KatexMath';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFlask, faExclamationTriangle, faThermometerHalf } from '@fortawesome/free-solid-svg-icons';
+import { faFlask, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 
 const SUBSTANCES = {
   water: {

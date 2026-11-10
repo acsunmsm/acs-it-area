@@ -7,6 +7,8 @@ import Navbar from './Navbar';
 import Footer from './Footer';
 import styles from './PublicationArticle.module.css';
 
+const requestTime = cache(() => Date.now());
+
 const loadPublication = cache(async (kind, id) => {
   const table = kind === 'event' ? 'eventos' : 'noticias';
   const { data } = await supabaseServer.from(table).select('*').eq('id', id).single();
@@ -68,7 +70,7 @@ export default async function PublicationArticle({ kind, params }) {
     ? t('news.categorias.' + record.categoria) : record.categoria);
   const body = event ? record.descripcion : record.contenido || record.descripcion || record.extracto;
   const lead = !event && record.extracto?.trim() !== body?.trim() && record.extracto?.trim();
-  const registrationOpen = event && record.inscription && new Date(record.fecha_programada).getTime() > Date.now();
+  const registrationOpen = event && record.inscription && new Date(record.fecha_programada).getTime() > requestTime();
 
   return <>
     <Navbar />

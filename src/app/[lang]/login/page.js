@@ -15,12 +15,10 @@ export default function LoginPage() {
     const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
       // Si el evento es 'SIGNED_IN' y hay una sesión, significa que el login fue exitoso
       if (event === 'SIGNED_IN' && session) {
-        console.log('Sesión detectada (SIGNED_IN), redirigiendo a /dashboard');
         router.push('/es/dashboard');
       }
       // Opcional: Si el usuario ya está logueado y visita el login, redirigir también
       // if (session && event === 'INITIAL_SESSION') {
-      //   console.log('Sesión inicial detectada, redirigiendo a /dashboard');
       //   router.push('/dashboard');
       // }
     });
@@ -48,7 +46,6 @@ export default function LoginPage() {
         // Si no hay error, el intento de login fue enviado.
         // La redirección ocurrirá a través del useEffect cuando Supabase confirme el 'SIGNED_IN'.
         setMessage('Procesando inicio de sesión...');
-        console.log('Intento de login enviado. Esperando confirmación de sesión...');
       }
     } catch (err) {
       // Captura cualquier otro error inesperado en la ejecución

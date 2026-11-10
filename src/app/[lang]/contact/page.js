@@ -4,9 +4,9 @@ import { useEffect, useRef, useState } from 'react';
 import Header from '../../../components/Navbar';
 import Footer from '../../../components/Footer';
 import Script from 'next/script';
-import Reveal, { RevealWords } from '@/src/components/Reveal';
-import BotonAcido from '@/src/components/BotonAcido';
-import { useTranslations, useLocale } from 'next-intl';
+import Reveal from '@/src/components/Reveal';
+
+import { useTranslations } from 'next-intl';
 
 export default function ContactPage() {
   const t = useTranslations('contact');
