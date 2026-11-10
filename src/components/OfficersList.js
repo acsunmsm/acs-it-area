@@ -64,7 +64,7 @@ function CheckIcon({ className = '', size = 13 }) {
 }
 
 // Unified Officer Card - used for Advisor and all directiva members
-function OfficerCard({ member, isSpacious = false, isPresidency = false, i18n = {} }) {
+function OfficerCard({ member, i18n = {} }) {
   const [copied, setCopied] = useState(false);
   const imagePath = `/assets/img/${member.image}`;
 
@@ -78,54 +78,37 @@ function OfficerCard({ member, isSpacious = false, isPresidency = false, i18n = 
   };
 
   return (
-    <article
-      className={`officer-grid-card ${isSpacious ? 'officer-card-spacious' : ''} ${isPresidency ? 'officer-card-presidency' : ''
-        }`}
-    >
-      <div className="officer-card-main">
-        <div
-          className={`officer-grid-photo-wrap ${isSpacious ? 'photo-spacious' : ''} ${isPresidency ? 'photo-presidency' : ''
-            }`}
-        >
-          <Image
-            src={imagePath}
-            alt={`Foto de ${member.name}`}
-            width={isSpacious ? 108 : 98}
-            height={isSpacious ? 108 : 98}
-            loading="lazy"
-            className="officer-grid-photo"
-          />
-        </div>
-
-        <div className="officer-grid-info">
-          <span className="officer-grid-role">{member.role}</span>
-          <h3
-            className={`officer-grid-name ${isSpacious ? 'name-spacious' : ''} ${isPresidency ? 'name-presidency' : ''
-              }`}
+    <article className="officer-profile">
+      <Image
+        src={imagePath}
+        alt=""
+        width={144}
+        height={172}
+        loading="lazy"
+        className="officer-portrait"
+      />
+      <div className="officer-details">
+        <span className="officer-role">{member.role}</span>
+        <h3>{member.name}</h3>
+        <div className="officer-email-row">
+          <a
+            href={`mailto:${member.email}`}
+            className="officer-grid-email"
+            title={`Enviar correo a ${member.email}`}
           >
-            {member.name}
-          </h3>
+            <MailIcon size={14} className="officer-mail-icon" />
+            <span className="officer-email-text">{member.email}</span>
+          </a>
 
-          <div className="officer-email-row">
-            <a
-              href={`mailto:${member.email}`}
-              className="officer-grid-email"
-              title={`Enviar correo a ${member.email}`}
-            >
-              <MailIcon size={14} className="officer-mail-icon" />
-              <span className="officer-email-text">{member.email}</span>
-            </a>
-
-            <button
-              type="button"
-              onClick={handleCopy}
-              className={`officer-copy-btn ${copied ? 'copied' : ''}`}
-              title={copied ? (i18n.copied || '¡Copiado!') : (i18n.copyEmail || 'Copiar correo')}
-              aria-label={copied ? (i18n.copied || '¡Copiado!') : (i18n.copyEmail || 'Copiar correo')}
-            >
-              {copied ? <CheckIcon size={13} /> : <CopyIcon size={13} />}
-            </button>
-          </div>
+          <button
+            type="button"
+            onClick={handleCopy}
+            className={`officer-copy-btn ${copied ? 'copied' : ''}`}
+            title={copied ? (i18n.copied || '¡Copiado!') : (i18n.copyEmail || 'Copiar correo')}
+            aria-label={copied ? (i18n.copied || '¡Copiado!') : (i18n.copyEmail || 'Copiar correo')}
+          >
+            {copied ? <CheckIcon size={13} /> : <CopyIcon size={13} />}
+          </button>
         </div>
       </div>
     </article>
@@ -243,6 +226,7 @@ export default function OfficersList({ areas = [], officers = [], title, i18n = 
               key={tab.key}
               type="button"
               className={`officer-tab-btn ${activeTab === tab.key ? 'active' : ''}`}
+              aria-pressed={activeTab === tab.key}
               onClick={() => setActiveTab(tab.key)}
             >
               {tab.label}
@@ -253,75 +237,17 @@ export default function OfficersList({ areas = [], officers = [], title, i18n = 
 
       {/* Render Each Area Section */}
       <div className="officers-areas-list">
-        {filteredAreas.map((area) => {
-          const isAdvisorArea = area.type === 'advisor' || area.id === 'advisor';
-          const isPresidencyArea = area.id === 'presidency';
-          const isTwoColumns = area.columns === 2;
-          const isThreeColumns = area.columns === 3;
+        {filteredAreas.map(area => (
+          <section key={area.id} className="officer-area" id={`area-${area.id}`}>
+            <h2>{area.title}</h2>
+            <div className="officer-roster">
+              {area.members.map(member => (
+                <OfficerCard key={member.name} member={member} i18n={i18n} />
+              ))}
+            </div>
+          </section>
+        ))}
 
-          return (
-            <section key={area.id} className="officer-area-block" id={`area-${area.id}`}>
-              {/* Area Header */}
-              <header className="officer-area-header">
-                <div className="officer-area-title-group">
-                  <span className="officer-area-indicator" aria-hidden="true"></span>
-                  <h2 className="officer-area-title">{area.title}</h2>
-                </div>
-              </header>
-
-              {/* Members Content */}
-              {isAdvisorArea ? (
-                <div className="officer-advisor-single-wrapper">
-                  <OfficerCard
-                    member={area.members[0]}
-                    isSpacious={true}
-                    i18n={i18n}
-                  />
-                </div>
-              ) : isPresidencyArea ? (
-                <div className="officer-presidency-wrapper">
-                  {/* Presidentes arriba (2 columnas con fichas amplias) */}
-                  <div className="officers-grid officers-grid-2col officer-presidents-grid">
-                    {area.members.slice(0, 2).map((member, mIdx) => (
-                      <OfficerCard
-                        key={mIdx}
-                        member={member}
-                        isSpacious={true}
-                        i18n={i18n}
-                      />
-                    ))}
-                  </div>
-
-                  {/* Vicepresidencia abajo (centrada y con el mismo tamaño y estilo idéntico al Asesor) */}
-                  {area.members.length > 2 && (
-                    <div className="officer-advisor-single-wrapper officer-vice-wrapper">
-                      <OfficerCard
-                        member={area.members[2]}
-                        isSpacious={true}
-                        i18n={i18n}
-                      />
-                    </div>
-                  )}
-                </div>
-              ) : (
-                <div
-                  className={`officers-grid ${isTwoColumns ? 'officers-grid-2col' : isThreeColumns ? 'officers-grid-3col' : ''
-                    }`}
-                >
-                  {area.members.map((member, mIdx) => (
-                    <OfficerCard
-                      key={mIdx}
-                      member={member}
-                      isSpacious={isTwoColumns}
-                      isPresidency={isThreeColumns}
-                      i18n={i18n}
-                    />
-                  ))}
-                </div>
-              )}
-            </section>
-          );
-        })}
       </div>
     </section>
   );

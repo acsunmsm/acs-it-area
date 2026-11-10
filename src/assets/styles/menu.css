@@ -69,10 +69,6 @@ body:has(.chapter-nav) {
   transform: scaleX(1);
 }
 
-.chapter-nav__link[data-institutional] {
-  --link-accent: var(--ink);
-}
-
 .chapter-nav__mail {
   display: inline-flex;
   align-items: center;
@@ -111,6 +107,20 @@ body:has(.chapter-nav) {
   font-size: .7em;
 }
 
+.chapter-nav__language-trigger[aria-expanded='true'] svg:last-of-type {
+  transform: rotate(180deg);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .chapter-nav__language-trigger svg:last-of-type {
+    transition: transform 180ms ease-out;
+  }
+
+  .chapter-nav__language-menu {
+    transition: grid-template-rows 240ms cubic-bezier(.25, .8, .25, 1);
+  }
+}
+
 .chapter-nav__language-trigger:is(:hover, :focus-visible, [aria-expanded='true']) {
   color: var(--chromium-blue);
 }
@@ -120,12 +130,27 @@ body:has(.chapter-nav) {
   top: calc(100% + .4rem);
   right: 0;
   width: min(16rem, calc(100vw - 1rem));
+  display: grid;
+  grid-template-rows: 0fr;
+  filter: drop-shadow(0 14px 14px rgb(37 31 32 / 12%));
+  z-index: 2;
+}
+
+.chapter-nav__language-menu[data-open='true'] {
+  grid-template-rows: 1fr;
+}
+
+.chapter-nav__language-clip {
+  min-height: 0;
+  overflow: hidden;
+  border-radius: 1.5rem;
+}
+
+.chapter-nav__language-panel {
   padding: 1.25rem 1rem;
   border: 1px solid var(--rule);
   border-radius: 1.5rem;
   background: var(--paper);
-  box-shadow: 0 14px 28px rgb(37 31 32 / 14%);
-  z-index: 2;
 }
 
 .chapter-nav__language-option {
@@ -226,10 +251,18 @@ body:has(.chapter-nav) {
   border: 0;
 }
 
-.chapter-nav :is(a, button):focus-visible,
-.chapter-nav__language:focus-within .chapter-nav__language-trigger {
+.chapter-nav :is(a, button):focus-visible {
   outline: 2px solid var(--ink);
   outline-offset: -2px;
+}
+
+.chapter-nav .chapter-nav__language-trigger:focus-visible {
+  outline-color: var(--chromium-blue);
+  border-radius: .4rem;
+}
+
+.chapter-nav__language-trigger:focus:not(:focus-visible) {
+  outline: none;
 }
 
 @media (max-width: 61.99rem) {
@@ -260,7 +293,6 @@ body:has(.chapter-nav) {
 
   .chapter-nav__language-menu {
     position: static;
-    margin-bottom: .5rem;
     width: min(16rem, calc(100vw - 6rem));
   }
 
