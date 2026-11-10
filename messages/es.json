@@ -328,13 +328,37 @@
     "saludoNoche": "¡Buenas noches! 🌙",
     "bienvenida": "Soy Carbonito, la nutria del ACS UNMSM. 🦦 Puedes preguntarme cómo unirte al capítulo, qué eventos hay o qué te intriga de la química. También puedo seguir el hilo. Prueba con «hierro» y luego «¿y su masa?». ¿Con qué empezamos?",
     "entradas": {
-      "fun": ["¡Tengo uno para ti!", "¡Este me gusta mucho!"],
-      "element": ["Mmm, ¡buena elección! Veamos qué nos cuenta la tabla periódica.", "¡Vamos a conocerlo! Te comparto algunos datos de este elemento.", "Ah, este me gusta. Mira su ficha conmigo."],
-      "elementFollowup": ["¡Claro! Sigamos con ese elemento.", "Sí, veamos ese detalle juntos."],
-      "science": ["¡Buena pregunta! Vamos por partes.", "Mmm, veámoslo juntos.", "¡Te cuento!"],
-      "publications": ["¡Claro! Veamos qué ha publicado el capítulo.", "Con gusto, revisemos la información del capítulo."],
-      "chapter": ["¡Claro, te cuento!", "Con gusto, te ayudo.", "¡Vamos a verlo juntos!"],
-      "clarify": ["¡Te ayudo! Solo me falta un detalle.", "Claro, vamos a precisarlo."]
+      "fun": [
+        "¡Tengo uno para ti!",
+        "¡Este me gusta mucho!"
+      ],
+      "element": [
+        "Mmm, ¡buena elección! Veamos qué nos cuenta la tabla periódica.",
+        "¡Vamos a conocerlo! Te comparto algunos datos de este elemento.",
+        "Ah, este me gusta. Mira su ficha conmigo."
+      ],
+      "elementFollowup": [
+        "¡Claro! Sigamos con ese elemento.",
+        "Sí, veamos ese detalle juntos."
+      ],
+      "science": [
+        "¡Buena pregunta! Vamos por partes.",
+        "Mmm, veámoslo juntos.",
+        "¡Te cuento!"
+      ],
+      "publications": [
+        "¡Claro! Veamos qué ha publicado el capítulo.",
+        "Con gusto, revisemos la información del capítulo."
+      ],
+      "chapter": [
+        "¡Claro, te cuento!",
+        "Con gusto, te ayudo.",
+        "¡Vamos a verlo juntos!"
+      ],
+      "clarify": [
+        "¡Te ayudo! Solo me falta un detalle.",
+        "Claro, vamos a precisarlo."
+      ]
     },
     "placeholder": "Escríbeme algo…",
     "buscando": "Consultando…",
@@ -385,8 +409,8 @@
     "searchedCode": "Documento buscado",
     "errorHint": "Verifica que el número de documento esté escrito correctamente. Si crees que es un error o acabas de participar en un evento, contáctanos.",
     "searchTitle": "Consulta de Certificados",
-    "searchSubtitle": "Ingresa tu número de documento de identidad (DNI, Cédula, Pasaporte) para consultar y verificar tus certificados emitidos por ACS UNMSM.",
-    "inputLabel": "Documento de Identidad (DNI, Cédula, Pasaporte)",
+    "searchSubtitle": "Ingresa tu número de documento de identidad (DNI, Pasaporte) para consultar y verificar tus certificados emitidos por ACS UNMSM.",
+    "inputLabel": "Documento de Identidad (DNI, Pasaporte)",
     "inputPlaceholder": "Ej: 72345678 o número de identificación",
     "submitButton": "Consultar Certificados",
     "inputHelp": "Ingresa tu número de identificación para listar todas tus constancias académicas registradas.",
