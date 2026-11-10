@@ -74,7 +74,7 @@ export default function Footer() {
             <h3 className="footer-acs-col-title">{t('getToKnowUs')}</h3>
             <ul className="footer-acs-links-list">
               <li><Link href="/">{t('home')}</Link></li>
-              <li><Link href="/about">{t('about')}</Link></li>
+              <li><Link href="/#nosotros">{t('about')}</Link></li>
               <li><Link href="/chapters">{t('officers')}</Link></li>
               <li><Link href="/contact">{t('contact')}</Link></li>
             </ul>

@@ -1,0 +1,188 @@
+.officers-page {
+  --officer-accent: #412bfd;
+  --officer-rule: #dedbea;
+  color: #251f20;
+  font-family: 'Stolzl', sans-serif;
+  background: #fff;
+}
+
+.officers-cover {
+  background: #f3f1ff;
+}
+
+.officers-cover-inner,
+.officers-section-wrap {
+  width: min(90%, 80rem);
+  margin-inline: auto;
+}
+
+.officers-cover-inner {
+  display: grid;
+  grid-template-columns: 1.12fr 1fr;
+  gap: clamp(2rem, 6vw, 6rem);
+  align-items: center;
+  padding-block: clamp(2.5rem, 5vw, 5rem);
+}
+
+.officers-cover-copy h1 {
+  max-width: 12ch;
+  margin: 0;
+  color: #3020b6;
+  font-size: clamp(3rem, 5.9vw, 6rem);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -.055em;
+}
+
+.officers-cover-copy p {
+  max-width: 49ch;
+  margin: 1.4rem 0 0;
+  font-size: clamp(1rem, 1.25vw, 1.2rem);
+  line-height: 1.65;
+  font-weight: 300;
+}
+
+.officers-cover-photo {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1.75;
+  object-fit: cover;
+  object-position: center 43%;
+  border-radius: .3rem clamp(2.5rem, 5vw, 5rem) .3rem .3rem;
+}
+
+.officers-section-wrap {
+  padding-block: 1.5rem clamp(4rem, 8vw, 8rem);
+}
+
+.officers-filter-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .35rem clamp(.3rem, 1vw, 1rem);
+  padding-block: .4rem;
+}
+
+.officer-tab-btn {
+  min-height: 44px;
+  padding: .5rem 1rem;
+  border: 0;
+  border-radius: 1.5rem;
+  background: transparent;
+  color: #493f50;
+  font: inherit;
+  font-size: .93rem;
+}
+
+.officer-tab-btn:hover { background: #f1efff; color: var(--officer-accent); }
+.officer-tab-btn.active { background: var(--officer-accent); color: white; }
+
+.officer-area {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 3.2fr);
+  gap: clamp(1.4rem, 3vw, 3rem);
+  align-items: start;
+  padding-block: clamp(2rem, 3.6vw, 3.75rem);
+  border-top: 1px solid var(--officer-rule);
+  scroll-margin-top: var(--chapter-main-height);
+}
+
+.officers-areas-list { margin-top: 1rem; }
+
+.officer-area h2 {
+  margin: 0;
+  font-size: clamp(1.35rem, 2vw, 2.1rem);
+  line-height: 1.18;
+  font-weight: 500;
+  letter-spacing: -.04em;
+  text-wrap: balance;
+}
+
+.officer-roster {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2rem;
+}
+
+.officer-profile {
+  display: grid;
+  grid-template-columns: clamp(5rem, 7vw, 6.75rem) minmax(0, 1fr);
+  align-items: center;
+  gap: 1rem;
+}
+
+.officer-profile:only-child { grid-column: 1 / -1; }
+
+.officer-portrait {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  object-position: center 20%;
+  border-radius: .3rem 1.4rem .3rem .3rem;
+  background: #f3f1ff;
+}
+
+.officer-role {
+  color: #4933ba;
+  font-size: .82rem;
+  line-height: 1.4;
+  display: block;
+}
+
+.officer-details h3 {
+  font-size: clamp(1.1rem, 1.5vw, 1.6rem);
+  line-height: 1.18;
+  font-weight: 500;
+  letter-spacing: -.025em;
+  margin: .4rem 0;
+}
+
+.officer-email-row,
+.officer-grid-email,
+.officer-copy-btn {
+  display: inline-flex;
+  align-items: center;
+}
+
+.officer-grid-email {
+  gap: .35rem;
+  color: #484452;
+  font-size: .8rem;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+.officer-mail-icon { flex-shrink: 0; }
+.officer-grid-email:hover { color: var(--officer-accent); text-decoration: underline; }
+
+.officer-copy-btn {
+  justify-content: center;
+  flex: none;
+  width: 2rem;
+  height: 2rem;
+  background: none;
+  color: #655f72;
+  border: none;
+  border-radius: 50%;
+}
+.officer-copy-btn:hover, .officer-copy-btn.copied { color: var(--officer-accent); background: #f1efff; }
+
+.officers-section-wrap :is(button,a):focus-visible {
+  outline: 2px solid var(--officer-accent);
+  outline-offset: 2px;
+}
+
+@media (max-width: 70rem) {
+  .officer-area { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 45rem) {
+  .officers-cover-inner, .officer-roster { grid-template-columns: minmax(0, 1fr); }
+  .officers-cover-inner { gap: 1.5rem; padding-block: 2.5rem; }
+  .officers-cover-photo { aspect-ratio: 2; }
+  .officers-cover-copy p { margin-top: 1rem; }
+  .officer-tab-btn { font-size: .86rem; padding-inline: .8rem; }
+  .officer-roster { gap: 1.5rem; }
+  .officer-profile { grid-template-columns: 5.25rem minmax(0, 1fr); }
+}

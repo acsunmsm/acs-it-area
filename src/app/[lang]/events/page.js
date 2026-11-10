@@ -9,11 +9,34 @@ import EventModal from '../../../components/EventModal';
 import EventoForm from '../../../components/EventoForm';
 import useAuth from '@/src/hooks/useAuth';
 import { useTranslations, useLocale } from 'next-intl';
-import { useRouter } from 'next/navigation';
-import { RevealWords } from '@/src/components/Reveal';
+import Image from 'next/image';
+import './agenda.css';
+
+const archivePhotos = [
+  'reaccion-en-cadena', 'goodyear', 'diversilab', 'copeiq',
+  'sintesis', 'atarjea', 'primavera', 'chemtalent',
+];
+
+function EventPhotoColumn({ side }) {
+  const offset = side === 'right' ? 4 : 0;
+  const photos = archivePhotos.slice(offset).concat(archivePhotos.slice(0, offset));
+  return (
+    <div className={`agenda-rail agenda-rail--${side}`} aria-hidden="true">
+      <div className="agenda-reel">
+        {[0, 1, 2].map(copy => (
+          <div key={copy} className="agenda-reel-cycle">
+            {photos.map(name => (
+              <Image key={name} alt="" width={640} height={360} loading="eager" unoptimized
+                src={`/assets/img/eventos-portada/${name}.webp`} />
+            ))}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export default function EventsPage() {
-  const router = useRouter();
   const locale = useLocale();
   const t = useTranslations('events');
 
@@ -89,11 +112,6 @@ export default function EventsPage() {
     hideDate.setDate(hideDate.getDate() + 1);
     const now = new Date();
     return now < hideDate;
-  };
-
-  // Ir a la página de detalles de un evento
-  const handleDetailsClick = (event) => {
-    router.push(`/${locale}/events/${event.id}/details`);
   };
 
   // Función para manejar el clic en "Inscríbete"
@@ -178,6 +196,7 @@ export default function EventsPage() {
   // Guardar término de búsqueda cuando el usuario hace submit
   const handleSearchSubmit = (e) => {
     e.preventDefault();
+    if (loadingEvents || authLoading || loadingMore) return;
     setActualSearchTerm(currentSearchInput);
     setPage(0);
   };
@@ -261,420 +280,194 @@ export default function EventsPage() {
     }
   };
 
-  // Vista mientras carga
-  if (loadingEvents || authLoading) {
-    return (
-      <div className="events-page-container">
-        <Navbar />
-        <section
-          className="hero-section text-white d-flex align-items-center"
-          style={{
-            minHeight: '35vh',
-            marginTop: '-76px',
-            paddingTop: '146px', // 70 + 76
-            paddingBottom: '60px',
-            background: 'linear-gradient(135deg, #3624D1 0%, #1E127E 100%)',
-            position: 'relative',
-            overflow: 'hidden'
-          }}
-        >
-          {/* Elementos decorativos (Glow) para modernizar el fondo */}
-          <div style={{
-            position: 'absolute',
-            top: '-30%',
-            right: '-5%',
-            width: '500px',
-            height: '500px',
-            background: 'radial-gradient(circle, rgba(111,237,238,0.15) 0%, rgba(0,0,0,0) 70%)',
-            borderRadius: '50%'
-          }}></div>
-          <div style={{
-            position: 'absolute',
-            bottom: '-40%',
-            left: '-10%',
-            width: '400px',
-            height: '400px',
-            background: 'radial-gradient(circle, rgba(255,212,0,0.08) 0%, rgba(0,0,0,0) 70%)',
-            borderRadius: '50%'
-          }}></div>
-
-          {/* Elemento gráfico de Química (Marca de agua) */}
-          <i className="fa fa-flask" style={{
-            position: 'absolute',
-            right: '5%',
-            top: '57%',
-            transform: 'translateY(-50%) rotate(15deg)',
-            fontSize: '250px',
-            color: 'rgba(255, 255, 255, 0.15)',
-            zIndex: 0
-          }}></i>
-
-          <div className="container position-relative z-1 text-md-start text-center">
-            <div className="mb-2">
-              <span style={{
-                display: 'inline-block',
-                width: '60px',
-                height: '5px',
-                backgroundColor: '#6FEDEE',
-                borderRadius: '3px',
-                marginBottom: '1rem'
-              }}></span>
-            </div>
-            <RevealWords
-              as="h1"
-              text={t('title')}
-              className="display-4 fw-bold mb-3"
-              style={{ color: '#ffffff', letterSpacing: '-1px' }}
-            />
-            <p style={{ color: 'rgba(226, 223, 223, 0.9)', fontSize: '1.15rem', maxWidth: '600px', margin: '0 auto 0 0' }} className="mx-auto mx-md-0">
-              {t('intro')}
-            </p>
-          </div>
-        </section>
-        <div className="container" style={{ flexGrow: 1, marginTop: '100px', textAlign: 'center' }}>
-          <div className="spinner-border text-primary" role="status" style={{ width: '3rem', height: '3rem' }}>
-            <span className="visually-hidden">Cargando...</span>
-          </div>
-          <p className="mt-3 fw-bold text-muted">{t('loadingMessage')}</p>
-        </div>
-        <Footer />
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="events-page-container">
-        <Navbar />
-        <section
-          className="hero-section text-white d-flex align-items-center"
-          style={{
-            minHeight: '35vh',
-            marginTop: '-76px',
-            paddingTop: '146px',
-            paddingBottom: '60px',
-            background: 'linear-gradient(135deg, #3624D1 0%, #1E127E 100%)',
-            position: 'relative',
-            overflow: 'hidden'
-          }}
-        >
-          {/* Elementos decorativos (Glow) para modernizar el fondo */}
-          <div style={{
-            position: 'absolute',
-            top: '-30%',
-            right: '-5%',
-            width: '500px',
-            height: '500px',
-            background: 'radial-gradient(circle, rgba(111,237,238,0.15) 0%, rgba(0,0,0,0) 70%)',
-            borderRadius: '50%'
-          }}></div>
-          <div style={{
-            position: 'absolute',
-            bottom: '-40%',
-            left: '-10%',
-            width: '400px',
-            height: '400px',
-            background: 'radial-gradient(circle, rgba(255,212,0,0.08) 0%, rgba(0,0,0,0) 70%)',
-            borderRadius: '50%'
-          }}></div>
-
-          {/* Elemento gráfico de Química (Marca de agua) */}
-          <i className="fa fa-flask" style={{
-            position: 'absolute',
-            right: '5%',
-            top: '57%',
-            transform: 'translateY(-50%) rotate(15deg)',
-            fontSize: '250px',
-            color: 'rgba(255, 255, 255, 0.15)',
-            zIndex: 0
-          }}></i>
-
-          <div className="container position-relative z-1 text-md-start text-center">
-            <div className="mb-2">
-              <span style={{
-                display: 'inline-block',
-                width: '60px',
-                height: '5px',
-                backgroundColor: '#6FEDEE',
-                borderRadius: '3px',
-                marginBottom: '1rem'
-              }}></span>
-            </div>
-            <RevealWords
-              as="h1"
-              text={t('title')}
-              className="display-4 fw-bold mb-3"
-              style={{ color: '#ffffff', letterSpacing: '-1px' }}
-            />
-            <p style={{ color: 'rgba(226, 223, 223, 0.9)', fontSize: '1.15rem', maxWidth: '600px', margin: '0 auto 0 0' }} className="mx-auto mx-md-0">
-              {t('intro')}
-            </p>
-          </div>
-        </section>
-        <div className="container" style={{ flexGrow: 1, marginTop: '100px', textAlign: 'center' }}>
-          <div className="alert alert-danger d-inline-block" role="alert" style={{ borderRadius: '15px' }}>
-            <i className="fas fa-exclamation-triangle me-2"></i> Error: {error}
-          </div>
-        </div>
-        <Footer />
-      </div>
-    );
-  }
+  const busy = loadingEvents || authLoading;
 
   return (
-    <div className="events-page-container">
+    <div className="events-page-container chapter-agenda">
       <Navbar />
-
-      <section
-        className="hero-section text-white d-flex align-items-center"
-        style={{
-          minHeight: '35vh',
-          marginTop: '-76px',
-          paddingTop: '146px',
-          paddingBottom: '60px',
-          background: 'linear-gradient(135deg, #3624D1 0%, #1E127E 100%)',
-          position: 'relative',
-          overflow: 'hidden'
-        }}
-      >
-        {/* Elementos decorativos (Glow) para modernizar el fondo */}
-        <div style={{
-          position: 'absolute',
-          top: '-30%',
-          right: '-5%',
-          width: '500px',
-          height: '500px',
-          background: 'radial-gradient(circle, rgba(111,237,238,0.15) 0%, rgba(0,0,0,0) 70%)',
-          borderRadius: '50%'
-        }}></div>
-        <div style={{
-          position: 'absolute',
-          bottom: '-40%',
-          left: '-10%',
-          width: '400px',
-          height: '400px',
-          background: 'radial-gradient(circle, rgba(255,212,0,0.08) 0%, rgba(0,0,0,0) 70%)',
-          borderRadius: '50%'
-        }}></div>
-
-        {/* Elemento gráfico de Química (Marca de agua) */}
-        <i className="fa fa-flask" style={{
-          position: 'absolute',
-          right: '5%',
-          top: '57%',
-          transform: 'translateY(-50%) rotate(15deg)',
-          fontSize: '250px',
-          color: 'rgba(255, 255, 255, 0.15)',
-          zIndex: 0
-        }}></i>
-
-        <div className="container position-relative z-1 text-md-start text-center">
-          <div className="mb-2">
-            <span style={{
-              display: 'inline-block',
-              width: '60px',
-              height: '5px',
-              backgroundColor: '#6FEDEE',
-              borderRadius: '3px',
-              marginBottom: '1rem'
-            }}></span>
-          </div>
-          <RevealWords
-            as="h1"
-            text={t('title')}
-            className="display-4 fw-bold mb-3"
-            style={{ color: '#ffffff', letterSpacing: '-1px' }}
-          />
-          <p style={{ color: 'rgba(226, 223, 223, 0.9)', fontSize: '1.15rem', maxWidth: '600px', margin: '0 auto 0 0', fontFamily: 'Stolzl, sans-serif' }} className="mx-auto mx-md-0">
-            {t('intro')}
-          </p>
-        </div>
-      </section>
-
-      <div className="container" style={{ flexGrow: 1 }}>
-        {/* Barra de búsqueda interactiva */}
-        <div className="events-search-container">
-          <form onSubmit={handleSearchSubmit} className="events-search-form">
-            <i className="fas fa-search events-search-icon"></i>
-            <input
-              type="text"
-              className="events-search-input"
-              placeholder={t('searchPlaceholder')}
-              value={currentSearchInput}
-              onChange={(e) => setCurrentSearchInput(e.target.value)}
-            />
-            {currentSearchInput && (
-              <button
-                type="button"
-                className="events-search-clear"
-                onClick={handleClearSearch}
-                aria-label="Limpiar búsqueda"
-                title="Limpiar búsqueda"
-              >
-                <i className="fas fa-times"></i>
+      <main>
+        <header className="agenda-cover">
+          <EventPhotoColumn side="left" />
+          <div className="agenda-cover-copy">
+            <h1>{t('title')}</h1>
+            <p>{t('intro')}</p>
+            <form onSubmit={handleSearchSubmit} className="agenda-search" role="search">
+              <div className="agenda-search-field">
+                <i className="fas fa-search" aria-hidden="true" />
+                <input
+                  type="text"
+                  aria-label={t('searchPlaceholder')}
+                  placeholder={t('searchHint')}
+                  value={currentSearchInput}
+                  onChange={(e) => setCurrentSearchInput(e.target.value)}
+                />
+                {currentSearchInput && (
+                  <button
+                    type="button"
+                    className="agenda-clear"
+                    disabled={busy || loadingMore}
+                    onClick={handleClearSearch}
+                    aria-label={t('clearSearch')}
+                    title={t('clearSearch')}
+                  >
+                    <i className="fas fa-times"></i>
+                  </button>
+                )}
+              </div>
+              <button type="submit" className="agenda-submit" disabled={busy || loadingMore}>
+                <span>{t('searchButton')}</span>
               </button>
-            )}
-            <button type="submit" className="events-search-btn">
-              <span>{t('searchButton')}</span>
-            </button>
-          </form>
-        </div>
-
-        {isAuthenticated && (
-          <div className="d-flex justify-content-end mb-4 px-2">
-            <button onClick={handleLogout} className="btn btn-outline-danger fw-bold" style={{ borderRadius: '20px', padding: '8px 20px', fontFamily: 'Stolzl, sans-serif' }}>
-              <i className="fas fa-sign-out-alt me-2"></i> {t('logout')}
-            </button>
+            </form>
           </div>
-        )}
+          <EventPhotoColumn side="right" />
+        </header>
+        <section className="agenda-list" aria-label={t('filterAll')} aria-busy={busy}>
+          {isAuthenticated && (
+            <div className="d-flex justify-content-end mb-4 px-2">
+              <button onClick={handleLogout} className="btn btn-outline-danger fw-bold" style={{ borderRadius: '20px', padding: '8px 20px', fontFamily: 'Stolzl, sans-serif' }}>
+                <i className="fas fa-sign-out-alt me-2"></i> {t('logout')}
+              </button>
+            </div>
+          )}
 
-        {events.length === 0 ? (
-          <div className="no-events-container">
-            <i className="fas fa-calendar-times no-events-icon"></i>
-            <h3 className="no-events-text">
-              {actualSearchTerm
-                ? `${t('noEventsSearch')} "${actualSearchTerm}"`
-                : t('noEventsEmpty')}
-            </h3>
-          </div>
-        ) : (
-          <div className="events-grid">
-            {events.map((event) => {
-              const isExpired = isEventExpired(event.fecha_programada);
-              const showTime = shouldShowTime(event);
+          {busy ? (
+            <p className="agenda-message" role="status">{t('loadingMessage')}</p>
+          ) : error ? (
+            <p className="agenda-message" role="alert">{error}</p>
+          ) : events.length === 0 ? (
+            <div className="no-events-container">
+              <i className="fas fa-calendar-times no-events-icon"></i>
+              <h3 className="no-events-text">
+                {actualSearchTerm
+                  ? `${t('noEventsSearch')} "${actualSearchTerm}"`
+                  : t('noEventsEmpty')}
+              </h3>
+            </div>
+          ) : (
+            <div className="events-grid">
+              {events.map((event) => {
+                const isExpired = isEventExpired(event.fecha_programada);
+                const showTime = shouldShowTime(event);
 
-              return (
-                <div key={event.id} className="event-card">
-                  {/* Contenedor del flyer sin recorte y con fondo ambiental */}
-                  <div className="event-image-wrapper">
-                    {event.imagen_url ? (
-                      <>
-                        <div
-                          className="event-image-ambient"
-                          style={{ backgroundImage: `url(${event.imagen_url})` }}
-                          aria-hidden="true"
-                        />
-                        <img
-                          src={event.imagen_url}
-                          alt={event.titulo || event.nombre || 'Evento ACS UNMSM'}
-                          className="event-image"
-                          loading="lazy"
-                        />
-                        <button
-                          type="button"
-                          className="event-flyer-expand-btn"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setPreviewFlyer({
-                              url: event.imagen_url,
-                              title: event.titulo || event.nombre || 'Flyer del evento'
-                            });
-                          }}
-                          title={t('viewFlyer')}
-                          aria-label={t('viewFlyer')}
-                        >
-                          <i className="fas fa-expand-arrows-alt"></i>
-                          <span>{t('viewFlyer')}</span>
-                        </button>
-                      </>
-                    ) : (
-                      <div className="event-no-image">
-                        <i className="fas fa-calendar-alt"></i>
-                        <span>{t('noImage')}</span>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Contenido descriptivo del evento con tipografía Stolzl */}
-                  <div className="event-content">
-                    <h3 className="event-title" title={event.titulo}>
-                      {event.titulo}
-                    </h3>
-
-                    <ul className="event-info-list">
-                      <li className="event-info-item">
-                        <i className="far fa-calendar-alt"></i>
-                        <span>
-                          {(() => {
-                            const displayDate = new Date(event.fecha_programada);
-                            return displayDate.toLocaleDateString('es-ES', {
-                              year: 'numeric',
-                              month: 'long',
-                              day: 'numeric'
-                            });
-                          })()}
-                        </span>
-                      </li>
-                      {showTime && (
-                        <li className="event-info-item">
-                          <i className="far fa-clock"></i>
-                          <span>{formatTime12Hour(event.hora)}</span>
-                        </li>
-                      )}
-                      <li className="event-info-item">
-                        <i className="fas fa-map-marker-alt"></i>
-                        <span>
-                          {event.modalidad?.toLowerCase() === 'en persona' ? t('modeInPerson') : (event.modalidad === 'Virtual' || !event.modalidad ? t('modeVirtual') : event.modalidad)}
-                        </span>
-                      </li>
-                    </ul>
-
-                    <div className="event-actions">
-                      <button onClick={() => handleDetailsClick(event)} className="btn-event btn-event-outline">
-                        <i className="fas fa-info-circle"></i> {t('detailsButton')}
-                      </button>
-
-                      {event.inscription && (
-                        <button
-                          onClick={() => handleRegisterClick(event)}
-                          className={`btn-event ${isExpired ? 'btn-event-disabled' : 'btn-event-primary'}`}
-                          disabled={isExpired}
-                        >
-                          <i className="fas fa-ticket-alt"></i> {isExpired ? t('expiredButton') : t('registerButton')}
-                        </button>
+                return (
+                  <article key={event.id} className="event-card">
+                    <div className="event-image-wrapper">
+                      {event.imagen_url ? (
+                        <>
+                          <img
+                            src={event.imagen_url}
+                            alt={event.titulo || event.nombre || 'Evento ACS UNMSM'}
+                            className="event-image"
+                            loading="lazy"
+                          />
+                          <button
+                            type="button"
+                            className="event-flyer-expand-btn"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setPreviewFlyer({
+                                url: event.imagen_url,
+                                title: event.titulo || event.nombre || 'Flyer del evento'
+                              });
+                            }}
+                            title={t('viewFlyer')}
+                            aria-label={t('viewFlyer')}
+                          >
+                            <i className="fas fa-expand-arrows-alt"></i>
+                            <span>{t('viewFlyer')}</span>
+                          </button>
+                        </>
+                      ) : (
+                        <div className="event-no-image">
+                          <i className="fas fa-calendar-alt"></i>
+                          <span>{t('noImage')}</span>
+                        </div>
                       )}
                     </div>
 
-                    {isAuthenticated && (
-                      <div className="admin-actions">
-                        <button onClick={() => handleEditClick(event)} className="btn-event btn-event-edit">
-                          <i className="fas fa-edit"></i> {t('editButton')}
-                        </button>
-                        <button onClick={() => handleDeleteClick(event.id)} className="btn-event btn-event-delete">
-                          <i className="fas fa-trash-alt"></i> {t('deleteButton')}
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        )}
+                    {/* Contenido descriptivo del evento con tipografía Stolzl */}
+                    <div className="event-content">
+                      <h2 className="event-title">
+                        {event.titulo}
+                      </h2>
 
-        {events.length > 0 && hasMore && (
-          <div className="btn-load-more-container">
-            <button
-              type="button"
-              onClick={handleLoadMore}
-              disabled={loadingMore}
-              className="btn-load-more"
-            >
-              {loadingMore ? (
-                <>
-                  <i className="fas fa-spinner fa-spin"></i>
-                  <span>{t('loadingMore')}</span>
-                </>
-              ) : (
-                <>
-                  <i className="fas fa-plus-circle"></i>
-                  <span>{t('loadMore')}</span>
-                </>
-              )}
-            </button>
-          </div>
-        )}
-      </div>
+                      <ul className="event-info-list">
+                        <li className="event-info-item">
+                          <i className="far fa-calendar-alt"></i>
+                          <span>
+                            {(() => {
+                              const displayDate = new Date(event.fecha_programada);
+                              return displayDate.toLocaleDateString(locale, {
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric'
+                              });
+                            })()}
+                          </span>
+                        </li>
+                        {showTime && (
+                          <li className="event-info-item">
+                            <i className="far fa-clock"></i>
+                            <span>{formatTime12Hour(event.hora)}</span>
+                          </li>
+                        )}
+                        <li className="event-info-item">
+                          <i className="fas fa-map-marker-alt"></i>
+                          <span>
+                            {event.modalidad?.toLowerCase() === 'en persona' ? t('modeInPerson') : (event.modalidad === 'Virtual' || !event.modalidad ? t('modeVirtual') : event.modalidad)}
+                          </span>
+                        </li>
+                      </ul>
+
+                      <div className="event-actions">
+                        <Link href={`/${locale}/events/${event.id}/details`} className="btn-event btn-event-outline">
+                          {t('detailsButton')} <span aria-hidden="true">&rarr;</span>
+                        </Link>
+
+                        {event.inscription && (
+                          <button
+                            onClick={() => handleRegisterClick(event)}
+                            className={`btn-event ${isExpired ? 'btn-event-disabled' : 'btn-event-primary'}`}
+                            disabled={isExpired}
+                          >
+                            <i className="fas fa-ticket-alt"></i> {isExpired ? t('expiredButton') : t('registerButton')}
+                          </button>
+                        )}
+                      </div>
+
+                      {isAuthenticated && (
+                        <div className="admin-actions">
+                          <button onClick={() => handleEditClick(event)} className="btn-event btn-event-edit">
+                            <i className="fas fa-edit"></i> {t('editButton')}
+                          </button>
+                          <button onClick={() => handleDeleteClick(event.id)} className="btn-event btn-event-delete">
+                            <i className="fas fa-trash-alt"></i> {t('deleteButton')}
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+          )}
+
+          {!busy && !error && events.length > 0 && hasMore && (
+            <div className="agenda-pagination">
+              <button
+                type="button"
+                onClick={handleLoadMore}
+                disabled={loadingMore}
+                className="agenda-submit agenda-load-more"
+                aria-busy={loadingMore}
+              >
+                <span>{t(loadingMore ? 'loadingMore' : 'loadMore')}</span>
+                <i className={loadingMore ? 'fas fa-spinner fa-spin' : 'fas fa-arrow-down'} aria-hidden="true" />
+              </button>
+            </div>
+          )}
+        </section>
+      </main>
 
       {/* Modal Lightbox para ver flyer completo en alta resolución */}
       {previewFlyer && (

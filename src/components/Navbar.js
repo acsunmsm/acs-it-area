@@ -9,7 +9,6 @@ import useAuth from '@/src/hooks/useAuth';
 
 const primaryLinks = [
   ['/', 'home'],
-  ['/about', 'about'],
   ['/chapters', 'officers'],
   ['/events', 'events'],
   ['/news', 'news'],
@@ -47,7 +46,6 @@ export default function Navbar() {
         key={href}
         href={href}
         className="chapter-nav__link"
-        data-institutional={label === 'about' || label === 'contact' || undefined}
         aria-current={current}
         onClick={() => setMenuOpen(false)}
       >
@@ -121,21 +119,23 @@ export default function Navbar() {
                   <span>{locale.toUpperCase()}</span>
                   <FontAwesomeIcon icon={faChevronDown} />
                 </button>
-                {languageOpen && (
-                  <div id="chapter-language-menu" className="chapter-nav__language-menu">
-                    {['es', 'en'].map(language => (
-                      <button
-                        key={language}
-                        type="button"
-                        className="chapter-nav__language-option"
-                        aria-current={locale === language ? 'true' : undefined}
-                        onClick={() => changeLanguage(language)}
-                      >
-                        {language === 'es' ? t('spanish') : t('english')}
-                      </button>
-                    ))}
+                <div id="chapter-language-menu" className="chapter-nav__language-menu" data-open={languageOpen} inert={!languageOpen}>
+                  <div className="chapter-nav__language-clip">
+                    <div className="chapter-nav__language-panel">
+                      {['es', 'en'].map(language => (
+                        <button
+                          key={language}
+                          type="button"
+                          className="chapter-nav__language-option"
+                          aria-current={locale === language ? 'true' : undefined}
+                          onClick={() => changeLanguage(language)}
+                        >
+                          {language === 'es' ? t('spanish') : t('english')}
+                        </button>
+                      ))}
+                    </div>
                   </div>
-                )}
+                </div>
               </div>
             </div>
             {!loading && session && navLink('/dashboard', 'dashboard', faTachometerAlt)}

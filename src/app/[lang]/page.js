@@ -19,6 +19,8 @@ export default async function HomePage({ params }) {
   const { lang } = await params;
   const t = await getTranslations({ locale: lang, namespace: 'homePage' });
 
+  const about = await getTranslations({ locale: lang, namespace: 'about' });
+
   return (
     <main>
       <Navbar />
@@ -46,6 +48,23 @@ export default async function HomePage({ params }) {
             />
             <figcaption>{t('workshopCaption')}</figcaption>
           </figure>
+        </div>
+      </section>
+
+      <section id="nosotros" className={styles.about} aria-labelledby="about-title">
+        <div className={styles.aboutLayout}>
+          <div>
+            <h2 id="about-title">{about('title')}</h2>
+            <p>{about('intro')}</p>
+          </div>
+          <div className={styles.purpose}>
+            {['mission', 'vision'].map(key => (
+              <div key={key}>
+                <h3>{about(key + 'Title')}</h3>
+                <p>{about(key + 'Text')}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
