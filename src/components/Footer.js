@@ -2,8 +2,8 @@
 'use client';
 
 // Usa `next-intl` para traducir textos (títulos, descripciones y mensajes) 
-import { useTranslations, useLocale } from 'next-intl';
-import { useRouter, usePathname, Link } from '@/src/i18n/navigation';
+import { useTranslations } from 'next-intl';
+import { Link } from '@/src/i18n/navigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faInstagram,

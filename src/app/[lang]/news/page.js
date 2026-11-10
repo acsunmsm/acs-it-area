@@ -1,5 +1,6 @@
 'use client';
 
+import { removePublicationCover } from '@/src/lib/updatePublication';
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import Link from 'next/link';
 import Navbar from '@/src/components/Navbar';
@@ -31,11 +32,10 @@ export default function NewsPage() {
 
   // Carga de noticias desde Supabase con fallback automático y seguro
   const fetchArticles = useCallback(async () => {
-    setLoadingArticles(true);
     try {
       const { data, error } = await supabase
         .from('noticias')
-        .select('*')
+        .select('id,titulo,categoria,extracto,fecha,imagen_url')
         .order('fecha', { ascending: false });
 
       if (error) {
@@ -79,7 +79,6 @@ export default function NewsPage() {
               es: item.extracto,
               en: item.extracto,
             },
-            contenido: item.contenido,
             rawArticle: item,
           };
         });
@@ -94,6 +93,7 @@ export default function NewsPage() {
   }, []);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- State updates follow the Supabase response.
     fetchArticles();
   }, [fetchArticles]);
 
@@ -121,9 +121,14 @@ export default function NewsPage() {
     setShowModal(true);
   };
 
-  const handleEditClick = (e, article) => {
+  const handleEditClick = async (e, article) => {
     e.stopPropagation();
-    setSelectedArticle(article.rawArticle || article);
+    const { data, error } = await supabase.from('noticias').select('*').eq('id', article.id).single();
+    if (error) {
+      alert(error.message);
+      return;
+    }
+    setSelectedArticle(data);
     setShowModal(true);
   };
 
@@ -132,24 +137,14 @@ export default function NewsPage() {
     if (window.confirm(t('deleteConfirm') || '¿Estás seguro de eliminar esta noticia?')) {
       try {
         if (article.id) {
-          const raw = article.rawArticle;
-          if (raw?.imagen_url && raw.imagen_url.includes('/public/')) {
-            const parts = raw.imagen_url.split('/public/');
-            if (parts.length > 1) {
-              const afterPublic = parts[1].split('/');
-              const bucket = afterPublic[0];
-              const pathInBucket = afterPublic.slice(1).join('/');
-              if (bucket && pathInBucket) {
-                await supabase.storage.from(bucket).remove([pathInBucket]);
-              }
-            }
-          }
-
-          const { error } = await supabase.from('noticias').delete().eq('id', article.id);
+          const { data, error } = await supabase.from('noticias').delete()
+            .eq('id', article.id).select('imagen_url').single();
           if (error) throw error;
+          await removePublicationCover(data.imagen_url);
         }
 
         alert(t('deleteSuccess') || 'Noticia eliminada exitosamente.');
+        setLoadingArticles(true);
         fetchArticles();
       } catch (err) {
         console.error('Error al eliminar noticia:', err);
@@ -261,8 +256,10 @@ export default function NewsPage() {
           title={selectedArticle ? 'Editar Noticia' : 'Publicar Nueva Noticia'}
         >
           <NoticiaForm
+            key={selectedArticle?.id || 'new'}
             article={selectedArticle}
             onSave={() => {
+              setLoadingArticles(true);
               fetchArticles();
               setShowModal(false);
               setSelectedArticle(null);

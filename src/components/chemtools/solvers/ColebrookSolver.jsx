@@ -3,7 +3,7 @@
 import React, { useState, useMemo } from 'react';
 import KatexMath from '../KatexMath';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faWater, faInfoCircle, faCheckCircle, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+import { faWater, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 
 export default function ColebrookSolver() {
   const [roughnessRatio, setRoughnessRatio] = useState('0.0001'); // Relative roughness epsilon/D

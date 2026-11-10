@@ -68,10 +68,15 @@ function OfficerCard({ member, i18n = {} }) {
   const [copied, setCopied] = useState(false);
   const imagePath = `/assets/img/${member.image}`;
 
-  const handleCopy = (e) => {
+  const handleCopy = async (e) => {
     e.preventDefault();
     if (member.email && navigator.clipboard) {
-      navigator.clipboard.writeText(member.email);
+      try {
+        await navigator.clipboard.writeText(member.email);
+      } catch {
+        setCopied(false);
+        return;
+      }
       setCopied(true);
       setTimeout(() => setCopied(false), 1800);
     }

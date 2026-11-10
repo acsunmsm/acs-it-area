@@ -31,7 +31,6 @@ export default function DashboardPage() {
 
     // Si no hay sesión activa, redirige al login
     if (!session) {
-      console.log('Dashboard: No hay sesión activa. Redirigiendo a /login');
       router.push('/login');
     }
   }, [session, loading, router]);
@@ -66,7 +65,6 @@ export default function DashboardPage() {
                 console.error('Error al cerrar sesión:', error);
                 alert('No se pudo cerrar la sesión. Inténtalo de nuevo.');
               } else {
-                console.log('Sesión cerrada. Redirigiendo...');
               }
             }}
             className="btn-logout"
@@ -136,10 +134,9 @@ export default function DashboardPage() {
         />
       </NewsModal>
 
-      <UserRegistrationsModal
-        show={showUserRegistrationsModal}
+      {showUserRegistrationsModal && <UserRegistrationsModal
         onClose={() => setShowUserRegistrationsModal(false)}
-      />
+      />}
       <Footer />
 
       {/* 🆕 ESTILOS CSS PARA LOS BOTONES Y LAYOUT DEL DASHBOARD */}

@@ -1,15 +1,15 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
+import { removePublicationCover, updatePublication } from '../lib/updatePublication';
 import { supabase } from '../lib/supabaseClient';
 import { useRouter } from 'next/navigation';
 import { Editor } from '@tinymce/tinymce-react';
 
 export default function NoticiaForm({ article, onSave, onCancel }) {
-  console.log('DEBUG (NoticiaForm): Componente NoticiaForm renderizado. Prop "article":', article);
 
   // Inicializa el estado con los datos de la noticia si se proporciona, o con valores vacíos
-  const [id, setId] = useState(article?.id || null);
+  const id = article?.id || null;
   const [titulo, setTitulo] = useState(
     article?.titulo || (typeof article?.title === 'object' ? (article.title.es || article.title.en) : article?.title) || ''
   );
@@ -68,41 +68,6 @@ export default function NoticiaForm({ article, onSave, onCancel }) {
     return publicData?.publicUrl;
   };
 
-  // Sincronizar estado cuando la prop article cambia
-  useEffect(() => {
-    console.log('DEBUG (NoticiaForm): useEffect disparado. Valor actual de "article":', article);
-    if (article) {
-      setId(article.id || null);
-      setTitulo(
-        article.titulo || (typeof article.title === 'object' ? (article.title.es || article.title.en) : article.title) || ''
-      );
-      setExtracto(
-        article.extracto || (typeof article.excerpt === 'object' ? (article.excerpt.es || article.excerpt.en) : article.excerpt) || ''
-      );
-      setCategoria(article.categoria || article.category || 'logro');
-      setContenido(article.contenido || article.descripcion || '');
-      setFecha(article.fecha ? new Date(article.fecha).toISOString().split('T')[0] : '');
-      setImagenUrlActual(article.imagen_url || article.image || null);
-      setImagen(null);
-      if (fileInputRef.current) {
-        fileInputRef.current.value = null;
-      }
-    } else {
-      setId(null);
-      setTitulo('');
-      setExtracto('');
-      setCategoria('logro');
-      setContenido('');
-      setFecha('');
-      setImagen(null);
-      setImagenUrlActual(null);
-      if (fileInputRef.current) {
-        fileInputRef.current.value = null;
-      }
-    }
-    setError(null);
-  }, [article]);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -117,27 +82,12 @@ export default function NoticiaForm({ article, onSave, onCancel }) {
           throw new Error('Tipo de archivo no permitido. Sube una imagen JPEG, PNG, GIF o WebP.');
         }
 
-        // Eliminar imagen antigua de Supabase Storage si se está editando
-        if (imagenUrlActual && id && imagenUrlActual.includes('/public/')) {
-          const parts = imagenUrlActual.split('/public/');
-          if (parts.length > 1) {
-            const afterPublic = parts[1].split('/');
-            const bucket = afterPublic[0];
-            const pathInBucket = afterPublic.slice(1).join('/');
-            if (bucket && pathInBucket) {
-              console.log(`DEBUG (NoticiaForm): Eliminando imagen previa de storage (${bucket}):`, pathInBucket);
-              await supabase.storage.from(bucket).remove([pathInBucket]);
-            }
-          }
-        }
-
         const fileExt = imagen.name.split('.').pop();
         const fileName = `${Date.now()}-${Math.random().toString(36).substring(2, 9)}.${fileExt}`;
         const filePath = `flyers/${fileName}`;
 
-        console.log('DEBUG (NoticiaForm): Subiendo nueva imagen a:', filePath);
         finalImagenUrl = await uploadToStorage(filePath, imagen);
-        console.log('DEBUG (NoticiaForm): Imagen subida con éxito, URL:', finalImagenUrl);
+        if (!finalImagenUrl) throw new Error('No se pudo obtener la URL de la imagen.');
       }
 
       const noticiaData = {
@@ -153,14 +103,8 @@ export default function NoticiaForm({ article, onSave, onCancel }) {
       const isActualEdit = id && id !== 'prueba-1';
 
       if (isActualEdit) {
-        console.log('DEBUG (NoticiaForm): Modo Edición. Actualizando noticia ID:', id, noticiaData);
-        const { error: updateError } = await supabase
-          .from('noticias')
-          .update(noticiaData)
-          .eq('id', id);
-        dbError = updateError;
+        await updatePublication('noticias', id, article?.imagen_url, noticiaData);
       } else {
-        console.log('DEBUG (NoticiaForm): Modo Creación. Insertando nueva noticia:', noticiaData);
         const { error: insertError } = await supabase
           .from('noticias')
           .insert(noticiaData);
@@ -168,6 +112,7 @@ export default function NoticiaForm({ article, onSave, onCancel }) {
       }
 
       if (dbError) {
+        if (imagen && dbError.code) await removePublicationCover(finalImagenUrl);
         console.error('Error guardando noticia en la base de datos:', dbError);
         throw new Error(`No se pudo guardar la noticia. Revisa los datos: ${dbError.message}`);
       }
@@ -382,7 +327,6 @@ export default function NoticiaForm({ article, onSave, onCancel }) {
                   if (fileInputRef.current) {
                     fileInputRef.current.value = null;
                   }
-                  console.log('DEBUG (NoticiaForm): Imagen actual eliminada del estado.');
                 }}
                 style={{
                   padding: '5px 10px',

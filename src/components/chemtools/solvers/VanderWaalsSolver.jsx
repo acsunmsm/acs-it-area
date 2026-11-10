@@ -3,7 +3,7 @@
 import React, { useState, useMemo } from 'react';
 import KatexMath from '../KatexMath';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCloud, faCalculator } from '@fortawesome/free-solid-svg-icons';
+import { faCloud } from '@fortawesome/free-solid-svg-icons';
 
 const GASES = {
   co2: { name: 'Dióxido de Carbono (CO₂)', a: 3.64, b: 0.04267 },

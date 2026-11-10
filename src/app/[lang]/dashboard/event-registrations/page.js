@@ -26,34 +26,28 @@ export default function EventRegistrationsPage() {
   useEffect(() => {
     if (loading) return;
     if (!session) {
-      console.log('EventRegistrationsPage: No hay sesión activa. Redirigiendo a /login');
       router.push('/login');
     }
   }, [session, loading, router]);
 
-  // Cargar eventos al cargar la página
   useEffect(() => {
-    if (session) { // Solo cargar eventos si hay sesión
-      fetchEvents();
+    if (!session) return;
+    async function fetchEvents() {
+      try {
+        const { data, error } = await supabase
+          .from('eventos') // Tu tabla de eventos
+          .select('id, titulo, fecha, hora, modalidad'); // Columnas que necesitas
+        if (error) throw error;
+        setEvents(data);
+      } catch (err) {
+        console.error('Error fetching events:', err.message);
+        setError('Error al cargar los eventos. Inténtalo de nuevo.');
+      } finally {
+        setLoadingEvents(false);
+      }
     }
+    fetchEvents();
   }, [session]);
-
-  const fetchEvents = async () => {
-    setLoadingEvents(true);
-    setError('');
-    try {
-      const { data, error } = await supabase
-        .from('eventos') // Tu tabla de eventos
-        .select('id, titulo, fecha, hora, modalidad'); // Columnas que necesitas
-      if (error) throw error;
-      setEvents(data);
-    } catch (err) {
-      console.error('Error fetching events:', err.message);
-      setError('Error al cargar los eventos. Inténtalo de nuevo.');
-    } finally {
-      setLoadingEvents(false);
-    }
-  };
 
   const fetchRegistrations = async (eventId) => {
     setLoadingRegistrations(true);
@@ -89,7 +83,6 @@ export default function EventRegistrationsPage() {
   const handleSearchButtonClick = () => {
     // La búsqueda se aplica automáticamente al filtrar `filteredEvents`
     // No se necesita lógica adicional aquí a menos que quieras buscar en la base de datos
-    console.log("Botón Buscar clicado con término:", searchTerm);
   };
 
   const filteredEvents = events.filter(event => {

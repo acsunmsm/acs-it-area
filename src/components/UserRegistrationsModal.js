@@ -6,7 +6,7 @@ import { supabase } from '@/src/lib/supabaseClient';
 import * as XLSX from 'xlsx'; // Importa la librería para Excel
 
 // Modal que muestra registros de usuarios por evento
-export default function UserRegistrationsModal({ show, onClose }) {
+export default function UserRegistrationsModal({ onClose }) {
   // Estados principales
   const [events, setEvents] = useState([]); // Lista de eventos disponibles
   const [selectedEvent, setSelectedEvent] = useState(null); // Evento seleccionado
@@ -16,37 +16,23 @@ export default function UserRegistrationsModal({ show, onClose }) {
   const [loadingRegistrations, setLoadingRegistrations] = useState(false); // Estado de carga para registros
   const [error, setError] = useState(''); // Manejo de errores
 
-  // useEffect: cuando el modal se abre, carga los eventos. Si se cierra, limpia estados.
   useEffect(() => {
-    if (show) {
-      fetchEvents();
-    } else {
-      // Limpiar estados cuando el modal se cierra
-      setEvents([]);
-      setSelectedEvent(null);
-      setRegistrations([]);
-      setSearchTerm('');
-      setError('');
+    async function fetchEvents() {
+      try {
+        const { data, error } = await supabase
+          .from('events')
+          .select('id, name, date'); // Asume que 'name' y 'date' son campos de tu tabla events
+        if (error) throw error;
+        setEvents(data);
+      } catch (err) {
+        console.error('Error fetching events:', err.message);
+        setError('Error al cargar los eventos. Inténtalo de nuevo.');
+      } finally {
+        setLoadingEvents(false);
+      }
     }
-  }, [show]);
-
-  // Obtiene todos los eventos desde la base de datos
-  const fetchEvents = async () => {
-    setLoadingEvents(true);
-    setError('');
-    try {
-      const { data, error } = await supabase
-        .from('events')
-        .select('id, name, date'); // Asume que 'name' y 'date' son campos de tu tabla events
-      if (error) throw error;
-      setEvents(data);
-    } catch (err) {
-      console.error('Error fetching events:', err.message);
-      setError('Error al cargar los eventos. Inténtalo de nuevo.');
-    } finally {
-      setLoadingEvents(false);
-    }
-  };
+    fetchEvents();
+  }, []);
 
   // Obtiene los registros de un evento específico
   const fetchRegistrations = async (eventId) => {
@@ -108,8 +94,7 @@ export default function UserRegistrationsModal({ show, onClose }) {
     XLSX.writeFile(wb, `registros_evento_${selectedEvent?.name.replace(/\s/g, '_') || 'desconocido'}.xlsx`);
   };
 
-  // Si el modal no está activo, no renderiza nada
-  if (!show) return null;
+
 
   return (
     <div className="modal-overlay">

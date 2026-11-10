@@ -6,14 +6,7 @@ import ChemSolver from './ChemSolver';
 import Navbar from '@/src/components/Navbar';
 import Footer from '@/src/components/Footer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faArrowRightArrowLeft,
-  faCalculator,
-  faFlask,
-  faAtom,
-  faGraduationCap,
-  faVial
-} from '@fortawesome/free-solid-svg-icons';
+import { faArrowRightArrowLeft, faCalculator, faAtom } from '@fortawesome/free-solid-svg-icons';
 
 import Link from 'next/link';
 import { useLocale } from 'next-intl';

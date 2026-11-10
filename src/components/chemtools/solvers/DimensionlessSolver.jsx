@@ -3,7 +3,7 @@
 import React, { useState, useMemo } from 'react';
 import KatexMath from '../KatexMath';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCalculator, faExchangeAlt, faLightbulb } from '@fortawesome/free-solid-svg-icons';
+import { faCalculator, faLightbulb } from '@fortawesome/free-solid-svg-icons';
 
 export default function DimensionlessSolver() {
   const [selectedNumber, setSelectedNumber] = useState('Re'); // 'Re', 'Pr', 'Nu'

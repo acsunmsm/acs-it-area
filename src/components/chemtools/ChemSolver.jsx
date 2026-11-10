@@ -9,23 +9,15 @@ import DimensionlessSolver from './solvers/DimensionlessSolver';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faCalculator,
-  faFilter,
   faSearch,
   faGlobe,
   faWater,
   faFlask,
-  faBolt,
   faMicroscope,
   faScaleBalanced,
   faCogs,
-  faLightbulb,
-  faCheckCircle,
-  faExclamationTriangle,
-  faInfoCircle,
-  faArrowRight,
   faAtom,
   faFire,
-  faVial,
   faDraftingCompass
 } from '@fortawesome/free-solid-svg-icons';
 

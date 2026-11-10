@@ -7,7 +7,6 @@ export default function NewsModal({ show, onClose, children, title = 'Detalles d
     return null;
   }
 
-  console.log('DEBUG (NewsModal): Modal renderizado con título:', title);
 
   return (
     // Overlay de fondo oscuro
