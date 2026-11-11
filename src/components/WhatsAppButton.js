@@ -1,4 +1,5 @@
 'use client';
+import Image from 'next/image';
 import { useEffect, useRef } from 'react';
 import Script from 'next/script';
 import { useTranslations } from 'next-intl';
@@ -52,7 +53,8 @@ export default function WhatsAppButton() {
       <div className="whatsapp_chat_support wcs_fixed_right" id="button-w">
         <div className="wcs_button_label">{t('contactUs')}</div>
         <div className="wcs_button wcs_button_circle">
-          <img
+          <Image
+            unoptimized
             src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
             alt="WhatsApp"
             width={50}
@@ -78,7 +80,8 @@ export default function WhatsAppButton() {
             <i className="fa fa-play"></i>
           </div>
           <div className="wcs_popup_avatar">
-            <img
+            <Image
+              width={50} height={50}
               src="https://cdn.pixabay.com/photo/2022/03/01/08/11/call-center-7040784_1280.png"
               alt=""
             />

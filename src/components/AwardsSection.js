@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import React from 'react';
 import { useTranslations } from 'next-intl';
 
@@ -103,8 +104,8 @@ export default function AwardsSection() {
             <div className="award-badge-card">
               <div className="badge-glow-halo gold-halo"></div>
               <div className="badge-image-container">
-                <img
-                  src="/assets/img/badge-outstanding.png"
+                <Image
+                  width={400} height={400} sizes="180px" src="/assets/img/badge-outstanding.png"
                   alt="2025-2026 Outstanding Student Communities Award - ACS"
                   className="award-badge-img"
                   loading="lazy"
@@ -118,8 +119,8 @@ export default function AwardsSection() {
             <div className="award-badge-card">
               <div className="badge-glow-halo green-halo"></div>
               <div className="badge-image-container">
-                <img
-                  src="/assets/img/badge-greenchem.png"
+                <Image
+                  width={400} height={400} sizes="180px" src="/assets/img/badge-greenchem.png"
                   alt="2025-2026 Green Chemistry Student Communities Award - ACS"
                   className="award-badge-img"
                   loading="lazy"
@@ -138,8 +139,8 @@ export default function AwardsSection() {
           {/* Identidad institucional del Capítulo */}
           <div className="awards-branding">
             <div className="d-inline-flex align-items-center justify-content-center">
-              <img
-                src="/assets/img/Whitelogo.svg"
+              <Image
+                width={1288} height={108} src="/assets/img/Whitelogo.svg"
                 alt="ACS White Logo"
                 className="awards-whitelogo-img"
               />
@@ -382,7 +383,7 @@ export default function AwardsSection() {
           margin-bottom: 14px;
         }
 
-        .award-badge-img {
+        :global(.award-badge-img) {
           max-width: 100%;
           max-height: 100%;
           object-fit: contain;
@@ -390,7 +391,7 @@ export default function AwardsSection() {
           transition: transform 0.3s ease;
         }
 
-        .award-badge-card:hover .award-badge-img {
+        .award-badge-card:hover :global(.award-badge-img) {
           transform: scale(1.04);
         }
 
@@ -427,7 +428,7 @@ export default function AwardsSection() {
           margin-top: 4px;
         }
 
-        .awards-whitelogo-img {
+        :global(.awards-whitelogo-img) {
           width: 340px;
           height: auto;
           max-width: 90vw;
@@ -450,7 +451,7 @@ export default function AwardsSection() {
             height: 65px;
           }
 
-          .awards-whitelogo-img {
+          :global(.awards-whitelogo-img) {
             width: 290px;
           }
         }
@@ -544,7 +545,7 @@ export default function AwardsSection() {
             margin-bottom: 14px;
           }
 
-          .awards-whitelogo-img {
+          :global(.awards-whitelogo-img) {
             width: 250px;
             max-width: 85vw;
           }
@@ -579,7 +580,7 @@ export default function AwardsSection() {
             height: 130px;
           }
 
-          .awards-whitelogo-img {
+          :global(.awards-whitelogo-img) {
             width: 210px;
             max-width: 80vw;
           }

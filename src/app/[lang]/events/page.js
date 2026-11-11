@@ -1,5 +1,6 @@
 'use client';
 
+import PublicationImage from '@/src/components/PublicationImage';
 import { removePublicationCover } from '@/src/lib/updatePublication';
 import { supabase } from '../../../lib/supabaseClient'; // Asegúrate de que esta ruta sea correcta
 import { useState, useEffect, useCallback, useRef } from 'react';
@@ -43,7 +44,8 @@ export default function EventsPage() {
   const locale = useLocale();
   const t = useTranslations('events');
 
-  const requestId = useRef(0);
+  const activeRequest = useRef(null);
+  const cancelRequest = useCallback(() => activeRequest.current?.abort(), []);
 
   // Estados principales
   const [events, setEvents] = useState([]);
@@ -61,7 +63,7 @@ export default function EventsPage() {
   const [actualSearchTerm, setActualSearchTerm] = useState('');
 
   // Verificación de sesión de usuario
-  const { session, loading: authLoading } = useAuth();
+  const { staffSession: session, loading: authLoading } = useAuth();
   const isAuthenticated = !!session;
 
   // Manejador de teclado para cerrar lightbox con Escape y bloqueo de scroll
@@ -134,7 +136,9 @@ export default function EventsPage() {
 
   // Cargar eventos desde Supabase con paginación
   const fetchEvents = useCallback(async (pageNumber, search, isLoadMore = false) => {
-    const currentRequest = ++requestId.current;
+    cancelRequest();
+    const controller = new AbortController();
+    activeRequest.current = controller;
     let query = supabase
       .from('eventos')
       .select('*', { count: 'exact' })
@@ -143,17 +147,19 @@ export default function EventsPage() {
 
     if (search) {
       // Buscar por título o descripción
-      query = query.or(`titulo.ilike.%${search}%,descripcion.ilike.%${search}%`);
+      const term = search.slice(0, 200).replace(/[\\%_]/g, '\\$&');
+      const pattern = '"' + ('%' + term + '%').replace(/["\\]/g, '\\$&') + '"';
+      query = query.or('titulo.ilike.' + pattern + ',descripcion.ilike.' + pattern);
     }
 
     const from = pageNumber * PAGE_SIZE;
     const to = from + PAGE_SIZE - 1;
-    query = query.range(from, to);
+    query = query.range(from, to).abortSignal(controller.signal);
 
     try {
       const { data, count, error: supabaseError } = await query;
 
-      if (currentRequest !== requestId.current) return;
+      if (controller.signal.aborted) return;
       setError(null);
       if (supabaseError) {
         console.error('Error fetching events:', supabaseError);
@@ -173,17 +179,17 @@ export default function EventsPage() {
         setHasMore(count != null ? currentTotal < totalAvailable : fetchedData.length === PAGE_SIZE);
       }
     } catch (err) {
-      if (currentRequest !== requestId.current) return;
+      if (controller.signal.aborted) return;
       console.error('Unexpected error fetching events:', err);
       setError('Ocurrió un error inesperado al cargar los eventos.');
       if (!isLoadMore) setEvents([]);
     } finally {
-      if (currentRequest === requestId.current) {
+      if (!controller.signal.aborted) {
         setLoadingMore(false);
         setLoadingEvents(false);
       }
     }
-  }, [t]);
+  }, [t, cancelRequest]);
 
   function searchEvents(term) {
     setLoadingEvents(true);
@@ -209,8 +215,8 @@ export default function EventsPage() {
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect -- State updates follow the Supabase response.
     fetchEvents(0, '');
-    return () => { requestId.current++; };
-  }, [fetchEvents]);
+    return cancelRequest;
+  }, [fetchEvents, cancelRequest]);
 
   useEffect(() => {
     document.title = `${t('title')} - ACS UNMSM`;
@@ -327,7 +333,8 @@ export default function EventsPage() {
                     <div className="event-image-wrapper">
                       {event.imagen_url ? (
                         <>
-                          <img
+                          <PublicationImage
+                            sizes="(max-width: 608px) 90vw, (max-width: 992px) 45vw, 400px"
                             src={event.imagen_url}
                             alt={event.titulo || event.nombre || 'Evento ACS UNMSM'}
                             className="event-image"
@@ -459,7 +466,7 @@ export default function EventsPage() {
               <h4>{previewFlyer.title}</h4>
             </div>
             <div className="flyer-lightbox-body">
-              <img src={previewFlyer.url} alt={previewFlyer.title} className="flyer-lightbox-img" />
+              <PublicationImage original src={previewFlyer.url} alt={previewFlyer.title} className="flyer-lightbox-img" />
             </div>
           </div>
         </div>

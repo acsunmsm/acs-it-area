@@ -1,8 +1,10 @@
+import PublicationImage from '@/src/components/PublicationImage';
 import { cache } from 'react';
 import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
 import { FiArrowLeft, FiArrowRight, FiArrowUpRight } from 'react-icons/fi';
-import { supabaseServer } from '@/src/lib/supabase-server';
+import { publicDatabase } from '@/src/lib/publicDatabase';
+import { sanitizePublication } from '@/src/lib/sanitizePublication';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import styles from './PublicationArticle.module.css';
@@ -11,7 +13,7 @@ const requestTime = cache(() => Date.now());
 
 const loadPublication = cache(async (kind, id) => {
   const table = kind === 'event' ? 'eventos' : 'noticias';
-  const { data } = await supabaseServer.from(table).select('*').eq('id', id).single();
+  const { data } = await publicDatabase.from(table).select('*').eq('id', id).single();
   return data;
 });
 
@@ -94,7 +96,7 @@ export default async function PublicationArticle({ kind, params }) {
               {record.imagen_url && <figure className={styles.cover}>
                 <a href={record.imagen_url} target="_blank" rel="noopener noreferrer"
                   aria-label={t(event ? 'publication.openPoster' : 'publication.openImage')}>
-                  <img src={record.imagen_url} alt={t(event ? 'publication.posterAlt' : 'publication.imageAlt', { title: record.titulo })}
+                  <PublicationImage sizes="(max-width: 720px) 90vw, 560px" src={record.imagen_url} alt={t(event ? 'publication.posterAlt' : 'publication.imageAlt', { title: record.titulo })}
                     fetchPriority="high" />
                   <span className={styles.expand} aria-hidden="true"><FiArrowUpRight /></span>
                 </a>
@@ -104,7 +106,7 @@ export default async function PublicationArticle({ kind, params }) {
         </header>
         <div className={styles.reading}>
           {body && <div className={styles.prose} data-article-body=""
-            dangerouslySetInnerHTML={{ __html: body }} />}
+            dangerouslySetInnerHTML={{ __html: sanitizePublication(body) }} />}
           <div className={styles.end}>{back}</div>
         </div>
       </article>

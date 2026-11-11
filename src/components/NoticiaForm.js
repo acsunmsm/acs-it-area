@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useState, useRef } from 'react';
 import { removePublicationCover, updatePublication } from '../lib/updatePublication';
 import { supabase } from '../lib/supabaseClient';
@@ -315,7 +316,7 @@ export default function NoticiaForm({ article, onSave, onCancel }) {
           {imagenUrlActual && !imagen && (
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '10px' }}>
               <p style={{ fontSize: '0.9em', color: '#555' }}>Imagen actual:</p>
-              <img
+              <Image unoptimized width={80} height={80}
                 src={imagenUrlActual}
                 alt="Imagen actual de la noticia"
                 style={{ width: '80px', height: 'auto', borderRadius: '5px', border: '1px solid #eee' }}

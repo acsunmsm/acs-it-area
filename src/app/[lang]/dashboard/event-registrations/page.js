@@ -10,7 +10,7 @@ import Navbar from '../../../../components/Navbar';
 import RegistrationsModal from '../../../../components/RegistrationsModal'; // Importa el nuevo componente modal
 
 export default function EventRegistrationsPage() {
-  const { session, loading } = useAuth();
+  const { staffSession: session, loading } = useAuth();
   const router = useRouter();
 
   const [events, setEvents] = useState([]);

@@ -1,5 +1,6 @@
 'use client'; // This component will use client-side features like useState and useEffect
 
+import PublicationImage from '@/src/components/PublicationImage';
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabaseClient'; // Adjust path if necessary
 import EventModal from './EventModal'; // Adjust path if necessary
@@ -122,11 +123,12 @@ export default function FeaturedEventPopup() {
     >
       <div style={{ padding: '20px', textAlign: 'center' }}>
         {featuredEvent.imagen_url ? (
-          <img
-            src={featuredEvent.imagen_url}
+          <PublicationImage
+            sizes="520px" src={featuredEvent.imagen_url}
             alt={featuredEvent.titulo || 'Imagen del evento destacado'}
             style={{
               maxWidth: '100%',
+              width: 'auto',
               maxHeight: '300px', // Max height for the image in the popup
               height: 'auto',
               borderRadius: '8px',

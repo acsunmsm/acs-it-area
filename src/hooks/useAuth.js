@@ -34,7 +34,8 @@ const useAuth = () => {
     };
   }, []); // El array vacío significa que se ejecuta solo una vez al montar
 
-  return { session, loading };
+  const role = session?.user?.app_metadata?.chapter_role;
+  return { session, staffSession: ['admin', 'organizer'].includes(role) ? session : null, loading };
 };
 
 export default useAuth;

@@ -24,7 +24,7 @@ export default function VerificarSearchForm() {
     e.preventDefault();
     const cleanDoc = documentNumber.trim().replace(/\s+/g, '');
 
-    if (!cleanDoc) {
+    if (!/^[0-9]{8}$/.test(cleanDoc)) {
       setErrorMsg(t('emptyCodeError'));
       return;
     }
@@ -72,6 +72,8 @@ export default function VerificarSearchForm() {
                 <input
                   id="documentNumber"
                   type="text"
+                  inputMode="numeric"
+                  maxLength={8}
                   className={styles.inputField}
                   placeholder={t('inputPlaceholder')}
                   value={documentNumber}

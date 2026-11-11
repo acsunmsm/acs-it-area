@@ -1,6 +1,7 @@
 // src/app/[lang]/dashboard/page.js
 'use client'
 
+import Image from 'next/image';
 import useAuth from '@/src/hooks/useAuth'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
@@ -17,7 +18,7 @@ import NoticiaForm from '../../../components/NoticiaForm';
 export default function DashboardPage() {
 
   // Obtiene la sesión actual y el estado de carga desde el hook
-  const { session, loading } = useAuth()
+  const { staffSession: session, loading } = useAuth()
   const router = useRouter()
 
   // Estados para mostrar/ocultar formularios o modales
@@ -79,7 +80,7 @@ export default function DashboardPage() {
               onClick={() => setShowEventForm(true)}
               className="dashboard-button btn-blue-light"
             >
-              <img src="/assets/img/evento_marketing.png" alt="Añadir Evento" className="button-icon" /> {/* Reemplaza con tu icono */}
+              <Image width={60} height={60} src="/assets/img/evento_marketing.png" alt="Añadir Evento" className="button-icon" /> {/* Reemplaza con tu icono */}
               Crear Nuevo Evento
             </button>
 
@@ -95,7 +96,7 @@ export default function DashboardPage() {
             {/* 🆕 BOTÓN Ver Usuarios Registrados AHORA ES UN LINK */}
             <Link href={`/${router.query?.lang || 'es'}/dashboard/event-registrations`} passHref legacyBehavior>
               <a className="dashboard-button btn-green">
-                <img src="/assets/img/usuarios_registrados.png" alt="Ver Usuarios" className="button-icon" />
+                <Image width={60} height={60} src="/assets/img/usuarios_registrados.png" alt="Ver Usuarios" className="button-icon" />
                 Ver Usuarios Registrados por Evento
               </a>
             </Link>
@@ -103,7 +104,7 @@ export default function DashboardPage() {
             {/* Botón Registrar Nuevo Usuario */}
             <Link href="/register" passHref legacyBehavior>
               <a className="dashboard-button btn-blue">
-                <img src="/assets/img/agregar_usuario.png" alt="Registrar Usuario" className="button-icon" /> {/* Reemplaza con tu icono */}
+                <Image width={60} height={60} src="/assets/img/agregar_usuario.png" alt="Registrar Usuario" className="button-icon" /> {/* Reemplaza con tu icono */}
                 Registrar Nuevo Usuario
               </a>
             </Link>
@@ -308,7 +309,7 @@ export default function DashboardPage() {
         }
 
         /* Estilo para los iconos dentro de los botones */
-        .button-icon {
+        :global(.button-icon) {
           width: 32px; /* Tamaño del icono */
           height: 32px;
           object-fit: contain; /* Asegura que la imagen no se recorte */
@@ -330,7 +331,7 @@ export default function DashboardPage() {
             padding: 20px 15px;
             font-size: 1em;
           }
-          .button-icon {
+          :global(.button-icon) {
             width: 28px;
             height: 28px;
           }

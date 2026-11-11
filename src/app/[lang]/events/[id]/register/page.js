@@ -2,7 +2,6 @@
 
 import { useParams, useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import { supabase } from '../../../../../lib/supabaseClient';
 import Swal from 'sweetalert2';
 
 // Si vas a usar estilos en línea o importar formStyles, define o importa aquí:
@@ -62,11 +61,9 @@ export default function EventRegistrationPage() {
       setLoadingEvent(true);
       setErrorEvent(null);
       try {
-        const { data, error } = await supabase
-          .from('eventos')
-          .select('*')
-          .eq('id', id)
-          .single();
+        const response = await fetch('/api/events/' + encodeURIComponent(id));
+        const data = response.ok ? await response.json() : null;
+        const error = data ? null : new Error('Evento no disponible');
 
         if (error || !data) {
           setErrorEvent('No se pudo cargar la información del evento.');
