@@ -2,136 +2,88 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
+import { useLocale, useTranslations } from 'next-intl';
+import { FiArrowDown, FiArrowRight, FiArrowUpRight, FiBookOpen, FiDatabase, FiGrid, FiTool, FiAward } from 'react-icons/fi';
 import Navbar from '@/src/components/Navbar';
 import Footer from '@/src/components/Footer';
-import Reveal from '@/src/components/Reveal';
-import { useTranslations, useLocale } from 'next-intl';
-import {
-  FaDatabase,
-  FaTools,
-  FaBookOpen,
-  FaGraduationCap,
-  FaExternalLinkAlt,
-  FaArrowRight,
-  FaThLarge
-} from 'react-icons/fa';
-
 import { RECURSOS } from '@/src/lib/resources';
+import styles from './resources.module.css';
 
-const ORDEN_CATEGORIAS = ['bases', 'herramientas', 'revistas', 'formacion'];
+const categories = { bases: FiDatabase, herramientas: FiTool, revistas: FiBookOpen, formacion: FiAward };
 
-const CATEGORIAS_CONFIG = {
-  bases: {
-    icon: FaDatabase,
-    color: '#0284c7',
-    badgeBg: '#e0f2fe',
-    badgeText: '#0369a1',
+const glassware = {
+  erlenmeyer: {
+    outline: 'M34 14h16v24l21 40q4 9-6 10H18q-9-1-5-10l21-40z',
+    reflection: 'M37 18v21L19 76', marks: 'M57 59h-6m10 8h-7m11 8h-7',
+    lip: 9, level: 65, light: '#8dfdf2', dark: '#147a94', tilt: -12
   },
-  herramientas: {
-    icon: FaTools,
-    color: '#412BFD',
-    badgeBg: '#eef2ff',
-    badgeText: '#3730a3',
+  volumetric: {
+    outline: 'M38 13h9v37c0 8 18 17 18 30q0 9-9 11H29q-9-2-9-11c0-13 18-23 18-30z',
+    reflection: 'M40 18v33c0 9-16 19-16 29', marks: 'M38 34h9',
+    lip: 6, level: 35, light: '#cfb9ff', dark: '#6252b5', tilt: 9
   },
-  revistas: {
-    icon: FaBookOpen,
-    color: '#059669',
-    badgeBg: '#ecfdf5',
-    badgeText: '#047857',
+  boiling: {
+    outline: 'M35 14h15v13l15 8-2 4-13-7v11c0 5 19 10 19 27a26 25 0 1 1-52 0c0-17 18-22 18-27z',
+    reflection: 'M38 18v25c0 7-17 13-17 27', marks: '',
+    lip: 9, level: 67, light: '#8edfff', dark: '#3060ac', tilt: -9
   },
-  formacion: {
-    icon: FaGraduationCap,
-    color: '#d97706',
-    badgeBg: '#fef3c7',
-    badgeText: '#92400e',
-  },
+  tube: {
+    outline: 'M31 14h23v65a11.5 12 0 0 1-23 0z',
+    reflection: 'M34 19v60q0 6 3 8', marks: 'M53 36h-6m6 10h-4m4 10h-6',
+    lip: 13, level: 59, light: '#ffcf86', dark: '#bb6535', tilt: 16
+  }
 };
 
-// Componentes SVG de Material de Laboratorio con Resplandor Cósmico
-function ErlenmeyerFlask({ width = 74, height = 74 }) {
-  return (
-    <svg width={width} height={height} viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" className="floating-flask-svg">
-      <defs>
-        <linearGradient id="flaskCyanGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#6FEDEE" stopOpacity="0.88" />
-          <stop offset="100%" stopColor="#0284c7" stopOpacity="0.75" />
-        </linearGradient>
-      </defs>
-      <rect x="25" y="8" width="14" height="4" rx="2" stroke="#6FEDEE" strokeWidth="2.5" fill="rgba(111,237,238,0.25)" />
-      <path d="M28 12V24L12 49C10 52.5 12.5 57 16.5 57H47.5C51.5 57 54 52.5 52 49L36 24V12" stroke="#6FEDEE" strokeWidth="2.5" strokeLinejoin="round" />
-      <path d="M17 48L22 42C24 39 28 39 30 42C32 45 36 45 38 42L47 48C49 51 47 55 44 55H20C17 55 15 51 17 48Z" fill="url(#flaskCyanGrad)" />
-      <circle cx="26" cy="47" r="1.8" fill="#ffffff" />
-      <circle cx="35" cy="44" r="1.4" fill="#ffffff" opacity="0.9" />
-      <circle cx="31" cy="34" r="1.2" fill="#6FEDEE" opacity="0.8" />
-      <line x1="33" y1="44" x2="38" y2="44" stroke="rgba(255,255,255,0.4)" strokeWidth="1.5" />
-      <line x1="31" y1="38" x2="35" y2="38" stroke="rgba(255,255,255,0.4)" strokeWidth="1.5" />
-    </svg>
-  );
+function Glassware({ kind, width, height }) {
+  const { outline, reflection, marks, lip, level, light, dark, tilt } = glassware[kind];
+  const id = 'resource-glass-' + kind;
+  return <svg aria-hidden="true" width={width} height={height} viewBox="0 0 86 100" fill="none" className="floating-flask-svg">
+    <defs>
+      <clipPath id={id}><path d={outline} /></clipPath>
+      <linearGradient id={id + '-wall'}>
+        <stop stopColor="#c4edff" stopOpacity=".52" /><stop offset=".15" stopColor="#dcf4ff" stopOpacity=".19" />
+        <stop offset=".46" stopColor="#7798df" stopOpacity=".07" /><stop offset=".8" stopColor="#7c9bbf" stopOpacity=".22" />
+        <stop offset="1" stopColor="#e5f9ff" stopOpacity=".64" />
+      </linearGradient>
+      <linearGradient id={id + '-liquid'} x2=".55" y2="1">
+        <stop stopColor={light} /><stop offset=".55" stopColor={dark} /><stop offset="1" stopColor={dark} stopOpacity=".64" />
+      </linearGradient>
+    </defs>
+    <g transform={`rotate(${tilt} 43 52)`}>
+      <path d={outline} fill={`url(#${id}-wall)`} />
+      <g clipPath={`url(#${id})`}>
+        <g transform={`rotate(${-tilt} 43 ${level})`}>
+          <rect y={level} width="86" height="100" fill={`url(#${id}-liquid)`} />
+          <ellipse cx="43" cy={level} rx={kind === 'volumetric' ? 5 : 32} ry="1.8" fill={light} />
+        </g>
+      </g>
+      <path d={outline} stroke="#bfe0f0" strokeWidth="1.25" />
+      <ellipse cx="42.5" cy="14" rx={lip} ry="2.6" fill="#263044" stroke="#d1e9f5" strokeWidth="1.4" />
+      <path d={reflection} stroke="white" opacity=".76" strokeWidth="1.7" strokeLinecap="round" />
+      {marks && <path d={marks} stroke={kind === 'volumetric' ? '#ffb978' : '#e9fcff'} strokeWidth="1.3" />}
+    </g>
+  </svg>;
 }
 
-function VolumetricFlask({ width = 64, height = 64 }) {
-  return (
-    <svg width={width} height={height} viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" className="floating-flask-svg">
-      <defs>
-        <linearGradient id="flaskPurpleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#c084fc" stopOpacity="0.92" />
-          <stop offset="100%" stopColor="#412BFD" stopOpacity="0.82" />
-        </linearGradient>
-      </defs>
-      <polygon points="30,4 34,4 36,9 28,9" stroke="#818cf8" strokeWidth="2" fill="rgba(129,140,248,0.4)" />
-      <path d="M30 9V32C24 35 20 42 20 48C20 55 25 59 32 59C39 59 44 55 44 48C44 42 40 35 34 32V9" stroke="#818cf8" strokeWidth="2.5" strokeLinejoin="round" />
-      <line x1="28" y1="20" x2="36" y2="20" stroke="#ffd400" strokeWidth="2" />
-      <path d="M22 47C22 54 26.5 57 32 57C37.5 57 42 54 42 47C42 43 38 38 32 38C26 38 22 43 22 47Z" fill="url(#flaskPurpleGrad)" />
-      <circle cx="31" cy="46" r="1.8" fill="#ffffff" />
-      <circle cx="33" cy="40" r="1.3" fill="#ffffff" opacity="0.8" />
-    </svg>
-  );
-}
+// Skeletal structures: unlabeled vertices and line ends represent carbon.
+const structures = [
+  { id: 'benzene', bonds: 'M42 10l21 12v24L42 58 21 46V22z M42 15l16 9 M58 43l-16 9 M26 43V25', atoms: [] },
+  { id: 'acetone', bonds: 'M16 48l27-16 27 16 M40 32V15 M46 32V15', atoms: [[43, 12, 'O']] },
+  { id: 'glycine', bonds: 'M22 36l16 10 21-13 M57 32V16 M62 32V16 M60 33l12 7',
+    atoms: [[13, 35, 'H₂N'], [60, 13, 'O'], [82, 47, 'OH']] },
+  { id: 'ethylAcetate', bonds: 'M7 47l20-12 M25 35V18 M30 35V18 M28 35l13 7 M55 42l16-9 20 12',
+    atoms: [[28, 14, 'O'], [48, 49, 'O']] },
+];
 
-function BoilingFlask({ width = 70, height = 70 }) {
-  return (
-    <svg width={width} height={height} viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" className="floating-flask-svg">
-      <defs>
-        <linearGradient id="flaskBlueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#38bdf8" stopOpacity="0.92" />
-          <stop offset="100%" stopColor="#0369a1" stopOpacity="0.8" />
-        </linearGradient>
-      </defs>
-      <rect x="28" y="6" width="8" height="3" rx="1.5" stroke="#38bdf8" strokeWidth="2" fill="rgba(56,189,248,0.3)" />
-      <path d="M29 9V24C22 27 18 34 18 42C18 51 24.5 58 32 58C39.5 58 46 51 46 42C46 34 42 27 35 24V9" stroke="#38bdf8" strokeWidth="2.5" />
-      <path d="M35 15L45 21" stroke="#38bdf8" strokeWidth="2.5" strokeLinecap="round" />
-      <circle cx="32" cy="44" r="11" fill="url(#flaskBlueGrad)" />
-      <circle cx="29" cy="41" r="2" fill="#ffffff" opacity="0.9" />
-      <circle cx="36" cy="46" r="1.5" fill="#ffffff" opacity="0.75" />
-    </svg>
-  );
-}
-
-function TestTube({ width = 48, height = 48 }) {
-  return (
-    <svg width={width} height={height} viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" className="floating-flask-svg">
-      <defs>
-        <linearGradient id="tubeMintGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#6FEDEE" stopOpacity="0.95" />
-          <stop offset="100%" stopColor="#10b981" stopOpacity="0.8" />
-        </linearGradient>
-      </defs>
-      <line x1="24" y1="10" x2="40" y2="10" stroke="#6FEDEE" strokeWidth="2.5" strokeLinecap="round" />
-      <path d="M27 10V46C27 51 29 55 32 55C35 55 37 51 37 46V10" stroke="#6FEDEE" strokeWidth="2.5" />
-      <path d="M28 34V46C28 49.5 29.5 53 32 53C34.5 53 36 49.5 36 46V34C34 35.5 30 32.5 28 34Z" fill="url(#tubeMintGrad)" />
-      <circle cx="32" cy="43" r="1.5" fill="#ffffff" />
-      <circle cx="30" cy="37" r="1.2" fill="#ffffff" opacity="0.8" />
-    </svg>
-  );
-}
-
-function BenzeneRing({ width = 56, height = 56 }) {
-  return (
-    <svg width={width} height={height} viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" className="floating-benzene-svg">
-      <polygon points="32,8 52,19.5 52,42.5 32,54 12,42.5 12,19.5" stroke="#6FEDEE" strokeWidth="2.5" strokeLinejoin="round" fill="rgba(111,237,238,0.08)" />
-      <circle cx="32" cy="31" r="13" stroke="#818cf8" strokeWidth="2" strokeDasharray="5 3" opacity="0.9" />
-    </svg>
-  );
+function MolecularStructures() {
+  return structures.map(({ id, bonds, atoms }) => (
+    <figure key={id} aria-hidden="true" className={`molecule molecule--${id}`}>
+      <svg viewBox="0 0 98 66" fill="none">
+        <path d={bonds} stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" strokeLinecap="round" />
+        {atoms.map(([x, y, label]) => <text key={label + x} x={x} y={y} textAnchor="middle">{label}</text>)}
+      </svg>
+    </figure>
+  ));
 }
 
 // Estrellas fijas y micro-estrellas cósmicas
@@ -210,21 +162,18 @@ const STARS = [
 export default function ResourcesPage() {
   const t = useTranslations('resources');
   const lang = useLocale();
-  const [filtro, setFiltro] = useState('todas');
-
+  const [filter, setFilter] = useState('todas');
   const scrollToHerramientas = (e) => {
     e?.preventDefault?.();
     const el = document.getElementById('herramientas');
     if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
+      el.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
     }
   };
 
-  return (
-    <main className="tema-biblioteca" style={{ background: '#06070a', minHeight: '100vh' }}>
-      <Navbar />
-
-      {/* ---------- Hero Cósmico Espacial (Fondo del espacio, matraces y fórmulas volando) ---------- */}
+  return <>
+    <Navbar />
+    <main className={styles.page}>
       <section className="cosmic-hero">
         {/* Nebulosas del espacio profundo */}
         <div className="cosmic-nebula cosmic-nebula--cyan" />
@@ -252,83 +201,36 @@ export default function ResourcesPage() {
         {/* ---------- MATRACES VOLANDO ---------- */}
         {/* Matraz Erlenmeyer superior izquierdo (visible en desktop y móvil) */}
         <div className="floating-item float-anim-1" style={{ top: '11%', left: '5%', opacity: 0.9 }}>
-          <ErlenmeyerFlask width={74} height={74} />
+          <Glassware kind="erlenmeyer" width={112} height={112} />
         </div>
 
         {/* Matraz Aforado superior derecho (visible en desktop y móvil) */}
         <div className="floating-item float-anim-2" style={{ top: '13%', right: '6%', opacity: 0.9 }}>
-          <VolumetricFlask width={66} height={66} />
+          <Glassware kind="volumetric" width={115} height={115} />
         </div>
 
         {/* Matraz Balón de Destilación inferior izquierdo (solo desktop/tablet) */}
         <div className="floating-item float-anim-3 hide-mobile" style={{ top: '66%', left: '5%', opacity: 0.85 }}>
-          <BoilingFlask width={70} height={70} />
+          <Glassware kind="boiling" width={104} height={104} />
         </div>
 
         {/* Tubo de Ensayo inferior derecho (solo desktop/tablet) */}
         <div className="floating-item float-anim-4 hide-mobile" style={{ top: '68%', right: '6%', opacity: 0.9 }}>
-          <TestTube width={54} height={54} />
+          <Glassware kind="tube" width={98} height={98} />
         </div>
 
-        {/* Anillo de Benceno resonante flotando lateral derecho */}
-        <div className="floating-item float-anim-5 hide-mobile" style={{ top: '38%', right: '3%', opacity: 0.75 }}>
-          <BenzeneRing width={62} height={62} />
+        <MolecularStructures />
+        <div aria-hidden="true" className="floating-item float-anim-2 equation equation--gas">
+          <i>PV</i> = <i>nRT</i>
         </div>
-
-        {/* Anillo de Benceno lateral izquierdo */}
-        <div className="floating-item float-anim-6 hide-mobile" style={{ top: '44%', left: '3%', opacity: 0.7 }}>
-          <BenzeneRing width={52} height={52} />
+        <div aria-hidden="true" className="floating-item float-anim-4 equation equation--ph">
+          pH = −log₁₀(<i>a</i><sub>H⁺</sub>)
         </div>
-
-        {/* ---------- FÓRMULAS QUÍMICAS VOLANDO ---------- */}
-        {/* PV = nRT (esquina inferior izquierda) */}
-        <div className="floating-item float-anim-2" style={{ bottom: '10%', left: '7%' }}>
-          <span className="floating-formula formula--cyan" style={{ fontSize: '1.35rem' }}>PV = nRT</span>
+        <div aria-hidden="true" className="floating-item float-anim-3 equation equation--energy hide-mobile">
+          Δ<i>G</i> = Δ<i>H</i> − <i>T</i>Δ<i>S</i>
         </div>
-
-        {/* pH = -log[H+] (esquina inferior derecha) */}
-        <div className="floating-item float-anim-4" style={{ bottom: '10%', right: '7%' }}>
-          <span className="floating-formula formula--cyan" style={{ fontSize: '1.25rem' }}>pH = -log[H<sup>+</sup>]</span>
-        </div>
-
-        {/* ΔG = ΔH - TΔS */}
-        <div className="floating-item float-anim-3 hide-mobile" style={{ top: '22%', right: '15%' }}>
-          <span className="floating-formula formula--violet" style={{ fontSize: '1.28rem' }}>ΔG = ΔH - TΔS</span>
-        </div>
-
-        {/* k = A e^(-Ea/RT) */}
-        <div className="floating-item float-anim-1 hide-mobile" style={{ top: '78%', left: '16%' }}>
-          <span className="floating-formula formula--gold" style={{ fontSize: '1.2rem' }}>k = A e<sup>-Ea/RT</sup></span>
-        </div>
-
-        {/* Keq */}
-        <div className="floating-item float-anim-5 hide-mobile" style={{ top: '30%', left: '11%' }}>
-          <span className="floating-formula formula--white" style={{ fontSize: '1.15rem' }}>K<sub>eq</sub> = [Prod] / [React]</span>
-        </div>
-
-        {/* E = hν (desplazado para no tapar el título) */}
-        <div className="floating-item float-anim-6 hide-mobile" style={{ top: '11%', right: '28%' }}>
-          <span className="floating-formula formula--gold" style={{ fontSize: '1.25rem' }}>E = hν</span>
-        </div>
-
-        {/* H2O */}
-        <div className="floating-item float-anim-2 hide-mobile" style={{ top: '56%', left: '2%', opacity: 0.65 }}>
-          <span className="floating-formula formula--cyan" style={{ fontSize: '1.15rem' }}>H<sub>2</sub>O</span>
-        </div>
-
-        {/* C6H12O6 */}
-        <div className="floating-item float-anim-3 hide-mobile" style={{ top: '57%', right: '2%', opacity: 0.65 }}>
-          <span className="floating-formula formula--violet" style={{ fontSize: '1.15rem' }}>C<sub>6</sub>H<sub>12</sub>O<sub>6</sub></span>
-        </div>
-
-        {/* ΔS_univ > 0 */}
-        <div className="floating-item float-anim-4 hide-mobile" style={{ top: '84%', left: '30%' }}>
-          <span className="floating-formula formula--white" style={{ fontSize: '1.12rem' }}>ΔS<sub>univ</sub> &gt; 0</span>
-        </div>
-
-        {/* CH3CH2OH */}
-        <div className="floating-item float-anim-1 hide-mobile" style={{ top: '85%', right: '30%' }}>
-          <span className="floating-formula formula--gold" style={{ fontSize: '1.12rem' }}>CH<sub>3</sub>CH<sub>2</sub>OH</span>
+        <div aria-hidden="true" className="floating-item float-anim-6 equation equation--photon hide-mobile">
+          <i>E</i> = <i>hν</i>
         </div>
 
         {/* ---------- CONTENIDO CENTRAL: GRANDAZO RECURSOS + INFO ---------- */}
@@ -353,118 +255,46 @@ export default function ResourcesPage() {
               className="btn-cosmic-scroll"
             >
               <span>{t('exploreTools') || 'Explorar Herramientas'}</span>
-              <FaArrowRight size={13} style={{ transform: 'rotate(90deg)' }} />
+              <FiArrowDown aria-hidden="true" size={18} />
             </button>
           </div>
         </div>
       </section>
-
-
-
-      {/* ---------- Barra de Filtros y Aviso (Modo Claro Premium) ---------- */}
-      <section id="herramientas" className="py-4 cosmic-light-bottom" style={{ background: '#ffffff', borderTop: '1px solid #e2e8f0', borderBottom: '1px solid #f1f5f9', scrollMarginTop: 'var(--chapter-main-height, 4rem)' }}>
-        <div className="container">
-          <div className="d-flex justify-content-center flex-wrap gap-3">
-            <button
-              onClick={() => setFiltro('todas')}
-              className={`cosmic-light-filter-btn ${filtro === 'todas' ? 'active' : ''}`}
-            >
-              <FaThLarge size={14} />
-              <span>{t('all') || 'Todos'}</span>
-              <span className="cosmic-light-filter-count">{RECURSOS.length}</span>
-            </button>
-
-            {ORDEN_CATEGORIAS.map((cat) => {
-              const count = RECURSOS.filter((r) => r.categoria === cat).length;
-              const IconComp = CATEGORIAS_CONFIG[cat].icon;
-              return (
-                <button
-                  key={cat}
-                  onClick={() => setFiltro(cat)}
-                  className={`cosmic-light-filter-btn ${filtro === cat ? 'active' : ''}`}
-                >
-                  <IconComp size={14} />
-                  <span>{t(`categorias.${cat}`)}</span>
-                  <span className="cosmic-light-filter-count">{count}</span>
-                </button>
-              );
+      <section id="herramientas" className={styles.catalog} aria-label={t('title')}>
+        <div className={styles.wrap}>
+          <div className={styles.filters} role="group" aria-label={t('title')}>
+            {['todas', ...Object.keys(categories)].map(key => {
+              const Icon = categories[key] || FiGrid;
+              const count = key === 'todas' ? RECURSOS.length : RECURSOS.filter(r => r.categoria === key).length;
+              return <button key={key} type="button" aria-pressed={filter === key} onClick={() => setFilter(key)}>
+                <Icon aria-hidden="true" />{key === 'todas' ? t('all') : t('categorias.' + key)} <small>{count}</small>
+              </button>;
             })}
           </div>
-        </div>
-      </section>
-
-      {/* ---------- Cuadrícula Clara ---------- */}
-      <section className="py-5 cosmic-light-bottom" style={{ background: '#ffffff', minHeight: '50vh' }}>
-        <div className="container">
-          {ORDEN_CATEGORIAS.map((categoria) => {
-            if (filtro !== 'todas' && filtro !== categoria) return null;
-            const delCategoria = RECURSOS.filter((r) => r.categoria === categoria);
-            if (delCategoria.length === 0) return null;
-            const config = CATEGORIAS_CONFIG[categoria];
-            const CatIcon = config.icon;
-
-            return (
-              <div key={categoria} className="mb-5">
-                <div className="d-flex align-items-center gap-3 mb-4 pb-2">
-                  <div className="cosmic-light-category-icon" style={{ background: config.badgeBg, color: config.color }}>
-                    <CatIcon size={20} />
+          {Object.entries(categories).filter(([key]) => filter === 'todas' || filter === key).map(([key, Icon]) =>
+            <section className={styles.group} key={key}>
+              <h2><Icon aria-hidden="true" />{t('categorias.' + key)}</h2>
+              <div>{RECURSOS.filter(r => r.categoria === key).map(resource => {
+                const title = t('fichas.' + resource.id + '.titulo');
+                return <article className={styles.resource} key={resource.id}>
+                  <div>
+                    {resource.isFeatured && <small className={styles.original}>{t('originalProject')} · ACS UNMSM</small>}
+                    <h3>{title}</h3>
+                    <p>{t('fichas.' + resource.id + '.texto')}</p>
                   </div>
-                  <h2 className="h4 fw-bold mb-0" style={{ color: '#0f172a', letterSpacing: '-0.01em' }}>
-                    {t(`categorias.${categoria}`)}
-                  </h2>
-                </div>
-
-                <div className="row g-4">
-                  {delCategoria.map((recurso, idx) => {
-                    const isOfficial = recurso.isFeatured;
-
-                    return (
-                      <Reveal key={recurso.id} delay={idx % 3} className="col-md-6 col-lg-4">
-                        <article className={`cosmic-light-card ${isOfficial ? 'cosmic-light-card-official' : ''}`}>
-
-                          <div className="cosmic-light-card-header">
-                            {isOfficial && (
-                              <div className="acs-exclusive-label">
-                                <span className="acs-dot"></span> {t('originalProject') || 'Proyecto Original'}
-                              </div>
-                            )}
-                          </div>
-
-                          <div className="cosmic-light-card-body">
-                            <h3 className="cosmic-light-card-title">{t(`fichas.${recurso.id}.titulo`)}</h3>
-                            <p className="cosmic-light-card-text">{t(`fichas.${recurso.id}.texto`)}</p>
-                          </div>
-
-                          <div className="cosmic-light-card-footer">
-                            {recurso.url ? (
-                              recurso.isInternal || recurso.url.startsWith('/') ? (
-                                <Link className="cosmic-light-card-link" href={`/${lang}${recurso.url}`}>
-                                  {t('visitar') || 'Abrir recurso'} <FaArrowRight size={11} className="ms-2" />
-                                </Link>
-                              ) : (
-                                <a className="cosmic-light-card-link" href={recurso.url} target="_blank" rel="noopener noreferrer">
-                                  {t('visitar') || 'Abrir recurso'} <FaExternalLinkAlt size={10} className="ms-2" />
-                                </a>
-                              )
-                            ) : (
-                              <span className="cosmic-light-card-soon">{t('comingSoon') || 'Próximamente'}</span>
-                            )}
-
-
-                          </div>
-
-                        </article>
-                      </Reveal>
-                    );
-                  })}
-                </div>
-              </div>
-            );
-          })}
+                  {resource.url ? <Link className={styles.open}
+                    href={resource.isInternal ? '/' + lang + resource.url : resource.url}
+                    target={resource.isInternal ? undefined : '_blank'} rel={resource.isInternal ? undefined : 'noopener noreferrer'}
+                    aria-label={t('visitar') + ' · ' + title}>
+                    {t('visitar')}{resource.isInternal ? <FiArrowRight /> : <FiArrowUpRight />}
+                  </Link> : <span>{t('comingSoon')}</span>}
+                </article>;
+              })}</div>
+            </section>
+          )}
         </div>
       </section>
-
-      <Footer />
     </main>
-  );
+    <Footer />
+  </>;
 }

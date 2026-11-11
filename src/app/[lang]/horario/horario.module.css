@@ -1,0 +1,11 @@
+.workspace {
+  height: calc(100vh - var(--chapter-main-height, 4rem));
+  height: calc(100dvh - var(--chapter-main-height, 4rem));
+  display: flex;
+  flex-direction: column;
+  background: #f6f6fa;
+}
+.returnBar { padding: 5px max(3%, calc((100% - 1160px) / 2)); background: white; }
+.returnBar a { display: inline-flex; align-items: center; gap: .6rem; min-height: 40px; font: 500 .85rem Stolzl, sans-serif; color: #3824ba; text-decoration: none; }
+.returnBar a:hover { text-decoration: underline; }
+.workspace iframe { width: 100%; flex: 1; min-height: 0; border: 0; }

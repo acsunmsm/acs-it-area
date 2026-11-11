@@ -1,3 +1,4 @@
+import { limitedBody } from '@/src/lib/requestLimits';
 import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 
@@ -5,7 +6,8 @@ import nodemailer from 'nodemailer';
 export async function POST(request) {
   try {
     // Extraer datos enviados desde el formulario
-    const formData = await request.formData();
+    const formData = await limitedBody(request, { scope: 'contact', bytes: 32768, perMinute: 5, form: true });
+    if (formData instanceof Response) return formData;
 
     const name = formData.get('name');
     const email = formData.get('email');
@@ -14,8 +16,10 @@ export async function POST(request) {
     const captcha = formData.get('g-recaptcha-response');
 
     // Verifica que se haya resuelto el CAPTCHA
-    if (!captcha) {
-      return NextResponse.json({ error: 'Captcha no resuelto' }, { status: 400 });
+    if (![name,email,subject,message,captcha].every(value => typeof value === 'string' && value.trim()) ||
+        name.length > 150 || subject.length > 200 || email.length > 254 || message.length > 5000 ||
+        captcha.length > 8192 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return NextResponse.json({ error: 'Revisa los campos y completa el CAPTCHA' }, { status: 400 });
     }
 
     // ✅ Verificar CAPTCHA con Google
@@ -24,7 +28,8 @@ export async function POST(request) {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
-      body: `secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${captcha}`,
+      body: new URLSearchParams({ secret: process.env.RECAPTCHA_SECRET_KEY, response: captcha }),
+      signal: AbortSignal.timeout(10000),
     });
 
     const verifyData = await verifyRes.json();

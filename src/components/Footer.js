@@ -2,6 +2,7 @@
 'use client';
 
 // Usa `next-intl` para traducir textos (títulos, descripciones y mensajes) 
+import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/src/i18n/navigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -26,7 +27,7 @@ export default function Footer() {
 
           {/* Column 1: Identity & Contact */}
           <div className="footer-acs-col-main">
-            <img src="/assets/img/Whitelogo.svg" alt="ACS UNMSM" className="footer-acs-logo" />
+            <Image width={1288} height={108} src="/assets/img/Whitelogo.svg" alt="ACS UNMSM" className="footer-acs-logo" />
 
             <div className="footer-acs-contact">
               <p>acs.unmsm@gmail.com</p>

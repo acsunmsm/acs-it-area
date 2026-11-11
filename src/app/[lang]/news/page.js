@@ -1,5 +1,6 @@
 'use client';
 
+import PublicationImage from '@/src/components/PublicationImage';
 import { removePublicationCover } from '@/src/lib/updatePublication';
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import Link from 'next/link';
@@ -18,7 +19,7 @@ export default function NewsPage() {
   const t = useTranslations('news');
   const locale = useLocale();
 
-  const { session } = useAuth();
+  const { staffSession: session } = useAuth();
   const isAuthenticated = !!session;
 
   const [articles, setArticles] = useState(DEFAULT_LOCAL_ARTICLES);
@@ -208,7 +209,7 @@ export default function NewsPage() {
               <article key={article.id} className={styles.story}>
                 <Link href={`/${locale}/news/${article.id}`} className={styles.storyLink}>
                   <div className={styles.picture}>
-                    <img src={article.image} alt="" loading={index === 0 ? 'eager' : 'lazy'} />
+                    <PublicationImage sizes="(max-width: 688px) 90vw, 360px" src={article.image} alt="" loading={index === 0 ? 'eager' : 'lazy'} />
                   </div>
                   <div className={styles.summary}>
                     <div className={styles.metadata}>

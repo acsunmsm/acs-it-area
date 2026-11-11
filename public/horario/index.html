@@ -11,16 +11,11 @@
   <meta property="og:description"
     content="Armador inteligente de horarios universitarios sin cruces a partir del PDF del SUM. FQIQ UNMSM.">
   <meta property="og:type" content="website">
-  <link rel="icon" href="/assets/img/icon3.png" onerror="this.href='../assets/img/icon3.png'">
+  <link rel="icon" href="/assets/img/icon3.png">
 
   <!-- pdf.js: librería de Mozilla para lectura de PDFs en cliente -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-  <script>
-    window.RUTA_WORKER_PDFJS = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
-    if (window.self !== window.top) {
-      document.documentElement.classList.add('inside-iframe');
-    }
-  </script>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <script src="vendor/purify.min.js"></script>
   <link rel="stylesheet" href="estilos.css">
 </head>
 
@@ -31,7 +26,7 @@
     <div class="header-wrap">
       <div class="brand-box">
         <div class="brand-logo-img">
-          <img src="/assets/img/LogoB.png" onerror="this.src='../assets/img/LogoB.png'" alt="ACS Student Chapter UNMSM"
+          <img src="/assets/img/LogoB.png" alt="ACS Student Chapter UNMSM"
             class="logo-principal">
         </div>
         <div class="brand-divider"></div>
@@ -54,22 +49,34 @@
        ARMADOR DE HORARIOS INTELIGENTE (SUM / PDF)
        ========================================================= -->
     <section id="tab-armador" style="display:block;">
-      <div class="card-header-flex">
-        <div>
-          <h2 class="section-title"><span class="icon-tag">ACS</span> Armador Inteligente de Horarios Académicos</h2>
-          <p class="card-desc">Carga el reporte PDF del Sistema Único de Matrícula (SUM) y genera automáticamente todas
-            las combinaciones posibles sin cruces de horarios.</p>
+      <header class="planner-intro">
+        <div class="planner-copy">
+          <h2>Generador de horarios</h2>
+          <p>Combina las asignaturas de tu escuela y encuentra un horario sin cruces a partir del reporte del SUM.</p>
         </div>
-        <div class="header-actions noprint">
-          <button class="btn sec sm" id="btnImprimirInline" title="Imprimir vista actual del horario">
-            Imprimir Horario
-          </button>
+        <div class="planner-week" aria-hidden="true">
+          <div class="planner-days"><span>Lun</span><span>Mar</span><span>Mié</span><span>Jue</span><span>Vie</span></div>
+          <div class="planner-blocks"><i></i><i></i><i></i><i></i><i></i><i></i></div>
         </div>
+      </header>
+
+      <!-- Paso 1: Cargar PDF -->
+      <div class="card noprint" id="paso1">
+        <h2><span class="num">1</span> Carga tu reporte del SUM</h2>
+        <button type="button" id="zona" aria-describedby="pdf-ayuda">
+          <span class="upload-symbol" aria-hidden="true">↑</span>
+          <span class="upload-copy"><b>Arrastra aquí tu reporte de asignaturas</b><small id="pdf-ayuda">PDF del SUM · Hasta 16 MB y 300 páginas</small></span>
+          <span class="upload-action">Seleccionar PDF</span>
+        </button>
+        <input type="file" id="archivo" accept="application/pdf" class="hide">
+        <p class="privacy-note">Tu PDF se procesa en este navegador.</p>
+        <div id="estado" role="status"></div>
       </div>
 
+      <div class="planner-tools noprint">
       <!-- Guía Desplegable -->
       <details class="guia noprint">
-        <summary>¿Cómo funciona el armador de horarios? (Guía rápida)</summary>
+        <summary>Cómo generar tu horario</summary>
         <div class="cont">
           <h4>1. Consigue el PDF del SUM</h4>
           <p>Descarga el reporte oficial <b>Reporte de Programación de Asignaturas</b> de tu escuela en formato PDF.</p>
@@ -86,17 +93,8 @@
         </div>
       </details>
 
-      <!-- Paso 1: Cargar PDF -->
-      <div class="card noprint" id="paso1">
-        <h2><span class="num">1</span> Cargar Reporte de Asignaturas (PDF)</h2>
-        <div id="zona">
-          <b>Arrastra el PDF del SUM aquí o haz clic para seleccionarlo</b>
-          <small>Formato oficial: Reporte de Programación de Asignaturas (UNMSM / FQIQ)</small>
-        </div>
-        <input type="file" id="archivo" accept="application/pdf" class="hide">
-        <div id="estado"></div>
+        <button class="btn sec sm" id="btnImprimirInline" type="button">Imprimir horario</button>
       </div>
-
       <!-- Paso 2: Cursos -->
       <div class="card noprint hide" id="paso2">
         <h2><span class="num">2</span> ¿Qué cursos vas a llevar?</h2>
@@ -160,7 +158,7 @@
 
       <!-- Paso 3: Preferencias -->
       <div class="card noprint hide" id="paso3">
-        <h2><span class="num">3</span> Filtros & Preferencias</h2>
+        <h2><span class="num">3</span> Filtros y preferencias</h2>
 
         <div class="fila">
           <label class="tit">Días permitidos</label>
@@ -196,7 +194,7 @@
 
         <div class="fila" style="align-items:flex-start">
           <label class="tit">Plana Docente</label>
-          <div style="flex:1;min-width:280px">
+          <div class="teacher-preferences">
             <p style="font-size:12.5px;color:var(--muted);margin:0 0 8px 0;line-height:1.4">
               Haz clic en cada docente para cambiar su disponibilidad:
               <span
@@ -294,7 +292,7 @@
   <!-- FOOTER OFICIAL ACS UNMSM -->
   <footer class="footer-acs-mini noprint">
     <div class="footer-wrap">
-      <img src="/assets/img/Whitelogo.svg" onerror="this.src='../assets/img/Whitelogo.svg'" alt="ACS UNMSM"
+      <img src="/assets/img/Whitelogo.svg" alt="ACS UNMSM"
         class="footer-logo">
       <div class="footer-text">
         <b>ACS Student Chapter UNMSM</b> · Facultad de Química e Ingeniería Química<br>
@@ -307,7 +305,7 @@
 
   <!-- SCRIPTS MODULARES -->
   <script src="nucleo.js"></script>
-  <script src="interfaz.js"></script>
+  <script type="module" src="interfaz.js"></script>
 </body>
 
 </html>

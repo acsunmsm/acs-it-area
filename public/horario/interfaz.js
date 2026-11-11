@@ -1,5 +1,15 @@
 /* ============ CONTROLADOR PRINCIPAL · ARMADOR DE HORARIOS INTELIGENTE (SUM / PDF) ============ */
-pdfjsLib.GlobalWorkerOptions.workerSrc = window.RUTA_WORKER_PDFJS;
+import * as pdfjsLib from './vendor/pdf.min.mjs';
+pdfjsLib.GlobalWorkerOptions.workerSrc = new URL('./vendor/pdf.worker.min.mjs', import.meta.url).href;
+if (window.self !== window.top) document.documentElement.classList.add('inside-iframe');
+
+function cleanMarkup(html) {
+  return DOMPurify.sanitize(html, {
+    ALLOWED_TAGS: ['b','br','button','details','div','h3','h4','header','input','label','optgroup','option','p','select','span','summary','table','tbody','td','th','thead','tr'],
+    ALLOWED_ATTR: ['class','id','style','type','value','title','selected','checked','disabled','label','colspan','rowspan','open','name','for','placeholder','maxlength','min','max']
+  });
+}
+
 
 const $ = s => document.querySelector(s);
 const $$ = s => [...document.querySelectorAll(s)];
@@ -138,7 +148,7 @@ function inicializarArmadorPDF() {
   // Días iniciales
   const diasContenedor = $("#dias");
   if (diasContenedor) {
-    diasContenedor.innerHTML = DIAS.slice(0, 6).map(d => `<span class="chip on" data-dia="${d}">${DIA_CORTO[d]}</span>`).join("");
+    diasContenedor.innerHTML = cleanMarkup(DIAS.slice(0, 6).map(d => `<span class="chip on" data-dia="${d}">${DIA_CORTO[d]}</span>`).join(""));
     $$('#dias .chip').forEach(ch => ch.onclick = () => {
       ch.classList.toggle("on");
       ch.classList.contains("on") ? E.dias.add(ch.dataset.dia) : E.dias.delete(ch.dataset.dia);
@@ -218,11 +228,15 @@ function inicializarArmadorPDF() {
 async function procesarPDF(file) {
   const E = AppState.armador;
   const estado = $("#estado");
-  if (estado) estado.innerHTML = `<div class="aviso i">Leyendo <b>${file.name}</b>…</div>`;
+  if (estado) estado.innerHTML = cleanMarkup(`<div class="aviso i">Leyendo <b>${file.name}</b>…</div>`);
 
+  let loadingTask;
   try {
+    if (file.size > 16 * 1024 * 1024) throw new Error("El PDF excede 16 MB.");
     const buf = await file.arrayBuffer();
-    const doc = await pdfjsLib.getDocument({ data: buf }).promise;
+    loadingTask = pdfjsLib.getDocument({ data: buf, isEvalSupported: false, useSystemFonts: true });
+    const doc = await loadingTask.promise;
+    if (doc.numPages > 300) throw new Error("El PDF excede 300 páginas.");
     const paginas = [];
     for (let i = 1; i <= doc.numPages; i++) {
       const p = await doc.getPage(i);
@@ -233,12 +247,14 @@ async function procesarPDF(file) {
     E.cursos = parsearPaginas(paginas);
     if (!E.cursos.length) throw new Error("No se reconoció ninguna asignatura. ¿Es el reporte de programación del SUM?");
     const ciclos = [...new Set(E.cursos.map(c => c.ciclo))].sort((a, b) => a - b);
-    if (estado) estado.innerHTML = `<div class="aviso i">Listo: <b>${E.cursos.length} secciones</b> en ${doc.numPages} páginas · ciclos encontrados: ${ciclos.join(", ")}</div>`;
+    if (estado) estado.innerHTML = cleanMarkup(`<div class="aviso i">Listo: <b>${E.cursos.length} secciones</b> en ${doc.numPages} páginas · ciclos encontrados: ${ciclos.join(", ")}</div>`);
     pintarCiclosArmador(ciclos);
     $("#paso2")?.classList.remove("hide");
     $("#paso3")?.classList.remove("hide");
   } catch (err) {
-    if (estado) estado.innerHTML = `<div class="aviso e"><b>No se pudo leer el PDF.</b> ${err.message}</div>`;
+    if (estado) estado.innerHTML = cleanMarkup(`<div class="aviso e"><b>No se pudo leer el PDF.</b> ${err.message}</div>`);
+  } finally {
+    await loadingTask?.destroy();
   }
 }
 
@@ -247,8 +263,8 @@ function pintarCiclosArmador(ciclos) {
   const ciclosCont = $("#ciclos");
   if (!ciclosCont) return;
 
-  ciclosCont.innerHTML = ciclos.map(c => `<span class="chip" data-ciclo="${c}">Ciclo ${c}</span>`).join("") +
-    `<span class="chip" data-ciclo="*">Todos los ciclos</span>`;
+  ciclosCont.innerHTML = cleanMarkup(ciclos.map(c => `<span class="chip" data-ciclo="${c}">Ciclo ${c}</span>`).join("") +
+    `<span class="chip" data-ciclo="*">Todos los ciclos</span>`);
   $$("#ciclos .chip").forEach(ch => ch.onclick = () => {
     $$("#ciclos .chip").forEach(o => o.classList.remove("on"));
     ch.classList.add("on");
@@ -327,7 +343,7 @@ function filtrarCursosArmador() {
       const aviso = sinResultados.querySelector(".aviso-no-match");
       if (aviso) {
         const querySegura = (input?.value || "").replace(/[<>&"']/g, s => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;', "'": '&#39;' }[s]));
-        aviso.innerHTML = `No se encontró ninguna asignatura que coincida con "<b>${querySegura}</b>" en ningún ciclo.`;
+        aviso.innerHTML = cleanMarkup(`No se encontró ninguna asignatura que coincida con "<b>${querySegura}</b>" en ningún ciclo.`);
       }
     } else {
       sinResultados.classList.add("hide");
@@ -375,7 +391,7 @@ function mostrarPopoverCurso(cod, e) {
     `;
   }).join("");
 
-  contenido.innerHTML = `
+  contenido.innerHTML = cleanMarkup(`
     <div class="popover-head">
       <div class="popover-meta-top">
         <span class="popover-cod">${cod}</span>
@@ -392,7 +408,7 @@ function mostrarPopoverCurso(cod, e) {
       ${secCardsHtml}
     </div>
     <div class="popover-footer-hint">Vista previa rápida</div>
-  `;
+  `);
 
   popover.classList.remove("hide");
   moverPopover(e);
@@ -476,7 +492,8 @@ function vincularEventosChipsCursos() {
       const query = (input?.value || "").trim();
       if (!todo && !query) {
         E.sel.clear();
-        $$('#cursos input[type="checkbox"]').forEach(i => i.checked = false);
+        $$('#cursos .seccion-controls').forEach(el => el.addEventListener('click', e => e.stopPropagation()));
+  $$('#cursos input[type="checkbox"]').forEach(i => i.checked = false);
       }
 
       filtrarCursosArmador();
@@ -512,7 +529,7 @@ function pintarCursosArmador() {
   const cursosCont = $("#cursos");
   if (!cursosCont) return;
 
-  cursosCont.innerHTML = codigos.map(cod => {
+  cursosCont.innerHTML = cleanMarkup(codigos.map(cod => {
     const s = lista.filter(c => c.codigo === cod);
     const primer = s[0];
     const cicloCurso = primer.ciclo || "-";
@@ -521,7 +538,7 @@ function pintarCursosArmador() {
     const secFijada = E.seccionesFijadas.get(cod) || "";
 
     const opcionesSecc = s.length > 1 ? `
-      <div style="margin-top:7px;display:flex;align-items:center;justify-content:flex-end;gap:6px;width:100%" onclick="event.stopPropagation()">
+      <div style="margin-top:7px;display:flex;align-items:center;justify-content:flex-end;gap:6px;width:100%" class="seccion-controls">
         <span style="font-size:11.5px;color:var(--muted);white-space:nowrap">Fijar:</span>
         <select class="sel-pin-seccion ${secFijada ? 'pinned' : ''}" data-cod="${cod}" title="Fijar sección específica para ${primer.nombre}">
           <option value="">Cualquier sección</option>
@@ -546,7 +563,7 @@ function pintarCursosArmador() {
       </label>
       ${opcionesSecc}
     </div>`;
-  }).join("");
+  }).join(""));
 
   $$('#cursos input[type="checkbox"]').forEach(i => i.onchange = () => {
     i.checked ? E.sel.add(i.dataset.cod) : E.sel.delete(i.dataset.cod);
@@ -669,13 +686,13 @@ function actualizarMonitorCreditos(cred, numCursos) {
   if (alerta) {
     if (cred > max) {
       alerta.className = "cred-alerta excedido";
-      alerta.innerHTML = `Has seleccionado <b>${cred} créditos</b>, superando el tope reglamentario de <b>${max} créditos</b> por <b>${cred - max} crédito(s)</b>. El SUM de la UNMSM no permite exceder los ${max} créditos.`;
+      alerta.innerHTML = cleanMarkup(`Has seleccionado <b>${cred} créditos</b>, superando el tope reglamentario de <b>${max} créditos</b> por <b>${cred - max} crédito(s)</b>. El SUM de la UNMSM no permite exceder los ${max} créditos.`);
     } else if (cred > 0 && cred < min) {
       alerta.className = "cred-alerta advertencia";
-      alerta.innerHTML = `Has seleccionado <b>${cred} créditos</b>. La matrícula regular en el SUM requiere un mínimo de <b>${min} créditos</b> (te faltan ${min - cred} crédito(s)).`;
+      alerta.innerHTML = cleanMarkup(`Has seleccionado <b>${cred} créditos</b>. La matrícula regular en el SUM requiere un mínimo de <b>${min} créditos</b> (te faltan ${min - cred} crédito(s)).`);
     } else if (cred >= min && cred < max && (max - cred) <= 4) {
       alerta.className = "cred-alerta disponible";
-      alerta.innerHTML = `Te quedan <b>${max - cred} crédito(s) disponibles</b> antes de alcanzar el tope reglamentario (${max} créditos).`;
+      alerta.innerHTML = cleanMarkup(`Te quedan <b>${max - cred} crédito(s) disponibles</b> antes de alcanzar el tope reglamentario (${max} créditos).`);
     } else {
       alerta.className = "cred-alerta hide";
       alerta.innerHTML = "";
@@ -707,14 +724,14 @@ function pintarDocentesArmador() {
     return '<span style="background:#f1f5f9;color:#64748b;padding:2px 10px;border-radius:20px;font-size:11.5px;font-weight:700;white-space:nowrap">— Sin preferencia</span>';
   }
 
-  contenedor.innerHTML = docs.map(d => {
+  contenedor.innerHTML = cleanMarkup(docs.map(d => {
     const estado = E.docPrefs.get(d) || 'neutro';
     const safe = d.replace(/"/g, '&quot;');
     return `<div class="doc-pref-row" data-doc="${safe}" style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:7px 10px;border-radius:8px;background:#f8fafc;border:1px solid var(--line);cursor:pointer;transition:background 0.15s" title="Haz clic para cambiar disponibilidad">
       <span style="font-size:13px;font-weight:500;color:var(--ink);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${d}</span>
       <span class="doc-pref-badge" style="flex-shrink:0">${estadoBadge(estado)}</span>
     </div>`;
-  }).join("");
+  }).join(""));
 
   contenedor.querySelectorAll(".doc-pref-row").forEach(row => {
     row.addEventListener("click", () => {
@@ -726,7 +743,7 @@ function pintarDocentesArmador() {
 
       // Actualizar visual sin redibujar todo
       const badge = row.querySelector('.doc-pref-badge');
-      if (badge) badge.innerHTML = estadoBadge(siguiente);
+      if (badge) badge.innerHTML = cleanMarkup(estadoBadge(siguiente));
       row.style.background = siguiente === 'disponible' ? '#f0fdf4' : (siguiente === 'no_disponible' ? '#fff5f5' : '#f8fafc');
       row.style.borderColor = siguiente === 'disponible' ? '#86efac' : (siguiente === 'no_disponible' ? '#fca5a5' : 'var(--line)');
     });
@@ -818,7 +835,7 @@ function armarHorarios() {
   const activos = grupos.filter(g => g.secciones.length);
 
   if (!activos.length) {
-    out.innerHTML = diagnosticoInteligente({ activos: [], vacios, f, lista, codigos });
+    out.innerHTML = cleanMarkup(diagnosticoInteligente({ activos: [], vacios, f, lista, codigos }));
     vincularEventosDiagnostico();
     out.scrollIntoView({ behavior: "smooth", block: "start" });
     return;
@@ -841,7 +858,7 @@ function armarHorarios() {
     }
   }
   if (!soluciones.length) {
-    out.innerHTML = diagnosticoInteligente({ activos, vacios, f, lista, codigos });
+    out.innerHTML = cleanMarkup(diagnosticoInteligente({ activos, vacios, f, lista, codigos }));
     vincularEventosDiagnostico();
     out.scrollIntoView({ behavior: "smooth", block: "start" });
     return;
@@ -887,7 +904,7 @@ function armarHorarios() {
     html += tarjetaResultadoArmador(s, i, color, f);
   });
 
-  out.innerHTML = html;
+  out.innerHTML = cleanMarkup(html);
   out.scrollIntoView({ behavior: "smooth", block: "start" });
 
   vincularEventosResultados();
@@ -966,7 +983,7 @@ function vincularEventosResultados() {
       const cardEl = $(`#res-tarjeta-${solIdx}`);
       if (cardEl) {
         const temp = document.createElement("div");
-        temp.innerHTML = tarjetaResultadoArmador(sol, solIdx, color, f);
+        temp.innerHTML = cleanMarkup(tarjetaResultadoArmador(sol, solIdx, color, f));
         const nuevaCard = temp.firstElementChild;
         nuevaCard.classList.add("card-updated");
         cardEl.replaceWith(nuevaCard);
@@ -1070,11 +1087,11 @@ function abrirModalCambioSeccion(solIdx, cod) {
   if (subtitulo) subtitulo.textContent = `Opción ${solIdx + 1} · Haz clic en una sección para cambiarla de inmediato`;
 
   if (todasDelCurso.length <= 1) {
-    cuerpo.innerHTML = `
+    cuerpo.innerHTML = cleanMarkup(`
       <div style="padding:20px;background:#f8fafc;border:1px solid var(--line);border-radius:10px;text-align:center">
         <p style="margin:0 0 6px 0;font-size:14px;font-weight:700;color:var(--ink)">Asignatura con sección única</p>
         <p style="margin:0;font-size:13px;color:var(--muted)">Esta asignatura solo cuenta con la <b>Sec. ${secActualObj.seccion}</b> en el reporte del SUM. No existen secciones alternativas para cambiar.</p>
-      </div>`;
+      </div>`);
     modal.classList.remove("hide");
     return;
   }
@@ -1141,7 +1158,7 @@ function abrirModalCambioSeccion(solIdx, cod) {
   });
 
   html += `</div>`;
-  cuerpo.innerHTML = html;
+  cuerpo.innerHTML = cleanMarkup(html);
 
   cuerpo.querySelectorAll(".btnModalAplicarSwap").forEach(btn => {
     btn.onclick = () => {
@@ -1169,7 +1186,7 @@ function abrirModalCambioSeccion(solIdx, cod) {
       const cardEl = $(`#res-tarjeta-${solIdx}`);
       if (cardEl) {
         const temp = document.createElement("div");
-        temp.innerHTML = tarjetaResultadoArmador(sol, solIdx, E.colorMap, E.ultimoFiltro);
+        temp.innerHTML = cleanMarkup(tarjetaResultadoArmador(sol, solIdx, E.colorMap, E.ultimoFiltro));
         const nuevaCard = temp.firstElementChild;
         nuevaCard.classList.add("card-updated");
         cardEl.replaceWith(nuevaCard);
@@ -1297,7 +1314,7 @@ function actualizarUIPlanesRespaldo() {
       if (esPlanA) badgesHtml += `<span class="badge badge-plan badge-plan-a">PLAN A</span> `;
       if (esPlanB) badgesHtml += `<span class="badge badge-plan badge-plan-b">PLAN B</span> `;
       if (esPlanC) badgesHtml += `<span class="badge badge-plan badge-plan-c">PLAN C</span> `;
-      slotBadge.innerHTML = badgesHtml;
+      slotBadge.innerHTML = cleanMarkup(badgesHtml);
     }
   });
 
@@ -1335,7 +1352,7 @@ function renderizarPanelPlanesRespaldo() {
     { letra: 'C', tag: 'Plan C', classTag: 'tag-c', classPlan: 'plan-c' }
   ];
 
-  grid.innerHTML = slots.map(s => {
+  grid.innerHTML = cleanMarkup(slots.map(s => {
     const p = planes[s.letra];
     if (!p) {
       return `
@@ -1367,7 +1384,7 @@ function renderizarPanelPlanesRespaldo() {
           <button class="btn-slot-action btnCopiarPlan" data-copiar-plan="${s.letra}">Copiar SUM</button>
         </div>
       </div>`;
-  }).join('');
+  }).join(''));
 
   // Eventos de botones dentro del panel
   grid.querySelectorAll("[data-quitar-plan]").forEach(btn => {
@@ -1431,7 +1448,7 @@ async function copiarPlanAlPortapapeles(letra, boton) {
     if (boton) {
       const orig = boton.innerHTML;
       boton.innerHTML = "✅ ¡Copiado!";
-      setTimeout(() => { boton.innerHTML = orig; }, 2000);
+      setTimeout(() => { boton.innerHTML = cleanMarkup(orig); }, 2000);
     }
   } catch (err) {
     alert("Error al copiar: " + err.message);
@@ -1448,7 +1465,7 @@ async function copiarTodosLosPlanes(boton) {
     if (boton) {
       const orig = boton.innerHTML;
       boton.innerHTML = "✅ ¡Copiado!";
-      setTimeout(() => { boton.innerHTML = orig; }, 2000);
+      setTimeout(() => { boton.innerHTML = cleanMarkup(orig); }, 2000);
     }
   } catch (err) {
     alert("Error al copiar: " + err.message);
@@ -1540,7 +1557,7 @@ function abrirModalCompararPlanes() {
   html += `</tr>`;
 
   html += `</tbody></table></div>`;
-  cuerpo.innerHTML = html;
+  cuerpo.innerHTML = cleanMarkup(html);
 
   cuerpo.querySelectorAll(".btnCopiarPlanModal").forEach(btn => {
     btn.onclick = () => {

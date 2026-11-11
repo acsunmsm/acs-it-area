@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useState, useEffect, useRef } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 
@@ -205,7 +206,7 @@ export default function MascotaBot() {
           (un rebote suave). Sin la key, React reaprovecha el <img> y
           no se anima el cambio.
         */}
-        <img
+        <Image
           key={pose}
           src={`/assets/img/otto-${pose}.png`}
           alt={t('nombre')}
@@ -246,7 +247,7 @@ export default function MascotaBot() {
           border-radius: 12px;
         }
 
-        .mascota-img {
+        :global(.mascota-img) {
           width: 118px;
           height: auto;
           display: block;
@@ -440,13 +441,13 @@ export default function MascotaBot() {
         }
 
         @media (max-width: 480px) {
-          .mascota-img { width: 92px; }
+          :global(.mascota-img) { width: 92px; }
         }
 
         /* Accesibilidad: sin movimiento (la pose sí cambia, pero sin rebote) */
         @media (prefers-reduced-motion: reduce) {
           .mascota-btn,
-          .mascota-img,
+          :global(.mascota-img),
           .mascota-burbujas i,
           .mascota-panel__punto,
           .mascota-bocadillo,

@@ -4,15 +4,17 @@ import Image from 'next/image';
 import { Link } from '@/src/i18n/navigation';
 import { getTranslations } from 'next-intl/server';
 import { supabaseServer } from '@/src/lib/supabase-server';
+import { findCertificatesByDni } from '@/src/lib/certificates';
 import styles from './verificar.module.css';
 
 // ---------- Metadata dinámica ----------
 export async function generateMetadata({ params }) {
-  const { lang, id } = await params;
+  const { lang } = await params;
   const t = await getTranslations({ locale: lang, namespace: 'verificar' });
 
   return {
-    title: `${t('metaTitle')} – ${id}`,
+    title: t('metaTitle'),
+    robots: { index: false, follow: false },
     description: t('metaDescription'),
   };
 }
@@ -22,54 +24,7 @@ export default async function VerificarCertificado({ params }) {
   const { lang, id } = await params;
   const t = await getTranslations({ locale: lang, namespace: 'verificar' });
 
-  const cleanId = decodeURIComponent(id || '').trim();
-  let certificados = [];
-
-  // 1. Intentar buscar por documento de identidad (columna 'documento_identidad' en Supabase)
-  try {
-    const { data: byDoc, error: errDoc } = await supabaseServer
-      .from('certificados')
-      .select('*')
-      .eq('documento_identidad', cleanId);
-
-    if (!errDoc && byDoc && byDoc.length > 0) {
-      certificados = byDoc;
-    }
-  } catch (e) {
-    // Continuamos si hay error
-  }
-
-  // 2. Fallbacks alternativos de nombres de columna de documento
-  if (certificados.length === 0) {
-    try {
-      const { data: byDocAlt } = await supabaseServer
-        .from('certificados')
-        .select('*')
-        .or(`dni.eq.${cleanId},documento_de_identidad.eq.${cleanId}`);
-
-      if (byDocAlt && byDocAlt.length > 0) {
-        certificados = byDocAlt;
-      }
-    } catch (e) {
-      // Ignorar si las columnas no existen
-    }
-  }
-
-  // 3. Si no se encontró por documento, buscar por id_certificado (QR o código directo)
-  if (certificados.length === 0) {
-    try {
-      const { data: byId, error: errId } = await supabaseServer
-        .from('certificados')
-        .select('*')
-        .eq('id_certificado', cleanId);
-
-      if (!errId && byId && byId.length > 0) {
-        certificados = byId;
-      }
-    } catch (e) {
-      // Error
-    }
-  }
+  const certificados = await findCertificatesByDni(supabaseServer, id);
 
   // Determinar si se encontraron certificados
   const isValid = certificados.length > 0;

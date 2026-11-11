@@ -21,7 +21,7 @@ export default function Navbar() {
   const locale = useLocale();
   const router = useRouter();
   const pathname = usePathname();
-  const { session, loading } = useAuth();
+  const { staffSession: session, loading } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
   const [languageOpen, setLanguageOpen] = useState(false);
   const toggleRef = useRef(null);

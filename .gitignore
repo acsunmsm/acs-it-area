@@ -121,3 +121,4 @@ sketch
 .agents/skills/
 skills-lock.json
 .agents
+/public/horario/vendor/

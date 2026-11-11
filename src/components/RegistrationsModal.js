@@ -1,6 +1,6 @@
 // src/components/RegistrationsModal.js
 import React from 'react';
-import * as XLSX from 'xlsx';
+import { downloadRegistrations } from '@/src/lib/downloadRegistrations';
 
 export default function RegistrationsModal({ selectedEvent, registrations, onClose, loadingRegistrations, error }) {
   if (!selectedEvent) {
@@ -8,7 +8,7 @@ export default function RegistrationsModal({ selectedEvent, registrations, onClo
   }
 
   //Maneja la descarga de los registros en un archivo de Excel.
-  const handleDownloadExcel = () => {
+  const handleDownloadExcel = async () => {
     // Si no hay registros, muestra una alerta y detiene la función.
     if (registrations.length === 0) {
       alert('No hay datos de registro para descargar.');
@@ -35,10 +35,7 @@ export default function RegistrationsModal({ selectedEvent, registrations, onClo
     }));
 
     // Usa la librería XLSX para crear y descargar el archivo.
-    const ws = XLSX.utils.json_to_sheet(dataToExport);
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, `Registros ${selectedEvent.titulo || 'Evento'}`);
-    XLSX.writeFile(wb, `registros_evento_${selectedEvent.titulo?.replace(/\s/g, '_') || 'desconocido'}.xlsx`);
+    await downloadRegistrations(dataToExport, selectedEvent.titulo);
   };
 
   return (

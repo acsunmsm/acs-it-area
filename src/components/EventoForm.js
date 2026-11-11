@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useState, useRef } from 'react';
 import { removePublicationCover, updatePublication } from '../lib/updatePublication';
 import { supabase } from '../lib/supabaseClient'; // Asegúrate de que esta ruta sea correcta
@@ -342,7 +343,7 @@ export default function EventoForm({ event, onSave, onCancel }) {
           {imagenUrlActual && !imagen && ( // Muestra la imagen actual solo si no se ha seleccionado una nueva
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '10px' }}>
               <p style={{ fontSize: '0.9em', color: '#555' }}>Imagen actual:</p>
-              <img src={imagenUrlActual} alt="Imagen actual del evento" style={{ width: '80px', height: 'auto', borderRadius: '5px', border: '1px solid #eee' }} />
+              <Image unoptimized width={80} height={80} src={imagenUrlActual} alt="Imagen actual del evento" style={{ width: '80px', height: 'auto', borderRadius: '5px', border: '1px solid #eee' }} />
               <button
                 type="button"
                 onClick={() => {

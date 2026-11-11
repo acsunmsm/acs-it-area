@@ -2,6 +2,7 @@ const createNextIntlPlugin = require('next-intl/plugin');
 
 const withNextIntl = createNextIntlPlugin('./src/i18n/request.js');
 /** @type {import('next').NextConfig} */
+const storageOrigin = process.env.NEXT_PUBLIC_SUPABASE_URL && new URL(process.env.NEXT_PUBLIC_SUPABASE_URL);
 const nextConfig = {
   reactStrictMode: true,
   allowedDevOrigins: ['192.168.1.59'],
@@ -18,6 +19,9 @@ const nextConfig = {
 
   images: {
     remotePatterns: [
+      ...(storageOrigin
+        ? [{ protocol: storageOrigin.protocol.slice(0, -1), hostname: storageOrigin.hostname, port: storageOrigin.port, pathname: '/storage/v1/object/public/**' }]
+        : []),
       {
         protocol: 'https',
         hostname: 'images.pexels.com',

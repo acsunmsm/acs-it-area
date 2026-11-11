@@ -3,7 +3,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { supabase } from '@/src/lib/supabaseClient';
-import * as XLSX from 'xlsx'; // Importa la librería para Excel
+import { downloadRegistrations } from '@/src/lib/downloadRegistrations';
 
 // Modal que muestra registros de usuarios por evento
 export default function UserRegistrationsModal({ onClose }) {
@@ -71,7 +71,7 @@ export default function UserRegistrationsModal({ onClose }) {
     event.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const handleDownloadExcel = () => {
+  const handleDownloadExcel = async () => {
     if (registrations.length === 0) {
       alert('No hay datos de registro para descargar.');
       return;
@@ -88,10 +88,7 @@ export default function UserRegistrationsModal({ onClose }) {
     }));
 
     // Genera el archivo Excel
-    const ws = XLSX.utils.json_to_sheet(dataToExport);
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, `Registros ${selectedEvent?.name || 'Evento'}`);
-    XLSX.writeFile(wb, `registros_evento_${selectedEvent?.name.replace(/\s/g, '_') || 'desconocido'}.xlsx`);
+    await downloadRegistrations(dataToExport, selectedEvent?.name);
   };
 
 

@@ -15,7 +15,11 @@ export default function LoginPage() {
     const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
       // Si el evento es 'SIGNED_IN' y hay una sesión, significa que el login fue exitoso
       if (event === 'SIGNED_IN' && session) {
-        router.push('/es/dashboard');
+        if (['admin', 'organizer'].includes(session.user?.app_metadata?.chapter_role)) {
+          router.push('/es/dashboard');
+        } else {
+          setMessage('Tu cuenta no tiene acceso al panel de organización.');
+        }
       }
       // Opcional: Si el usuario ya está logueado y visita el login, redirigir también
       // if (session && event === 'INITIAL_SESSION') {
@@ -45,7 +49,7 @@ export default function LoginPage() {
       } else {
         // Si no hay error, el intento de login fue enviado.
         // La redirección ocurrirá a través del useEffect cuando Supabase confirme el 'SIGNED_IN'.
-        setMessage('Procesando inicio de sesión...');
+        if (['admin','organizer'].includes(data.user?.app_metadata?.chapter_role)) setMessage('Procesando inicio de sesión...');
       }
     } catch (err) {
       // Captura cualquier otro error inesperado en la ejecución
