@@ -13,7 +13,7 @@ function localLimit(key, limit, minute) {
   return count <= limit;
 }
 
-export async function limitedBody(request, { scope, bytes, perMinute, form = false }) {
+export async function limitedBody(request, { scope, bytes, perMinute, form = false, allowLocalFallback = false }) {
   // Only trust a header overwritten by the deployment's ingress proxy.
   const ipHeader = process.env.VERCEL === '1' ? 'x-vercel-forwarded-for' : process.env.TRUSTED_CLIENT_IP_HEADER;
   const client = (ipHeader && request.headers.get(ipHeader)?.split(',')[0].trim()) || 'shared';
@@ -23,10 +23,15 @@ export async function limitedBody(request, { scope, bytes, perMinute, form = fal
     return Response.json({ error: 'Demasiadas solicitudes' }, { status: 429, headers: { 'Retry-After': '60' } });
   }
   if (process.env.NODE_ENV === 'production') {
-    const { supabaseServer } = await import('./supabase-server.js');
-    const { data, error } = await supabaseServer.rpc('consume_request_quota', { key_hash: key, quota: limit });
-    if (error) return Response.json({ error: 'Servicio temporalmente no disponible' }, { status: 503 });
-    if (!data) return Response.json({ error: 'Demasiadas solicitudes' }, { status: 429, headers: { 'Retry-After': '60' } });
+    try {
+      const { supabaseServer } = await import('./supabase-server.js');
+      const { data, error } = await supabaseServer.rpc('consume_request_quota', { key_hash: key, quota: limit })
+        .abortSignal(AbortSignal.timeout(2500));
+      if (error) throw error;
+      if (!data) return Response.json({ error: 'Demasiadas solicitudes' }, { status: 429, headers: { 'Retry-After': '60' } });
+    } catch {
+      if (!allowLocalFallback) return Response.json({ error: 'Servicio temporalmente no disponible' }, { status: 503 });
+    }
   }
   const tooLarge = () => Response.json({ error: 'Solicitud demasiado grande' }, { status: 413 });
   if (Number(request.headers.get('content-length')) > bytes) return tooLarge();

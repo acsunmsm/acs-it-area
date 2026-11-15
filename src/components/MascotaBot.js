@@ -59,6 +59,7 @@ export default function MascotaBot() {
     const question = (valor ?? texto).trim();
     if (!question || activeRequest.current) return;
     const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort('timeout'), 24000);
     activeRequest.current = controller;
     setPending(true);
     setMensajes(prev => [...prev, { de: 'user', texto: question }]);
@@ -69,7 +70,7 @@ export default function MascotaBot() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ question, lang, previous: context.current }),
-        signal: AbortSignal.any([controller.signal, AbortSignal.timeout(24000)])
+        signal: controller.signal
       });
       if (!res.ok) throw new Error('Chat unavailable');
       const reply = await res.json();
@@ -86,12 +87,13 @@ export default function MascotaBot() {
       setMensajes(prev => [...prev, { de: 'bot', texto: replyText, links: reply.links, question: unresolved ? question : null }]);
       setPose(reply.pose);
     } catch {
-      if (controller.signal.aborted) return;
+      if (controller.signal.aborted && controller.signal.reason !== 'timeout') return;
       setMensajes(prev => [...prev, { de: 'bot', texto: t('errorConexion'), retry: question }]);
       setPose('piensa');
     } finally {
+      clearTimeout(timeout);
       activeRequest.current = null;
-      if (!controller.signal.aborted) setPending(false);
+      if (!controller.signal.aborted || controller.signal.reason === 'timeout') setPending(false);
     }
   };
 

@@ -281,3 +281,20 @@
     grid-template-columns: 1fr;
   }
 }
+
+.updates { padding-block: clamp(3rem, 6vw, 6rem); background: #f4f3fa; font-family: Stolzl, sans-serif; }
+.updatesInner { width: min(88%,76rem); margin: auto; }
+.updatesInner h2 { margin: 0 0 1.15rem; font: 500 clamp(1.45rem,2.6vw,2.1rem)/1.15 Stolzl,sans-serif; letter-spacing: -.045em; color: #251f20; }
+.canvasFeature { display: grid; grid-template-columns: minmax(0,1.35fr) minmax(0,1fr); align-items: center; overflow: hidden; background: #191937; color: white; border-radius: 7px 48px 7px 7px; }
+.canvasCopy { padding: clamp(1.6rem,4.5vw,4.6rem); }
+.canvasCopy h3 { color: white; margin: 0; font: 500 clamp(2.35rem,4.8vw,4.7rem)/1.04 Stolzl,sans-serif; letter-spacing: -.065em; }
+.canvasCopy p { color: #eeedf7; font-size: clamp(1rem,1.25vw,1.15rem); font-weight: 300; line-height: 1.65; max-width: 44ch; margin: 1.15rem 0 1.6rem; }
+.canvasLink { display: inline-flex; align-items: center; justify-content: center; gap: .8rem; padding: .8rem 1.3rem; border-radius: 2rem; min-height: 46px; font-weight: 500; color: #162032; background: #6fedee; text-decoration: none; }
+.canvasLink:hover { color: #251f20; background: white; }
+.canvasLink:focus-visible { outline: 3px solid white; outline-offset: 4px; }
+.canvasPhoto { width: 100%; height: auto; display: block; align-self: center; }
+@media (max-width: 720px) {
+  .canvasFeature { grid-template-columns: 1fr; border-top-right-radius: 30px; }
+  .canvasCopy { grid-row: 2; }
+  .canvasPhoto { max-height: 390px; object-fit: cover; object-position: center 47%; }
+}
