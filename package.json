@@ -5,6 +5,7 @@
   "scripts": {
     "test:carbonito": "node --test tests/carbonito.test.mjs",
     "generar:certificados": "node scripts/generar-certificados.mjs",
+    "subir:plantilla": "node scripts/subir-plantilla-supabase.mjs",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
