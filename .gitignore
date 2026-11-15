@@ -20,6 +20,17 @@
 # production
 /build
 
+# Generated certificates
+/certificados_generados/
+certificados_plantillas/*.png
+certificados_plantillas/*.jpg
+certificados_plantillas/*.jpeg
+prueba.png
+*.xlsx
+*.csv
+*.xls
+*.pdf
+
 # misc
 .DS_Store
 *.pem
@@ -59,6 +70,11 @@ next-env.d.ts
 
 # production
 /build
+
+# Generated certificates
+/certificados_generados/
+*.xlsx
+*.csv
 
 # misc
 .DS_Store

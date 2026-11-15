@@ -1,0 +1,63 @@
+{
+  "baseUrl": "https://acs-unmsm.org/es/verificar",
+  "name": {
+    "yPercent": 49,
+    "fontSize": 32,
+    "colorHex": "#0b1b2b",
+    "fontFamily": "bold"
+  },
+  "event": {
+    "enabled": true,
+    "yPercent": 37,
+    "fontSize": 16,
+    "colorHex": "#334155",
+    "fontFamily": "medium"
+  },
+  "date": {
+    "enabled": true,
+    "yPercent": 25,
+    "fontSize": 13,
+    "colorHex": "#64748b",
+    "fontFamily": "regular"
+  },
+  "qr": {
+    "xPercent": 82,
+    "yPercent": 9,
+    "sizePercent": 14
+  },
+  "codeText": {
+    "enabled": true,
+    "xPercent": 82,
+    "yPercent": 5.5,
+    "fontSize": 8.5,
+    "colorHex": "#475569",
+    "fontFamily": "regular"
+  },
+  "reconocimiento": {
+    "name": {
+      "fontSize": 90,
+      "colorHex": "#412BFD",
+      "fontFamily": "niconne",
+      "y": 693
+    },
+    "paragraph": {
+      "fontSize": 16.5,
+      "colorHex": "#1e293b",
+      "fontFamily": "garamond",
+      "y": 565,
+      "lineHeight": 52,
+      "maxWidth": 1480
+    },
+    "qr": {
+      "x": 1480,
+      "y": 873,
+      "size": 362
+    },
+    "eraser": {
+      "x": 300,
+      "y": 456,
+      "width": 1400,
+      "height": 146
+    }
+  }
+}

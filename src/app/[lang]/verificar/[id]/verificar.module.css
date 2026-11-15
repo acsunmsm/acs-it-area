@@ -303,6 +303,38 @@
   transform: translateY(0);
 }
 
+/* ---------- Botón de Descarga Oficial de Certificado ---------- */
+.downloadPdfBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  margin-top: 1.1rem;
+  padding: 0.85rem 1.5rem;
+  background: linear-gradient(135deg, #412bfd 0%, #2b1baa 100%);
+  color: #ffffff !important;
+  font-family: 'Stolzl', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  border-radius: 12px;
+  text-decoration: none;
+  box-shadow: 0 4px 16px rgba(65, 43, 253, 0.3);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+}
+
+.downloadPdfBtn:hover {
+  background: linear-gradient(135deg, #4f39fe 0%, #3523bd 100%);
+  color: #ffffff !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 22px rgba(65, 43, 253, 0.45);
+}
+
+.downloadPdfBtn:active {
+  transform: translateY(0);
+}
+
 /* ---------- Responsive ---------- */
 @media (max-width: 576px) {
   .heroSection {
