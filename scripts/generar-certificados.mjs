@@ -277,6 +277,28 @@ async function main() {
         fecha: '2025 - 2026',
         tipo: 'reconocimiento',
       },
+      {
+        id_certificado: 'ACS-REC-2026-005',
+        nombre_persona: 'Carlos Eduardo Ruiz',
+        evento: 'Reconocimiento a la Directiva',
+        miembro: 'Tesorero',
+        cargo: 'Tesorero',
+        area: 'Tesorería',
+        periodo: '2025 - 2026',
+        fecha: '2025 - 2026',
+        tipo: 'reconocimiento',
+      },
+      {
+        id_certificado: 'ACS-REC-2026-006',
+        nombre_persona: 'Camila Sofía Paredes',
+        evento: 'Reconocimiento a Secretarías',
+        miembro: 'Secretaria',
+        cargo: 'Secretaria',
+        area: 'Secretaria de Actas y Archivo',
+        periodo: '2025 - 2026',
+        fecha: '2025 - 2026',
+        tipo: 'reconocimiento',
+      },
     ];
     }
   }
