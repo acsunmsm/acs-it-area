@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { read as readXlsx, utils as xlsxUtils } from 'xlsx';
-import { generateCertificatePdf, DEFAULT_CERTIFICATE_CONFIG, findTemplateForEvent } from '../src/lib/certificateGenerator.js';
+import { generateCertificatePdf, DEFAULT_CERTIFICATE_CONFIG, findTemplateForEvent, fixMojibake } from '../src/lib/certificateGenerator.js';
 import { isCertificatePdfEnabled } from '../src/lib/certificates.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -104,7 +104,7 @@ async function loadRecordsFromExcel(filePath) {
       const evento = row.evento || row.nombre_evento || row['Evento'] || '';
       const fecha = row.fecha || row['Fecha'] || '';
       const horas = row.horas || row['Horas'] || '';
-      const area = row.area || row['Area'] || '';
+      const area = row.area || row['Area'] || row['Área'] || '';
       const miembro =
         row.miembro ||
         row['Miembro'] ||
@@ -117,20 +117,20 @@ async function loadRecordsFromExcel(filePath) {
         row['Rol'] ||
         '';
       const cargo = row.cargo || row.rol || row.puesto || row['Cargo'] || row['Rol'] || miembro;
-      const periodo = row.periodo || row['Periodo'] || '';
+      const periodo = row.periodo || row['Periodo'] || row['Período'] || '';
       const tipo = row.tipo || row.tipo_certificado || row['Tipo'] || '';
 
       return {
         id_certificado: String(idCertificado).trim(),
-        nombre_persona: String(nombre).trim(),
-        evento: String(evento).trim(),
-        fecha: String(fecha).trim(),
-        horas: String(horas).trim(),
-        area: String(area).trim(),
-        miembro: String(miembro).trim(),
-        cargo: String(cargo).trim(),
-        periodo: String(periodo).trim(),
-        tipo: String(tipo).trim(),
+        nombre_persona: fixMojibake(String(nombre).trim()),
+        evento: fixMojibake(String(evento).trim()),
+        fecha: fixMojibake(String(fecha).trim()),
+        horas: fixMojibake(String(horas).trim()),
+        area: fixMojibake(String(area).trim()),
+        miembro: fixMojibake(String(miembro).trim()),
+        cargo: fixMojibake(String(cargo).trim()),
+        periodo: fixMojibake(String(periodo).trim()),
+        tipo: fixMojibake(String(tipo).trim()),
       };
     })
     .filter(Boolean);
@@ -180,7 +180,15 @@ async function loadRecordsFromSupabase() {
     }
 
     console.log(`✅ Se obtuvieron ${data?.length || 0} registros directamente desde Supabase.`);
-    return data || [];
+    return (data || []).map((row) => ({
+      ...row,
+      nombre_persona: fixMojibake(row.nombre_persona || ''),
+      area: fixMojibake(row.area || ''),
+      cargo: fixMojibake(row.cargo || ''),
+      miembro: fixMojibake(row.miembro || ''),
+      periodo: fixMojibake(row.periodo || ''),
+      evento: fixMojibake(row.evento || ''),
+    }));
   } catch (err) {
     console.warn('⚠️  No se pudo conectar a Supabase:', err.message);
     return [];
