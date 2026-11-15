@@ -542,32 +542,52 @@ export async function generateCertificatePdf({
     const effectiveParaSize =
       pageWidth > 1200 ? baseParaSize * (pageWidth / 842) : baseParaSize;
 
-    // Resolver rol/miembro (lee columna 'miembro', 'cargo' o 'rol')
-    const rawMiembro = cert.miembro || cert.cargo || cert.rol || cert.puesto || 'Miembro';
-    let cargoClean = String(rawMiembro).trim();
-    if (!/activo|activa|director|directora|presidente|presidenta|vicepresidente|vicepresidenta|secretari[oa]|asesor|coordinador|coordinadora|subcoordinador|subcoordinadora|vocal|honorari[oa]/i.test(cargoClean)) {
+    // Resolver rol/cargo: se usa lo que dice en 'cargo' (o 'miembro')
+    let rawCargo = String(cert.cargo || cert.miembro || cert.rol || cert.puesto || '').trim();
+    let rawArea = String(cert.area || '').trim();
+
+    // Si no vino cargo pero el área contiene el cargo directivo (ej. "Presidente", "Tesorero")
+    if (!rawCargo && rawArea) {
+      if (/^(presidente|presidenta|vicepresidente|vicepresidenta|secretari[oa]\s+general|tesorer[oa]|tesorer[ií]a)/i.test(rawArea)) {
+        rawCargo = rawArea;
+        rawArea = '';
+      }
+    }
+    if (!rawCargo) rawCargo = 'Miembro';
+
+    // Normalizar Tesorería -> Tesorero en el cargo si es necesario
+    if (/^tesorer[ií]a$/i.test(rawCargo)) {
+      rawCargo = 'Tesorero';
+    }
+
+    // Si en cargo viene "Secretario de [Área]" y área está vacía, extraer el área y dejar solo "Secretario"
+    const matchSecDe = rawCargo.match(/^(secretari[oa])\s+(?:de\s+la\s+|de\s+el\s+|del\s+|de\s+)(.+)$/i);
+    if (matchSecDe) {
+      rawCargo = matchSecDe[1].charAt(0).toUpperCase() + matchSecDe[1].slice(1).toLowerCase();
+      if (!rawArea) {
+        rawArea = matchSecDe[2];
+      }
+    }
+
+    // Ajustar cargoClean (agregar "Activo" solo a roles generales que no sean directivos ni coordinadores)
+    let cargoClean = rawCargo.trim();
+    if (!/activo|activa|director|directora|presidente|presidenta|vicepresidente|vicepresidenta|secretari[oa]|tesorer[oa]|tesorer[ií]a|asesor|asesora|coordinador|coordinadora|subcoordinador|subcoordinadora|vocal|fiscal|honorari[oa]/i.test(cargoClean)) {
       cargoClean = `${cargoClean} Activo`;
     }
 
-    // Detectar si es presidente, presidenta, vicepresidente, vicepresidenta, secretario/a general (para omitir "en el área de ")
-    const isDirectivaSinArea =
-      /^(presidente|presidenta|vicepresidente|vicepresidenta|secretari[oa](\/[ao])?\s+general)(\s+.*)?$/i.test(cargoClean) ||
-      /^(presidente|presidenta|vicepresidente|vicepresidenta|secretari[oa](\/[ao])?\s+general)(\s+.*)?$/i.test(String(cert.area || '').trim());
+    // Detectar cargos que NO llevan área (Presidente/a, Vicepresidente/a, Tesorero/a/Tesorería, Secretario/a General)
+    const isSinArea =
+      /^(presidente|presidenta|vicepresidente|vicepresidenta|secretari[oa](\/[ao])?\s+general|tesorer[oa]|tesorer[ií]a)$/i.test(cargoClean) ||
+      /^(presidente|presidenta|vicepresidente|vicepresidenta|secretari[oa](\/[ao])?\s+general|tesorer[oa]|tesorer[ií]a)$/i.test(String(cert.area || '').trim());
 
-    if (isDirectivaSinArea && !cert.miembro && !cert.cargo && /^(presidente|presidenta|vicepresidente|vicepresidenta|secretari[oa](\/[ao])?\s+general)/i.test(String(cert.area || '').trim())) {
-      cargoClean = String(cert.area).trim();
-    }
-
-    // Limpiar área: eliminar prefijos como "Coordinador de ", "Coordinadora de ", "Subcoordinador de ", "Subcoordinadora de ", "Voluntario de ", etc.
-    let rawArea = String(cert.area || cert.evento || '').trim();
-    rawArea = rawArea
-      .replace(/^(sub[- ]?coordinador[as]?|coordinador[as]?|voluntari[oa]s?|director[as]?|secretari[oa]s?(\s+general)?)\s*(de\s+la\s+|de\s+el\s+|del\s+|de\s+|:\s*)?/i, '')
-      .replace(/^área\s+(de\s+la\s+|de\s+el\s+|del\s+|de\s+)?/i, '')
-      .replace(/^area\s+(de\s+la\s+|de\s+el\s+|del\s+|de\s+)?/i, '')
+    // Limpiar área: eliminar "Secretario de ", "Secretaria de ", "Coordinador de ", "Voluntario de ", "Área de ", etc.
+    let areaClean = rawArea
+      .replace(/^(sub[- ]?coordinador[as]?(\/[as])?|coordinador[as]?(\/[as])?|voluntari[oa]s?(\/[oa])?|director[as]?(\/[as])?|secretari[oa]s?(\/[oa])?|secretar[ií]a|tesorer[oa]s?(\/[oa])?|tesorer[ií]a)\s*(de\s+la\s+|de\s+el\s+|del\s+|de\s+|:\s*)?/i, '')
+      .replace(/^área\s*(de\s+la\s+|de\s+el\s+|del\s+|de\s+)?/i, '')
+      .replace(/^area\s*(de\s+la\s+|de\s+el\s+|del\s+|de\s+)?/i, '')
       .trim();
 
-    const areaClean = rawArea || 'Área General';
-    const fechaClean = String(cert.periodo || cert.fecha || '2026').trim();
+    const fechaClean = String(cert.periodo || cert.fecha || '2025 - 2026').trim();
 
     let lines = [];
     if (cert.descripcion || cert.texto) {
@@ -578,8 +598,8 @@ export async function generateCertificatePdf({
         (recoConfig.paragraph?.maxWidth ?? 1480) * scaleX
       );
     } else {
-      // Si es presidente, vicepresidente o secretario/a general, se elimina "en el área de "
-      const areaPhrase = isDirectivaSinArea || !rawArea ? '' : ` en el área de ${areaClean}`;
+      // Si es Presidente/a, Tesorero/a, Secretario/a General, etc., o no hay área, se elimina "en el área de "
+      const areaPhrase = (isSinArea || !areaClean) ? '' : ` en el área de ${areaClean}`;
       const fullText = `Por su destacada y comprometida participación como ${cargoClean} del capítulo estudiantil ACS UNMSM${areaPhrase}, durante el periodo ${fechaClean}, demostrando excelencia y dedicación.`;
 
       lines = wrapTextIntoLines(
