@@ -68,6 +68,10 @@
     "description": "If you see this message in English, localization works."
   },
   "homePage": {
+    "updates": "What’s new",
+    "canvasDescription": "Build molecules with your hands. Atomic Canvas uses MediaPipe to track your gestures through the camera so you can select atoms and combine them on screen.",
+    "canvasAction": "Try Atomic Canvas",
+    "canvasAlt": "Carbonito uses hand gestures to select model atoms in front of a camera.",
     "welcome": "Welcome to <chapter>ACS UNMSM</chapter>",
     "welcomeIntro": "We're students at San Marcos who love sharing what we learn about chemistry. We run workshops, try out experiments and visit local schools to do science with their students.",
     "welcomeInvitation": "Would you like to come to a workshop or suggest our next experiment?",

@@ -26,6 +26,24 @@ export default async function HomePage({ params }) {
       <Navbar />
       <HeroCarousel />
 
+      <section className={styles.updates} aria-labelledby="updates-title">
+        <div className={styles.updatesInner}>
+          <h2 id="updates-title">{t('updates')}</h2>
+          <article className={styles.canvasFeature}>
+            <div className={styles.canvasCopy}>
+              <h3>Atomic Canvas</h3>
+              <p>{t('canvasDescription')}</p>
+              <a href="https://acsunmsm.github.io/Quimimmmmcant/" className={styles.canvasLink}>
+                {t('canvasAction')} <span aria-hidden="true">↗</span>
+              </a>
+            </div>
+            <Image className={styles.canvasPhoto} src="/assets/img/carbonitomediapipe.jpg"
+              width={2048} height={2048} sizes="(max-width: 720px) 88vw, (max-width: 1280px) 40vw, 490px"
+              alt={t('canvasAlt')} />
+          </article>
+        </div>
+      </section>
+
       <section id="conocenos" className={styles.welcome} aria-labelledby="welcome-title">
         <div className={styles.welcomeLayout}>
           <div className={styles.welcomeCopy}>

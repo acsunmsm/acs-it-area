@@ -6,7 +6,7 @@ import { eventDescription, listPublications } from '@/src/lib/carbonito/catalog'
 import { selectWithModel } from '@/src/lib/carbonito/model';
 
 export async function POST(request) {
-  const body = await limitedBody(request, { scope: 'carbonito', bytes: 8192, perMinute: 35 });
+  const body = await limitedBody(request, { scope: 'carbonito', bytes: 8192, perMinute: 35, allowLocalFallback: true });
   if (body instanceof Response) return body;
   if (!body || !['en','es'].includes(body.lang) || typeof body.question !== 'string' ||
       !body.question.trim() || body.question.length > 500) return new Response(null,{status:400});
