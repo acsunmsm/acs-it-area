@@ -418,6 +418,7 @@
     "backToResources": "Volver a Recursos",
     "verifyAnother": "Consultar otro DNI",
     "officialIssuer": "ACS Student Chapter UNMSM • Registro Oficial",
-    "statusVerified": "Credencial Oficial Auténtica"
+    "statusVerified": "Credencial Oficial Auténtica",
+    "downloadCertificate": "Descargar Certificado (PDF)"
   }
 }

@@ -417,6 +417,7 @@
     "backToResources": "Back to Resources",
     "verifyAnother": "Look up another DNI",
     "officialIssuer": "ACS Student Chapter UNMSM • Official Registry",
-    "statusVerified": "Authentic Official Credential"
+    "statusVerified": "Authentic Official Credential",
+    "downloadCertificate": "Download Certificate (PDF)"
   }
 }
