@@ -46,9 +46,15 @@ export async function findCertificatesByDni(db, query) {
 export function isCertificatePdfEnabled(cert) {
   if (!cert) return false;
   const tipo = String(cert.tipo || '').toLowerCase();
-  if (tipo === 'reconocimiento') return true;
-  if (cert.miembro) return true;
+  const area = String(cert.area || '').toLowerCase();
   const evento = String(cert.evento || '').toLowerCase();
-  if (evento.includes('reconocimiento')) return true;
+
+  // Si tiene asignada columna miembro, cargo o periodo (reconocimientos de gestión)
+  if (cert.miembro || cert.cargo || cert.periodo) return true;
+
+  if (/reconocimiento|directiva|miembro/i.test(tipo)) return true;
+  if (/reconocimiento/i.test(area)) return true;
+  if (/reconocimiento/i.test(evento)) return true;
+
   return false;
 }

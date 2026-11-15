@@ -144,14 +144,19 @@ export function slugifyEventName(name = '') {
  * Determina si un certificado corresponde al tipo "Reconocimiento".
  */
 export function isRecognitionCertificate(cert = {}, templateName = '') {
+  if (!cert) return false;
+  if (cert.isRecognition === true) return true;
+
   const typeStr = String(cert.tipo || '').toLowerCase();
   const areaStr = String(cert.area || '').toLowerCase();
   const eventStr = String(cert.evento || '').toLowerCase();
   const tName = String(templateName || '').toLowerCase();
   const certPlantilla = String(cert.plantilla || '').toLowerCase();
 
-  if (cert.isRecognition === true) return true;
-  if (/reconocimiento|miembro|participaci[oó]n|directiva/i.test(typeStr)) return true;
+  // Si tiene asignada columna miembro, cargo o periodo
+  if (cert.miembro || cert.cargo || cert.periodo) return true;
+
+  if (/reconocimiento|directiva|miembro/i.test(typeStr)) return true;
   if (/reconocimiento/i.test(areaStr)) return true;
   if (/reconocimiento/i.test(eventStr)) return true;
   if (/reconocimiento|prueba/i.test(tName)) return true;
