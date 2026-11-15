@@ -35,7 +35,7 @@
   },
   "reconocimiento": {
     "name": {
-      "fontSize": 90,
+      "fontSize": 80,
       "colorHex": "#412BFD",
       "fontFamily": "niconne",
       "y": 693
