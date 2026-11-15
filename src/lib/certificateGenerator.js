@@ -40,6 +40,54 @@ export function wrapTextIntoLines(text, font, fontSize, maxWidth) {
 }
 
 /**
+ * Corrige automáticamente textos con problemas de codificación (mojibake)
+ * habituales en importaciones de Excel / CSV mal interpretados como ANSI / Latin-1.
+ * Ejemplo: "VinculaciÃ³n" -> "Vinculación", "A³" -> "ó", "Ã¡" -> "á"
+ */
+export function fixMojibake(text) {
+  if (!text || typeof text !== 'string') return text || '';
+
+  let fixed = text;
+
+  // Intento de decodificación por buffer si contiene secuencias multibyte corrompidas
+  try {
+    if (/[\u00C0-\u00FF]/.test(fixed) && /Ã|Â|â/.test(fixed)) {
+      const decoded = Buffer.from(fixed, 'latin1').toString('utf8');
+      if (decoded && !decoded.includes('\uFFFD')) {
+        fixed = decoded;
+      }
+    }
+  } catch (e) {
+    // Si falla la conversión por buffer, continuar con los reemplazos directos
+  }
+
+  // Reemplazo de combinaciones clásicas de mojibake en español
+  fixed = fixed
+    .replace(/Ã¡/g, 'á')
+    .replace(/Ã©/g, 'é')
+    .replace(/Ã­/g, 'í')
+    .replace(/Ã³/g, 'ó')
+    .replace(/Ãº/g, 'ú')
+    .replace(/Ã±/g, 'ñ')
+    .replace(/Ã/g, 'Á')
+    .replace(/Ã‰/g, 'É')
+    .replace(/Ã/g, 'Í')
+    .replace(/Ã“/g, 'Ó')
+    .replace(/Ãš/g, 'Ú')
+    .replace(/Ã‘/g, 'Ñ')
+    .replace(/Ã¼/g, 'ü')
+    .replace(/Ãœ/g, 'Ü')
+    .replace(/A³|a³/g, 'ó')
+    .replace(/A¡|a¡/g, 'á')
+    .replace(/A©|a©/g, 'é')
+    .replace(/A±|a±/g, 'ñ')
+    .replace(/Aº|aº/g, 'ú')
+    .replace(/Â°/g, '°');
+
+  return fixed.trim();
+}
+
+/**
  * Configuración por defecto para el estampado de datos sobre la plantilla.
  */
 export const DEFAULT_CERTIFICATE_CONFIG = {
@@ -528,7 +576,7 @@ export async function generateCertificatePdf({
         ? baseNameSize * (pageWidth / 1400)
         : baseNameSize;
 
-    const nombrePersona = (cert.nombre_persona || 'Nombre del Participante').trim();
+    const nombrePersona = fixMojibake((cert.nombre_persona || 'Nombre del Participante').trim());
     const nameWidth = recoNameFont.widthOfTextAtSize(nombrePersona, effectiveNameSize);
     const nameX = (pageWidth - nameWidth) / 2;
     const nameY = (recoConfig.name?.y ?? 705) * scaleY;
@@ -548,8 +596,8 @@ export async function generateCertificatePdf({
       pageWidth > 1200 ? baseParaSize * (pageWidth / 842) : baseParaSize;
 
     // Resolver rol/cargo: se usa lo que dice en 'cargo' (o 'miembro')
-    let rawCargo = String(cert.cargo || cert.miembro || cert.rol || cert.puesto || '').trim();
-    let rawArea = String(cert.area || '').trim();
+    let rawCargo = fixMojibake(String(cert.cargo || cert.miembro || cert.rol || cert.puesto || '').trim());
+    let rawArea = fixMojibake(String(cert.area || '').trim());
 
     // Si no vino cargo pero el área contiene el cargo directivo (ej. "Presidente", "Tesorero")
     if (!rawCargo && rawArea) {
@@ -592,7 +640,7 @@ export async function generateCertificatePdf({
       .replace(/^area\s*(de\s+la\s+|de\s+el\s+|del\s+|de\s+)?/i, '')
       .trim();
 
-    const fechaClean = String(cert.periodo || cert.fecha || '2025 - 2026').trim();
+    const fechaClean = fixMojibake(String(cert.periodo || cert.fecha || '2025 - 2026').trim());
 
     let lines = [];
     if (cert.descripcion || cert.texto) {
