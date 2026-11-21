@@ -11,6 +11,7 @@ import {
   faFacebookF,
   faLinkedinIn,
   faWhatsapp,
+  faYoutube,
 } from '@/src/lib/fontawesome';
 
 export default function Footer() {
@@ -66,6 +67,15 @@ export default function Footer() {
                 className="footer-acs-social-link"
               >
                 <FontAwesomeIcon icon={faWhatsapp} />
+              </a>
+              <a
+                href="https://www.youtube.com/@ACSUNMSM"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="footer-acs-social-link"
+                aria-label="YouTube"
+              >
+                <FontAwesomeIcon icon={faYoutube} />
               </a>
             </div>
           </div>

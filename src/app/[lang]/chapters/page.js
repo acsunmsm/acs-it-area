@@ -1,4 +1,4 @@
-import { getOfficerAreas } from '@/src/lib/officerAreas';
+import { getOfficerAreas, getOfficerPeriods } from '@/src/lib/officerAreas';
 import Navbar from '@/src/components/Navbar';
 import Footer from '@/src/components/Footer';
 import OfficersList from '@/src/components/OfficersList';
@@ -19,6 +19,7 @@ export default async function Officers({ params }) {
   const { lang } = await params;
   const t = await getTranslations({ locale: lang, namespace: 'officers' });
 
+  const periods = getOfficerPeriods(t);
   const areas = getOfficerAreas(t);
 
   const i18n = {
@@ -30,6 +31,12 @@ export default async function Officers({ params }) {
       presidency: t('areas.presidency'),
       executive: t('areas.executive'),
       coordinations: t('areas.coordinations'),
+      marketing: t('areas.marketing'),
+      events: t('areas.events'),
+      humanResources: t('areas.humanResources'),
+      liaison: t('areas.liaison'),
+      technology: t('areas.technology'),
+      k12: t('areas.k12'),
     },
     singleMember: t('singleMember'),
     multipleMembers: t('multipleMembers'),
@@ -39,6 +46,19 @@ export default async function Officers({ params }) {
       presidency: t('filters.presidency'),
       executive: t('filters.executive'),
       coordinations: t('filters.coordinations'),
+    },
+    periods: {
+      heading: t('periods.heading'),
+      subtitle: t('periods.subtitle'),
+      period2026: t('periods.period2026'),
+      period2026Badge: t('periods.period2026Badge'),
+      period2025: t('periods.period2025'),
+      period2025Badge: t('periods.period2025Badge'),
+      foundersHeaderTitle: t('periods.foundersHeaderTitle'),
+      foundersSubtitle: t('periods.foundersSubtitle'),
+      foundersIntro: t('periods.foundersIntro'),
+      foundersTag: t('periods.foundersTag'),
+      foundersArea: t('periods.foundersArea'),
     },
     copyEmail: t('copyEmail'),
     copied: t('copied'),
@@ -66,7 +86,7 @@ export default async function Officers({ params }) {
             />
           </div>
         </header>
-        <OfficersList areas={areas} title={t('title')} i18n={i18n} />
+        <OfficersList periods={periods} areas={areas} title={t('title')} i18n={i18n} />
       </main>
 
       <Footer />

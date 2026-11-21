@@ -18,7 +18,8 @@ import {
   faInstagram,
   faFacebookF,
   faLinkedinIn,
-  faWhatsapp
+  faWhatsapp,
+  faYoutube
 } from '@fortawesome/free-brands-svg-icons';
 
 // Agregar todos los iconos a la librería
@@ -33,6 +34,7 @@ library.add(
   faFacebookF,
   faLinkedinIn,
   faWhatsapp,
+  faYoutube,
   faTools,
   faArrowLeft
 );
@@ -49,6 +51,7 @@ export {
   faFacebookF,
   faLinkedinIn,
   faWhatsapp,
+  faYoutube,
   faTools,
   faArrowLeft
 };
