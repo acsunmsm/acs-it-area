@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import { useState } from 'react';
 
-// Standard clean SVG vectors (no weird icons)
+// Standard clean SVG vectors
 function MailIcon({ className = '', size = 15 }) {
   return (
     <svg
@@ -63,10 +63,83 @@ function CheckIcon({ className = '', size = 13 }) {
   );
 }
 
-// Unified Officer Card - used for Advisor and all directiva members
+function HistoryIcon({ className = '', size = 17 }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
+      <circle cx="12" cy="12" r="10" />
+      <polyline points="12 6 12 12 16 14" />
+    </svg>
+  );
+}
+
+function StarEmblemIcon({ className = '', size = 20 }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
+      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+    </svg>
+  );
+}
+
+// Avatar con fallback a iniciales si la foto no existe o falla al cargar
+function OfficerAvatar({ member }) {
+  const [imgError, setImgError] = useState(false);
+
+  const getInitials = (fullName = '') => {
+    return fullName
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean)
+      .slice(0, 2)
+      .map((part) => part[0]?.toUpperCase() || '')
+      .join('');
+  };
+
+  if (member.image && !imgError) {
+    return (
+      <Image
+        src={`/assets/img/${member.image}`}
+        alt={member.name}
+        width={144}
+        height={172}
+        loading="lazy"
+        className="officer-portrait"
+        onError={() => setImgError(true)}
+      />
+    );
+  }
+
+  return (
+    <div className="officer-portrait officer-avatar-fallback" aria-hidden="true">
+      <span className="officer-avatar-initials">{getInitials(member.name)}</span>
+    </div>
+  );
+}
+
+// Unified Officer Card
 function OfficerCard({ member, i18n = {} }) {
   const [copied, setCopied] = useState(false);
-  const imagePath = `/assets/img/${member.image}`;
 
   const handleCopy = async (e) => {
     e.preventDefault();
@@ -84,47 +157,73 @@ function OfficerCard({ member, i18n = {} }) {
 
   return (
     <article className="officer-profile">
-      <Image
-        src={imagePath}
-        alt=""
-        width={144}
-        height={172}
-        loading="lazy"
-        className="officer-portrait"
-      />
+      <OfficerAvatar member={member} />
       <div className="officer-details">
-        <span className="officer-role">{member.role}</span>
-        <h3>{member.name}</h3>
-        <div className="officer-email-row">
-          <a
-            href={`mailto:${member.email}`}
-            className="officer-grid-email"
-            title={`Enviar correo a ${member.email}`}
-          >
-            <MailIcon size={14} className="officer-mail-icon" />
-            <span className="officer-email-text">{member.email}</span>
-          </a>
-
-          <button
-            type="button"
-            onClick={handleCopy}
-            className={`officer-copy-btn ${copied ? 'copied' : ''}`}
-            title={copied ? (i18n.copied || '¡Copiado!') : (i18n.copyEmail || 'Copiar correo')}
-            aria-label={copied ? (i18n.copied || '¡Copiado!') : (i18n.copyEmail || 'Copiar correo')}
-          >
-            {copied ? <CheckIcon size={13} /> : <CopyIcon size={13} />}
-          </button>
+        <div className="officer-meta-row">
+          {member.role ? (
+            <span className="officer-role">{member.role}</span>
+          ) : (
+            member.isFounder && (
+              <span className="officer-role officer-role-founder">
+                {i18n.periods?.foundersTag || 'Fundador'}
+              </span>
+            )
+          )}
+          {member.isFounder && member.role && (
+            <span className="officer-founder-pill">
+              ★ {i18n.periods?.foundersTag || 'Fundador'}
+            </span>
+          )}
         </div>
+        <h3>{member.name}</h3>
+
+        {member.email && (
+          <div className="officer-email-row">
+            <a
+              href={`mailto:${member.email}`}
+              className="officer-grid-email"
+              title={`Enviar correo a ${member.email}`}
+            >
+              <MailIcon size={14} className="officer-mail-icon" />
+              <span className="officer-email-text">{member.email}</span>
+            </a>
+
+            <button
+              type="button"
+              onClick={handleCopy}
+              className={`officer-copy-btn ${copied ? 'copied' : ''}`}
+              title={copied ? (i18n.copied || '¡Copiado!') : (i18n.copyEmail || 'Copiar correo')}
+              aria-label={copied ? (i18n.copied || '¡Copiado!') : (i18n.copyEmail || 'Copiar correo')}
+            >
+              {copied ? <CheckIcon size={13} /> : <CopyIcon size={13} />}
+            </button>
+          </div>
+        )}
       </div>
     </article>
   );
 }
 
-export default function OfficersList({ areas = [], officers = [], title, i18n = {} }) {
+export default function OfficersList({
+  periods = [],
+  areas = [],
+  officers = [],
+  title,
+  i18n = {},
+}) {
+  const [activePeriodYear, setActivePeriodYear] = useState('2026');
   const [activeTab, setActiveTab] = useState('all');
 
-  // Fallback: If only officers array is provided, adapt it to areas
-  let effectiveAreas = areas;
+  // Si se reciben periodos, seleccionar el activo
+  const hasPeriods = periods && periods.length > 0;
+  const activePeriod = hasPeriods
+    ? periods.find((p) => p.year === activePeriodYear) || periods[0]
+    : null;
+
+  // Determinar áreas activas (por periodo o fallback a áreas directas)
+  let effectiveAreas = activePeriod ? activePeriod.areas : areas;
+
+  // Fallback para array plano de oficiales si no hay áreas estructuradas
   if (!effectiveAreas || effectiveAreas.length === 0) {
     if (officers && officers.length > 0) {
       const normalized = officers.map((item, idx) => {
@@ -158,53 +257,43 @@ export default function OfficersList({ areas = [], officers = [], title, i18n = 
           members: normalized.slice(4, 6),
         },
         {
-          id: 'marketing',
-          title: i18n?.areas?.marketing || 'Coordinación de Marketing',
+          id: 'coordinations',
+          title: i18n?.areas?.coordinations || 'Coordinaciones',
           type: 'coordination',
           columns: 2,
-          members: normalized.slice(6, 8),
-        },
-        {
-          id: 'events',
-          title: i18n?.areas?.events || 'Coordinación de Eventos y Proyectos',
-          type: 'coordination',
-          columns: 2,
-          members: normalized.slice(8, 10),
-        },
-        {
-          id: 'humanResources',
-          title: i18n?.areas?.humanResources || 'Coordinación de Talento Humano',
-          type: 'coordination',
-          columns: 2,
-          members: normalized.slice(10, 12),
-        },
-        {
-          id: 'liaison',
-          title: i18n?.areas?.liaison || 'Coordinación de Vinculación',
-          type: 'coordination',
-          columns: 2,
-          members: normalized.slice(12, 14),
-        },
-        {
-          id: 'technology',
-          title: i18n?.areas?.technology || 'Coordinación de Tecnologías de la Información',
-          type: 'coordination',
-          columns: 2,
-          members: normalized.slice(14, 16),
-        },
-        {
-          id: 'k12',
-          title: i18n?.areas?.k12 || 'Coordinación de Divulgación Científica K-12',
-          type: 'coordination',
-          columns: 2,
-          members: normalized.slice(16, 18),
+          members: normalized.slice(6),
         },
       ];
     }
   }
 
-  // Filter areas based on active tab
-  const filteredAreas = effectiveAreas.filter((area) => {
+  // Generar pestañas de filtro dinámicamente según las áreas disponibles en la gestión
+  const areaTabs = [
+    { key: 'all', label: i18n?.filters?.all || 'Todos' },
+    ...(effectiveAreas.some((a) => a.id === 'advisor')
+      ? [{ key: 'advisor', label: i18n?.filters?.advisor || i18n?.areas?.advisor || 'Asesoría' }]
+      : []),
+    ...(effectiveAreas.some((a) => a.id === 'presidency')
+      ? [{ key: 'presidency', label: i18n?.filters?.presidency || 'Presidencia' }]
+      : []),
+    ...(effectiveAreas.some((a) => a.id === 'executive')
+      ? [
+        {
+          key: 'executive',
+          label:
+            activePeriod?.isFounder || activePeriodYear === '2025-2026' || activePeriodYear === '2025'
+              ? i18n?.areas?.secretary || 'Secretaría'
+              : i18n?.filters?.executive || 'Secretaría y Tesorería',
+        },
+      ]
+      : []),
+    ...(effectiveAreas.some((a) => a.type === 'coordination')
+      ? [{ key: 'coordinations', label: i18n?.filters?.coordinations || 'Coordinaciones' }]
+      : []),
+  ];
+
+  // Filtrar áreas según la pestaña seleccionada
+  const filteredAreas = (effectiveAreas || []).filter((area) => {
     if (activeTab === 'all') return true;
     if (activeTab === 'advisor') return area.id === 'advisor';
     if (activeTab === 'presidency') return area.id === 'presidency';
@@ -213,20 +302,58 @@ export default function OfficersList({ areas = [], officers = [], title, i18n = 
     return true;
   });
 
-  const tabs = [
-    { key: 'all', label: i18n?.filters?.all || 'Todos' },
-    { key: 'advisor', label: i18n?.filters?.advisor || i18n?.areas?.advisor || 'Asesoría' },
-    { key: 'presidency', label: i18n?.filters?.presidency || 'Presidencia' },
-    { key: 'executive', label: i18n?.filters?.executive || 'Secretaría y Tesorería' },
-    { key: 'coordinations', label: i18n?.filters?.coordinations || 'Coordinaciones' },
-  ];
-
   return (
     <section className="officers-section-wrap" aria-label={title || 'Directiva'}>
-      {/* Quick Navigation Tabs */}
+      {/* ─── Cronología / Selector de Periodos de Gestión ─── */}
+      {hasPeriods && (
+        <div className="officers-timeline-bar" role="region" aria-label={i18n.periods?.heading || 'Línea Temporal de Gestiones'}>
+          <div className="officers-timeline-badge-label">
+            <span>{i18n.periods?.heading || 'Gestiones'}</span>
+          </div>
+
+          <div className="officers-timeline-selector" role="tablist">
+            {periods.map((period) => {
+              const isSelected = activePeriodYear === period.year;
+              return (
+                <button
+                  key={period.year}
+                  type="button"
+                  role="tab"
+                  aria-selected={isSelected}
+                  className={`officer-period-pill ${isSelected ? 'active' : ''} ${period.isFounder ? 'is-founder' : ''}`}
+                  onClick={() => {
+                    setActivePeriodYear(period.year);
+                    setActiveTab('all');
+                  }}
+                >
+                  <span className="officer-period-year">{period.label || period.year}</span>
+                  {period.badge && !period.label?.toLowerCase().includes(period.badge.toLowerCase()) && (
+                    <span className="officer-period-tag">{period.badge}</span>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* ─── Encabezado conmemorativo de Fundadores ("encima de todos") ─── */}
+      {activePeriod?.isFounder && (
+        <div className="officers-founders-header" role="region" aria-label={i18n.periods?.foundersHeaderTitle || 'Fundadores'}>
+          <h2 className="officers-founders-title">
+            {i18n.periods?.foundersHeaderTitle || 'Fundadores'}
+          </h2>
+          <p className="officers-founders-desc">
+            {activePeriod.intro || i18n.periods?.foundersIntro || 'Homenaje y conmemoración a la mesa directiva y líderes fundadores que hicieron posible el inicio, la fundación y el reconocimiento oficial del Capítulo Estudiantil ACS UNMSM.'}
+          </p>
+        </div>
+      )}
+
+
+      {/* ─── Pestañas de filtrado por área ─── */}
       <nav className="officers-navigation-bar" aria-label="Navegación por áreas directivas">
         <div className="officers-filter-tabs">
-          {tabs.map((tab) => (
+          {areaTabs.map((tab) => (
             <button
               key={tab.key}
               type="button"
@@ -240,19 +367,18 @@ export default function OfficersList({ areas = [], officers = [], title, i18n = 
         </div>
       </nav>
 
-      {/* Render Each Area Section */}
+      {/* ─── Listado de Áreas y Oficiales ─── */}
       <div className="officers-areas-list">
-        {filteredAreas.map(area => (
+        {filteredAreas.map((area) => (
           <section key={area.id} className="officer-area" id={`area-${area.id}`}>
             <h2>{area.title}</h2>
             <div className="officer-roster">
-              {area.members.map(member => (
+              {area.members.map((member) => (
                 <OfficerCard key={member.name} member={member} i18n={i18n} />
               ))}
             </div>
           </section>
         ))}
-
       </div>
     </section>
   );

@@ -139,6 +139,7 @@
       "vicePresident": "Vicepresidenta",
       "treasurer": "Tesorera",
       "secretary": "Secretario",
+      "secretary2": "Secretaria",
       "marketingCoordinator": "Coordinadora de Marketing",
       "marketingSubCoordinator": "Subcoordinadora de Marketing",
       "eventsCoordinator": "Coordinador de Eventos",
@@ -147,10 +148,26 @@
       "humanResourcesSubCoordinator": "Subcoordinador Talento Humano",
       "internalLiaison": "Subcoordinadora de Vinculación",
       "externalLiaison": "Coordinador de Vinculación",
+      "internalLiaisonCoord": "Coordinador de Vinculación Interna",
+      "externalLiaisonCoord": "Coordinadora de Vinculación Externa",
       "cio": "Coordinador de Tecnologías de la Información",
       "dcio": "Subcoordinador de Tecnologías de la Información",
       "k12Coordinator": "Coordinador de K-12",
-      "k12SubCoordinator": "Subcoordinador de K-12"
+      "k12SubCoordinator": "Subcoordinador de K-12",
+      "founder": "Miembro Fundador"
+    },
+    "periods": {
+      "heading": "Gestiones",
+      "subtitle": "Conmemoración y registro histórico de las mesas directivas del capítulo",
+      "period2026": "Gestión 2026",
+      "period2026Badge": "Actual",
+      "period2025": "Mesa fundadora 2025-2026",
+      "period2025Badge": "Mesa Fundadora",
+      "foundersHeaderTitle": "Fundadores",
+      "foundersSubtitle": "Mesa Directiva Fundadora (2025–2026)",
+      "foundersIntro": "Homenaje y conmemoración a la mesa directiva y líderes fundadores que hicieron posible el inicio, la fundación y el reconocimiento oficial del Capítulo Estudiantil ACS UNMSM.",
+      "foundersTag": "Fundador",
+      "foundersArea": "Miembros Fundadores"
     }
   },
   "contact": {

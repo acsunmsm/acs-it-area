@@ -138,6 +138,7 @@
       "vicePresident": "Vice President",
       "treasurer": "Treasurer",
       "secretary": "Secretary",
+      "secretary2": "Secretary",
       "marketingCoordinator": "Marketing Coordinator",
       "marketingSubCoordinator": "Marketing Subcoordinator",
       "eventsCoordinator": "Events Coordinator",
@@ -146,10 +147,26 @@
       "humanResourcesSubCoordinator": "Human Resources Subcoordinator",
       "internalLiaison": "Liaison Subcoordinator",
       "externalLiaison": "Liaison Coordinator",
+      "internalLiaisonCoord": "Internal Liaison Coordinator",
+      "externalLiaisonCoord": "External Liaison Coordinator",
       "cio": "Information Technology Coordinator",
       "dcio": "Information Technology Subcoordinator",
       "k12Coordinator": "K-12 Coordinator",
-      "k12SubCoordinator": "K-12 Subcoordinator"
+      "k12SubCoordinator": "K-12 Subcoordinator",
+      "founder": "Founding Member"
+    },
+    "periods": {
+      "heading": "Board Terms",
+      "subtitle": "Commemoration and historical record of chapter executive boards",
+      "period2026": "2026 Term",
+      "period2026Badge": "Current",
+      "period2025": "Mesa fundadora 2025-2026",
+      "period2025Badge": "Founding Board",
+      "foundersHeaderTitle": "Founders",
+      "foundersSubtitle": "Founding Executive Board (2025–2026)",
+      "foundersIntro": "Tribute and commemoration to the founding executive board and leaders who made possible the start, foundation, and official recognition of the ACS UNMSM Student Chapter.",
+      "foundersTag": "Founder",
+      "foundersArea": "Founding Members"
     }
   },
   "contact": {

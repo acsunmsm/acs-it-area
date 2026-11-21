@@ -204,3 +204,140 @@ export function getOfficerAreas(t) {
     }
   ];
 }
+
+export function getOfficerAreas2025(t) {
+  const facultyAdvisor = t('roles.facultyAdvisor');
+  const president = t('roles.president');
+  const vicePresident = t('roles.vicePresident');
+  const secretary = t('roles.secretary2') || t('roles.secretary') || 'Secretaria';
+  const marketingCoordinator = t('roles.marketingCoordinator');
+  const marketingSubCoordinator = t('roles.marketingSubCoordinator');
+  const eventsCoordinator = t('roles.eventsCoordinator');
+  const humanResources = t('roles.humanResources');
+  const internalLiaisonCoord = t('roles.internalLiaisonCoord') || 'Coordinador de Vinculación Interna';
+  const externalLiaisonCoord = t('roles.externalLiaisonCoord') || 'Coordinadora de Vinculación Externa';
+
+  return [
+    {
+      id: 'advisor',
+      title: t('areas.advisor'),
+      type: 'advisor',
+      columns: 1,
+      members: [
+        {
+          role: facultyAdvisor,
+          name: 'PhD Jose Orlando Calvay Castillo',
+          email: 'advisor@acs-unmsm.org',
+          image: 'josecalvay.png',
+          isAdvisor: true,
+          affiliation: t('advisorAffiliation')
+        }
+      ]
+    },
+    {
+      id: 'presidency',
+      title: t('areas.presidency'),
+      type: 'board',
+      columns: 2,
+      members: [
+        {
+          role: president,
+          name: 'Israel Emanuel Gonzales Cruz',
+        },
+        {
+          role: vicePresident,
+          name: 'Frances Atena Malapi Segura',
+        }
+      ]
+    },
+    {
+      id: 'executive',
+      title: secretary,
+      type: 'board',
+      columns: 1,
+      members: [
+        {
+          role: secretary,
+          name: 'Geraldine Campos Arias',
+          image: 'geraldine_campos.jpg',
+        }
+      ]
+    },
+    {
+      id: 'liaison',
+      title: t('areas.liaison'),
+      type: 'coordination',
+      columns: 2,
+      members: [
+        {
+          role: internalLiaisonCoord,
+          name: 'Javier Antony Sanchez Hilasaca',
+          image: 'javier_sanchez.jpg',
+        },
+        {
+          role: externalLiaisonCoord,
+          name: 'Diana Rosa Soto Mezarino',
+        }
+      ]
+    },
+    {
+      id: 'marketing',
+      title: t('areas.marketing'),
+      type: 'coordination',
+      columns: 2,
+      members: [
+        {
+          role: marketingCoordinator,
+          name: 'Zulie Milene',
+        },
+        {
+          role: marketingSubCoordinator,
+          name: 'Dalma Cruzado Tintaya',
+        }
+      ]
+    },
+    {
+      id: 'events',
+      title: t('areas.events'),
+      type: 'coordination',
+      columns: 1,
+      members: [
+        {
+          role: eventsCoordinator,
+          name: 'Jhefferson Andre Zagaceta Pinpincos',
+        }
+      ]
+    },
+    {
+      id: 'humanResources',
+      title: t('areas.humanResources'),
+      type: 'coordination',
+      columns: 1,
+      members: [
+        {
+          role: humanResources,
+          name: 'Amira Briseida Jacinto Mauricio',
+        }
+      ]
+    },
+  ];
+}
+
+export function getOfficerPeriods(t) {
+  return [
+    {
+      year: '2026',
+      label: t('periods.period2026') || 'Gestión 2026',
+      isCurrent: true,
+      areas: getOfficerAreas(t),
+    },
+    {
+      year: '2025-2026',
+      label: t('periods.period2025') || 'Mesa fundadora 2025-2026',
+      badge: t('periods.period2025Badge') || 'Mesa Fundadora',
+      isFounder: true,
+      intro: t('periods.foundersIntro'),
+      areas: getOfficerAreas2025(t),
+    }
+  ];
+}
