@@ -63,45 +63,6 @@ function CheckIcon({ className = '', size = 13 }) {
   );
 }
 
-function HistoryIcon({ className = '', size = 17 }) {
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-      aria-hidden="true"
-    >
-      <circle cx="12" cy="12" r="10" />
-      <polyline points="12 6 12 12 16 14" />
-    </svg>
-  );
-}
-
-function StarEmblemIcon({ className = '', size = 20 }) {
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-      aria-hidden="true"
-    >
-      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-    </svg>
-  );
-}
-
 // Avatar con fallback a iniciales si la foto no existe o falla al cargar
 function OfficerAvatar({ member }) {
   const [imgError, setImgError] = useState(false);
@@ -160,19 +121,8 @@ function OfficerCard({ member, i18n = {} }) {
       <OfficerAvatar member={member} />
       <div className="officer-details">
         <div className="officer-meta-row">
-          {member.role ? (
+          {member.role && (
             <span className="officer-role">{member.role}</span>
-          ) : (
-            member.isFounder && (
-              <span className="officer-role officer-role-founder">
-                {i18n.periods?.foundersTag || 'Fundador'}
-              </span>
-            )
-          )}
-          {member.isFounder && member.role && (
-            <span className="officer-founder-pill">
-              ★ {i18n.periods?.foundersTag || 'Fundador'}
-            </span>
           )}
         </div>
         <h3>{member.name}</h3>
@@ -281,7 +231,7 @@ export default function OfficersList({
         {
           key: 'executive',
           label:
-            activePeriod?.isFounder || activePeriodYear === '2025-2026' || activePeriodYear === '2025'
+            activePeriod?.isFounder
               ? i18n?.areas?.secretary || 'Secretaría'
               : i18n?.filters?.executive || 'Secretaría y Tesorería',
         },
@@ -289,6 +239,9 @@ export default function OfficersList({
       : []),
     ...(effectiveAreas.some((a) => a.type === 'coordination')
       ? [{ key: 'coordinations', label: i18n?.filters?.coordinations || 'Coordinaciones' }]
+      : []),
+    ...(effectiveAreas.some((a) => a.type === 'founders' || a.id === 'founders')
+      ? [{ key: 'founders', label: i18n?.periods?.foundersArea || 'Fundadores' }]
       : []),
   ];
 
@@ -299,6 +252,7 @@ export default function OfficersList({
     if (activeTab === 'presidency') return area.id === 'presidency';
     if (activeTab === 'executive') return area.id === 'executive';
     if (activeTab === 'coordinations') return area.type === 'coordination';
+    if (activeTab === 'founders') return area.type === 'founders' || area.id === 'founders';
     return true;
   });
 
@@ -306,7 +260,7 @@ export default function OfficersList({
     <section className="officers-section-wrap" aria-label={title || 'Directiva'}>
       {/* ─── Cronología / Selector de Periodos de Gestión ─── */}
       {hasPeriods && (
-        <div className="officers-timeline-bar" role="region" aria-label={i18n.periods?.heading || 'Línea Temporal de Gestiones'}>
+        <div className="officers-timeline-bar" role="region" aria-label={i18n.periods?.heading || 'Gestiones'}>
           <div className="officers-timeline-badge-label">
             <span>{i18n.periods?.heading || 'Gestiones'}</span>
           </div>
@@ -320,35 +274,19 @@ export default function OfficersList({
                   type="button"
                   role="tab"
                   aria-selected={isSelected}
-                  className={`officer-period-pill ${isSelected ? 'active' : ''} ${period.isFounder ? 'is-founder' : ''}`}
+                  className={`officer-period-pill ${isSelected ? 'active' : ''}`}
                   onClick={() => {
                     setActivePeriodYear(period.year);
                     setActiveTab('all');
                   }}
                 >
                   <span className="officer-period-year">{period.label || period.year}</span>
-                  {period.badge && !period.label?.toLowerCase().includes(period.badge.toLowerCase()) && (
-                    <span className="officer-period-tag">{period.badge}</span>
-                  )}
                 </button>
               );
             })}
           </div>
         </div>
       )}
-
-      {/* ─── Encabezado conmemorativo de Fundadores ("encima de todos") ─── */}
-      {activePeriod?.isFounder && (
-        <div className="officers-founders-header" role="region" aria-label={i18n.periods?.foundersHeaderTitle || 'Fundadores'}>
-          <h2 className="officers-founders-title">
-            {i18n.periods?.foundersHeaderTitle || 'Fundadores'}
-          </h2>
-          <p className="officers-founders-desc">
-            {activePeriod.intro || i18n.periods?.foundersIntro || 'Homenaje y conmemoración a la mesa directiva y líderes fundadores que hicieron posible el inicio, la fundación y el reconocimiento oficial del Capítulo Estudiantil ACS UNMSM.'}
-          </p>
-        </div>
-      )}
-
 
       {/* ─── Pestañas de filtrado por área ─── */}
       <nav className="officers-navigation-bar" aria-label="Navegación por áreas directivas">

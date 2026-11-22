@@ -144,7 +144,9 @@
       "eventsCoordinator": "Events Coordinator",
       "eventsSubCoordinator": "Events Subcoordinator",
       "humanResources": "Human Resources Coordinator",
+      "humanResourcesMale": "Human Resources Coordinator",
       "humanResourcesSubCoordinator": "Human Resources Subcoordinator",
+      "humanResourcesSubFemale": "Human Resources Subcoordinator",
       "internalLiaison": "Liaison Subcoordinator",
       "externalLiaison": "Liaison Coordinator",
       "internalLiaisonCoord": "Internal Liaison Coordinator",
@@ -152,19 +154,21 @@
       "cio": "Information Technology Coordinator",
       "dcio": "Information Technology Subcoordinator",
       "k12Coordinator": "K-12 Coordinator",
+      "k12CoordinatorFemale": "K-12 Coordinator",
       "k12SubCoordinator": "K-12 Subcoordinator",
-      "founder": "Founding Member"
+      "founder": "Founding Member",
+      "generalSecretary": "Secretary General",
+      "ceo": "CEO",
+      "treasurer2": "Treasurer",
+      "eventsSupport": "Events Support Member"
     },
     "periods": {
       "heading": "Board Terms",
       "subtitle": "Commemoration and historical record of chapter executive boards",
       "period2026": "2026 Term",
       "period2026Badge": "Current",
-      "period2025": "Mesa fundadora 2025-2026",
-      "period2025Badge": "Founding Board",
+      "period2025": "2025 Term",
       "foundersHeaderTitle": "Founders",
-      "foundersSubtitle": "Founding Executive Board (2025–2026)",
-      "foundersIntro": "Tribute and commemoration to the founding executive board and leaders who made possible the start, foundation, and official recognition of the ACS UNMSM Student Chapter.",
       "foundersTag": "Founder",
       "foundersArea": "Founding Members"
     }
